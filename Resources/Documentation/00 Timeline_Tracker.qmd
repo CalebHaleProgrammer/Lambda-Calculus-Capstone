@@ -1,0 +1,36 @@
+---
+title: "Timeline_Tracker"
+format: html
+---
+
+**Week 1** 205+ minutes
+
+:20 reading Turing's paper for theoretical foundations
+
+:20 reviewing plan and resources
+
+1:00+ brainstorming abt abstraction
+
+:15 reading Turing
+
+:30 reading Intro to Lambda Calculus
+
+:25 more Intro ... reading and trying to figure out abstraction
+
+:35 looking at a JS lambda calculus interpreter on Github (tadeuzagallo)
+
+**Monday 4/27** 110 minutes
+
+:25 Reading Turing
+
+:5 Reading Intro to LC
+
+1:20 Github and article on LC int
+
+**Tuesday 4/28** 15 minutes
+
+:15 Reading Turing
+
+**Thursday 4/30** ...
+
+Set up Github, create folders and files for work up to now
