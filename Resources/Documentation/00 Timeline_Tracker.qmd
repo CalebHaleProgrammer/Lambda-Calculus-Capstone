@@ -49,6 +49,8 @@ format: html
 
 :5 Saved Resources for offline use
 
+:30 Reaching out to acquaintence about understanding abstraction
+
 Saved resources:
 
 Introduction to Lambda Calculus from <https://www.cse.chalmers.se/research/group/logic/TypesSS05/Extra/geuvers.pdf>
