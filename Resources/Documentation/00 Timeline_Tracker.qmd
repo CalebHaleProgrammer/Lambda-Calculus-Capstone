@@ -46,3 +46,13 @@ format: html
 **Cont.: I think this is a strong conceptual formulation, but I'm not completely sure how it aligns with abstraction in the technical sense. Functions in both normal programming and LC are called abstractions, (the "defined" aspect being the code in the function and the "undefined" aspect being the arguments), and the term "abstraction" is also used in programming when talking about a system's structure: having separate specialized methods that can act as a black box and be used without worrying much about the details of how it is implemented. These allow higher-level reasoning based on functionality (e.g. "determine eligibility"-\>"report eligibility to user") similar to how grouping and classification is used in everyday reasoning (e.g. you don't need to know a dog's color to determine how many legs you would expect it to have, any more than you'd need to know the workings of a function to know what it does). Thus, referring to functions as abstractions and referring to program abstraction (as a methodology or structure) can use the same idea of abstraction, as I understand it, but take advantage of different aspects (what varies, for functions, what remains the same, for fulfilling functionality needs).**
 
 1:25 Set up Github, create folders and files for work up until now
+
+:5 Saved Resources for offline use
+
+Saved resources:
+
+Introduction to Lambda Calculus from <https://www.cse.chalmers.se/research/group/logic/TypesSS05/Extra/geuvers.pdf>
+
+Types and Programming Languages from <https://www.cis.upenn.edu/~bcpierce/tapl/>
+
+Cloned example untyped LC interpreter repo (not in resources folder bc I was afraid of git issues) <https://github.com/tadeuzagallo/lc-js>
