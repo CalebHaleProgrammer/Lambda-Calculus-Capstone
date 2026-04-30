@@ -1,2 +1,2 @@
 # Lambda-Calculus-Capstone
-# Hello World
+Hello World
