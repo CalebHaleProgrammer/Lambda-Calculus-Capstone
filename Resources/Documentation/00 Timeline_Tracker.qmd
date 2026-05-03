@@ -31,7 +31,7 @@ format: html
 
 :15 Reading Turing
 
-**Thursday 4/30** ...
+**Thursday 4/30** 120 minutes
 
 **Checkpoint Report:**
 
@@ -58,3 +58,31 @@ Introduction to Lambda Calculus from <https://www.cse.chalmers.se/research/group
 Types and Programming Languages from <https://www.cis.upenn.edu/~bcpierce/tapl/>
 
 Cloned example untyped LC interpreter repo (not in resources folder bc I was afraid of git issues) <https://github.com/tadeuzagallo/lc-js>
+
+**Friday 5/1** 135 minutes
+
+**Term and free variable definitions are inductively defined, allowing for constructive generation of more. Bound variables are syntactically part of the function definition, so they can no longer be treated as constants or have constants substituted. Closed terms only have bound variables, so the function is self-contained and "deterministic".**
+
+1:00 Meeting with a project mentor
+
+1:15 Reading Intro to Lambda Calculus
+
+Meaning of "abstraction" as the term for binding a variable
+
+bound meaning to be considered in full "domain" vs free variables can be treated as/substituted with a constant?
+
+Valid terms and free variables are defined inductively; variable, application, and abstraction for terms, variable as free, application having free variables of it's parts, abstraction binding variables which are otherwise free.
+
+Substitution is only for free variables because the bound variables need to be part of the definition, used in application. Closed terms have no free variables (are deterministic).
+
+Compatibility rules make sense, are they reversible (do terms have inverses?)
+
+Future research: de Bruijn notation to address alpha-conversion requirements
+
+**Saturday 5/2** 120 minutes
+
+**I have a good handle on the LC syntax, and have decided a good way to think about bound and free variables is variables which are placeholders meant to be defined (by inputs) and undefined variables, respectively. I will focus more on personally working through the concepts and designing as best I can without studying/relying on outside resources as much.**
+
+:5 Reading Intro to LC and reviewing notes
+
+1:55 Brainstorming, reviewing knowledge and orienting myself
