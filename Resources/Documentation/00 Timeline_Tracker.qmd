@@ -86,3 +86,43 @@ Future research: de Bruijn notation to address alpha-conversion requirements
 :5 Reading Intro to LC and reviewing notes
 
 1:55 Brainstorming, reviewing knowledge and orienting myself
+
+**Sunday 5/3** 90 minutes
+
+1:30 brainstorming abt abstraction
+
+Constants and variables can be reformulated as a line of dependencies considering contextual information, where more concrete ideas are dependent on their abstractions, with additional information forming them at each level (terrier is an instance of dog, which is an instance of mammal, etc.) Functions with no arguments are constants, functions with untyped arguments are variable based on constant(s) (the arguments), functions with simply typed arguments are variable based on variable (the argument) based on a constant (the type), and functions with dependent-typed arguments are variable based on variable (argument) based on a variable (type with dependency) based on a constant (the independent variable defining the type).
+
+This is interesting, but almost feels like all varieties of LC could be reduced to untyped LC, with the constants being inputs, the variables being the function definition, or something like that. Also, what it means to depend on another variable or to be an abstraction is still a little messy.
+
+I also formulated two levels of related-ness, like constants that describe variables (can function as an abstraction that describes them) vs constants that have to do with variables but don't really convey information about them, e.g. "x exists" applies the constant info of "existence" to it but that doesn't really tell us anything, it's like the ultimate abstraction - almost useless, except when considering relationships between things in abstract math or something like that. Also, names "apply" information to a thing without really indicating anything about it in and of itself, since name-ability is just as abstract of a category as "exists". (Whether a name is appropriate, descriptive, or intuitive is a different matter.)
+
+Ideally a satisfactory formulation of abstraction would be able to align conceptually with computer functions with or without arguments, math functions with inputs and outputs, (which should be very closely conceptual to the former) and math abstractions, and should also support multiple levels of classification and reasoning using that definition of abstraction.
+
+I also had the thought that a chain of built-up definitions is more akin to LLM vector definitions and/or the hierarchical structure of OOP inheritance, while a good system of abstraction should handle flexibility more like an ECS (which, being something implemented in software is obviously expressible in the LC/Turing formulation).
+
+Also, in my brainstorming I think I conflated two types of "depending on" other values, which could work with my "informational" vs "empty" formulation, namely, information like type, meta-information, which shapes the nature of a variable directly by what it can be, vs information like independent variables, outside/contextual information, which shapes the value of a variable almost indirectly (in that it's not tied to the nature of the variable?) when it is plugged in...? Or, meta-information about the "domain" of a variable vs arbitrary information about which values or "slice" or "instance" to look at.
+
+Although abstractions are defined by what remains constant, it is not the adding/setting/restricting of constants to a variable system that creates/"does" abstraction, but adding variable flexibility to a constant, since terrier-\>dog-\>mammal deals with more and more variable flexibility at higher abstraction. Abstraction, then, is replacing a constant by a variable of that constant's type or "domain". When there are no constants remaining it is maximally abstract.
+
+**Monday 5/4** 110 minutes
+
+**Intensional definitions have less detail and function as and/or are abstractions, but may correspond to a single extension/referent – "simply typed definition" – or to a extension of a class of referents based on it's relative/dependent definition – "dependently typed definition". The former yields neat hierarchies like OOP, while the latter allows more flexibility.**
+
+1:00 Brainstorming about abstraction
+
+:50 brainstorming, reviewing notes, summarizing ideas
+
+Abstraction is about replacing a constant with a variable of its type to broaden the possibilities, creating a class representative of a similar thing to the original object. New information cannot be added, because the flexibility in value only extends to the scope or type of the constant being replaced. I.e. removing the detail of breed and appearance can abstract from a dog to the idea of dog, but vagueness/generalness on the subject of breed cannot imply qualities of flight or feathers to include birds in the abstraction. Only when you remove the relevant information and go more abstract can you do so (dog-\>animal, losing detail about body shape and composition).
+
+More detail about type and the connection/dependencies of variables not yet explored, but the flexibility of type came up again.
+
+Using the two examples of f(2x)=x\^2 - x +3 being solvable by substituting for x -\> f(x)=(x/2)\^2 - x/2 +3 and, as an arbitrary example, x\^2 = x+2, in which you cannot freely substitute for x, I brainstormed the distinction between "intensional" and "extensional" definitions. In the former example, the two sides are equal by definition and substituting a different variable into it cannot change its equality any more than a thing can be different than itself – it's part of the definition of equality that that is impossible. Since f() is just shorthand for ()\^2 -()+3, they cannot be unequal. In the second example, each side is its own expression, they are equal not by intension but by extension – they refer to the same thing – which can be seen more clearly by different notation. f1(x)=f2(x) is only equal when the effect of f1 is the same as the effect of f2, that is, when ()\^2 = ()+2.
+
+Using the "intensional" definition as something like "what a function does" and "extensional" as "what effect or end result it has" reveals a distinction between two types of intensional definitions, which I think correspond somewhat with simple and dependent types. In plain algebra you can "do the same thing to both sides" when solving an equation, but "dividing by 3" and "square" have two different natures: the first is a single operation, while the second one describes an infinite number of operations, that is "multiplying by x" for the x being squared, and thus can lead to issues with changing equality states when not careful, like making -1=1. Thus, a "simply typed" intensional definition corresponds to a single extension, while a "dependently typed" intensional definition corresponds to a whole class or set of extensions. For objects rather than functions, constants vs variables have the same or similar behavior.
+
+Functions can have many outputs from a single "input" when variable, so long as no single input goes to multiple outputs.\*
+
+**Tuesday 5/5** 25 minutes
+
+:25 planning lexer and parser
