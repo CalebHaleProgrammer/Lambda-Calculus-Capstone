@@ -126,3 +126,9 @@ Functions can have many outputs from a single "input" when variable, so long as 
 **Tuesday 5/5** 25 minutes
 
 :25 planning lexer and parser
+
+**Wednesday 5/6** ... minutes
+
+:40 planning lexer, generate code from pseudocode with AI, review code
+
+**Thursday 5/7** ... minutes

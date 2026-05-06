@@ -1,47 +1,153 @@
 ---
 title: "Drafting Space"
 format: html
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 ## Quarto
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+Quarto enables you to weave together content and executable code into a
+finished document. To learn more about Quarto see <https://quarto.org>.
 
 ## Pseudo Code
 
-Lexer
-Character by character
+Lexer Character by character
 
-For after each normal character,
-If a special character or space, then the running "read" is a token, else keep reading
+For after each normal character, If a special character or space, then
+the running "read" is a token, else keep reading
 
-After a special character, if it was a paren or dot that's it, else if a lambda then continue reading for the full token.
+After a special character, if it was a paren or dot that's it, else if a
+lambda then continue reading for the full token.
 
-Parser
-Token by token
-( makes new branch
-) ends and returns a level
-*should handle main dependency-levelling, just needs left and right association for application and abstraction, respectively. I don't need the tree to be binary or efficient hypothetically, so long as evaluation can be done step by step using pairs.
+\*only accept a not-null, not-empty expression
 
-/ denotes a binding token, drop / to read name
-. denotes a separation, shouldn't be needed, drop . to process semantics, term after binding is bound so no symbol needed.
+PrimeNewTokenRead: runningRead = fullExpression\[1\], fullExpression =
+fullExpression\[2:\] #all except the first character
 
-Binding token and term token together should be the abstraction to apply to another term.
+repeat until processed:
 
+if runningRead\[-1\] %in% c("(",")",".") \| (runningRead\[-1\] is a char
+& fullExpression\[1\] is not a char)
+
+then add runningRead to tokens, if fullExpression!="", PrimeNewTokenRead
+
+elseif fullExpression\[1\] is a char
+
+then ReadLetter
+
+else throw error, may be trying to bind a syntax symbol.
+
+console print the reading state for tracking
+
+ReadLetter:
+
+if fullExpression not "",
+
+then runningRead+=fullExpression\[1\],
+
+fullExpression\[2:\]
+
+|      |           |           |           |             |             |
+|------|-----------|-----------|-----------|-------------|-------------|
+|      | (         | )         | .         | \\          | char        |
+| (    | set token | set token | set token | throw error | set token   |
+| )    | set token | set token | set token | throw error | set token   |
+| .    | set token | set token | set token | throw error | set token   |
+| \\   | set token | set token | set token | throw error | set token   |
+| char | set token | set token | set token | add to read | add to read |
+
+```{r}
+install.packages("foreach")
+library(foreach)
+
+foreach(i=1:length(fullExpression)) %do% {
+  ...
+}
+
+
+AI code:
+  # TRUE if character is a non-symbol (letter/digit/etc.), FALSE for ()./\
+IsChar <- function(ch) {
+  nchar(ch) > 0 && !ch %in% c("(", ")", ".", "/", "\\")
+} #nchar(ch) > 0 makes sure the argument isn't empty
+
+# Sets runningRead to the first char of fullExpression and advances fullExpression
+PrimeNewTokenRead <- function() {
+  runningRead    <<- substr(fullExpression, 1, 1)
+  fullExpression <<- substr(fullExpression, 2, nchar(fullExpression))
+}
+
+# Appends the first char of fullExpression to runningRead and advances fullExpression
+ReadLetter <- function() {
+  if (fullExpression != "") {
+    runningRead    <<- paste0(runningRead, substr(fullExpression, 1, 1))
+    fullExpression <<- substr(fullExpression, 2, nchar(fullExpression))
+  }
+}
+
+# ── Main tokenising loop ──────────────────────────────────────────────────────
+
+tokens <- c()
+PrimeNewTokenRead()
+
+processed <- FALSE
+while (!processed) {
+
+  # Peek at boundary characters
+  lastChar  <- substr(runningRead,    nchar(runningRead),    nchar(runningRead))
+  firstChar <- substr(fullExpression, 1, 1)   # "" when fullExpression is empty
+
+  cat(sprintf(
+    "[Reading] runningRead: %-12s | firstChar: %-4s | tokens so far: [%s]\n",
+    paste0("'", runningRead, "'"),
+    paste0("'", firstChar,   "'"),
+    paste(tokens, collapse = ", ")
+  ))
+
+  if (lastChar %in% c("(", ")", ".") ||
+      (IsChar(lastChar) && !IsChar(firstChar))) {
+    # ── Token boundary reached: flush runningRead ──
+    tokens <- c(tokens, runningRead)
+    if (fullExpression != "") {
+      PrimeNewTokenRead()
+    } else {
+      processed <- TRUE
+    }
+
+  } else if (IsChar(firstChar)) {
+    # ── Still inside a multi-char token: keep reading ──
+    ReadLetter()
+
+  } else {
+    stop("Parse error: may be trying to bind a syntax symbol ('",
+         firstChar, "').")
+  }
+}
+
+cat("\nFinal tokens:", paste(tokens, collapse = " | "), "\n")
+
+```
+
+Parser Token by token ( makes new branch ) ends and returns a level
+\*should handle main dependency-levelling, just needs left and right
+association for application and abstraction, respectively. I don't need
+the tree to be binary or efficient hypothetically, so long as evaluation
+can be done step by step using pairs.
+
+/ denotes a binding token, drop / to read name . denotes a separation,
+shouldn't be needed, drop . to process semantics, term after binding is
+bound so no symbol needed.
+
+Binding token and term token together should be the abstraction to apply
+to another term.
 
 Tree visualizing library in R?
 
-(X(y))
-((X)y)
-
-
-
-
-
+(X(y)) ((X)y)
 
 ```{r}
 #| echo: false
 #The `echo: false` option disables the printing of code (only output is displayed).
 ```
-
-
