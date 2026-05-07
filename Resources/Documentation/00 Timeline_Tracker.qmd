@@ -127,8 +127,20 @@ Functions can have many outputs from a single "input" when variable, so long as 
 
 :25 planning lexer and parser
 
-**Wednesday 5/6** ... minutes
+**Wednesday 5/6** 40 minutes
 
 :40 planning lexer, generate code from pseudocode with AI, review code
 
 **Thursday 5/7** ... minutes
+
+**New formulation: Objects are either a single value (constant), a single unknown value ("existential variable" or "false variable"), or a variety of values ("universal variable" or simply "variable") from a collection that defines it, i.e. a set. What I termed existential variables would likely be called "false variables" but I refer to them as variables since "what they can be" can vary, although in practice they function as an unknown constant. Any of these value(s) can then be stated to belong to another set of values, which further describes the value(s), and which corresponds to a type. Thus, an individual dog can be of type dog, mammal, vertebrate, pet, etc.**
+
+**Then, abstraction is the process of specifying a constant or variable to be in a larger set than previously defined; C\|Ve\|Vu + \_\|type -\> Vu + type (such that the type is a larger superset of the previous type, which if not specified would just be the set of the thing itself, it belonging to a collection of nothing but itself at the very least). Of note is that the primary defining term, i.e. the constant or variable itself, becomes a "universal"/true variable because the abstract object is a class that includes the original object. Without this change, the term would simply refer to the same object in more vague/broad terms.**
+
+**As sets can be defined by set-builder notation or enumerated elements, this corresponds to intensional and extensional definitions, and either can be used in the definition of the primary C\|V term and the type term. When the type term's definition is intensionally based on the primary C\|V term, it is a dependent type. When the primary C\|V term is a variable defined from another term/obj, then that is a bound variable. Existence is the property of having an element in the extension of a set as defined intensionally (e.g. set builder notation).**
+
+**This formulation encapsulates well my brainstorming on different levels of detail in description, natures of definition, ways variables (or what we so call) are used, types, and constant descriptions/definitions of variable objects.**
+
+**Further work will aim to clarify the concepts of varying levels of detail and categorizing in this framework, with examples of human reasoning, as well as explore more deeply dependent type definitions with examples. Additional exploration of intensional vs extensional definitions, reasoning using abstraction and categorical logic, and defining functions in terms of this formulation are on the docket for upcoming synthesis.**
+
+1:30 synthesize notes from abstraction brainstorming (about half done).
