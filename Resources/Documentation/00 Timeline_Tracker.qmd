@@ -131,7 +131,7 @@ Functions can have many outputs from a single "input" when variable, so long as 
 
 :40 planning lexer, generate code from pseudocode with AI, review code
 
-**Thursday 5/7** ... minutes
+**Thursday 5/7** 170 minutes
 
 **New formulation: Objects are either a single value (constant), a single unknown value ("existential variable" or "false variable"), or a variety of values ("universal variable" or simply "variable") from a collection that defines it, i.e. a set. What I termed existential variables would likely be called "false variables" but I refer to them as variables since "what they can be" can vary, although in practice they function as an unknown constant. Any of these value(s) can then be stated to belong to another set of values, which further describes the value(s), and which corresponds to a type. Thus, an individual dog can be of type dog, mammal, vertebrate, pet, etc.**
 
@@ -147,4 +147,16 @@ Functions can have many outputs from a single "input" when variable, so long as 
 
 :10 Reviewing R code from AI (looks good for the lexer, next will be the parsing)
 
-:.. Saved my old chat from trying to understand the Traverse function in the github example's code (markdown file 04 and pdf file 05). I'm not sure which format I prefer for documentation. Began new chat to work on the parser and decided to test the lexer while the AI was thinking. Accidentally ran a line of code through the parser and it actually worked quite well, except that I forgot to have spaces break up variable names as I planned. Output recorded in file 06. Reading user input with readline is failing in an interactive session.
+:50 Saved my old chat from trying to understand the Traverse function in the github example's code (markdown file 04 and pdf file 05). I'm not sure which format I prefer for documentation. Began new chat to work on the parser and decided to test the lexer while the AI was thinking. Accidentally ran a line of code through the parser and it actually worked quite well, except that I forgot to have spaces break up variable names as I planned. Output recorded in file 06. Reading user input with readline is failing in an interactive session.
+
+:20 Looked at options for tree visualizing in R, ggraph seems nice but I'll need to convert my tree into a dataframe I think. There's the data.tree library for making trees, but AI also mentioned S3 classes that can represent tree hierarchies, so I'm looking at that too.
+
+data.tree : <https://cran.r-project.org/web/packages/data.tree/vignettes/data.tree.html>
+
+ggraph : <https://r-graph-gallery.com/334-basic-dendrogram-with-ggraph.html>
+
+**Friday 5/8** ... minutes
+
+:35 Meeting with mentor. Lexer counted space as a token. Learned debugging in RStudio and using source-running for readline to work.
+
+To discuss in meeting: readline for user input, tree visualizing in r, project plan, current formulation of abstraction,

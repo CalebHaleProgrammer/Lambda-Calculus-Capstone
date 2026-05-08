@@ -69,22 +69,22 @@ library(foreach)
 #print(paste("Hello", name)) is the syntax for printing
 
 
-#if(interactive()) 
+if(interactive()) 
   {fullExpression <- readline(prompt="Enter your expression: ")}
+#test
 
-#AI code:
-  # TRUE if character is a non-symbol (letter/digit/etc.), FALSE for ()./\
+  # TRUE if non-symbol (letter/digit/etc.), FALSE for ()./\
 IsChar <- function(ch) {
-  nchar(ch) > 0 && !ch %in% c("(", ")", ".", "/", "\\")
+  nchar(ch) > 0 && !ch %in% c("(", ")", ".", "/", "\\", " ")
 } #nchar(ch) > 0 makes sure the argument isn't empty
 
-# Sets runningRead to the first char of fullExpression and advances fullExpression
+# Sets the first char of fullExpression to runningRead, taking first char
 PrimeNewTokenRead <- function() {
   runningRead    <<- substr(fullExpression, 1, 1)
   fullExpression <<- substr(fullExpression, 2, nchar(fullExpression))
 }
 
-# Appends the first char of fullExpression to runningRead and advances fullExpression
+# Moves the first char of fullExpression to runningRead
 ReadLetter <- function() {
   if (fullExpression != "") {
     runningRead    <<- paste0(runningRead, substr(fullExpression, 1, 1))
@@ -147,6 +147,10 @@ bound so no symbol needed.
 
 Binding token and term token together should be the abstraction to apply
 to another term.
+
+```{r}
+
+```
 
 Tree visualizing library in R?
 
