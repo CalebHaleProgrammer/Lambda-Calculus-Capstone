@@ -59,15 +59,20 @@ fullExpression\[2:\]
 | char | set token | set token | set token | add to read | add to read |
 
 ```{r}
-install.packages("foreach")
+#install.packages("foreach")
 library(foreach)
 
-foreach(i=1:length(fullExpression)) %do% {
-  ...
-}
+#foreach(i=1:length(fullExpression)) %do% {
+#  ...
+#}
+
+#print(paste("Hello", name)) is the syntax for printing
 
 
-AI code:
+#if(interactive()) 
+  {fullExpression <- readline(prompt="Enter your expression: ")}
+
+#AI code:
   # TRUE if character is a non-symbol (letter/digit/etc.), FALSE for ()./\
 IsChar <- function(ch) {
   nchar(ch) > 0 && !ch %in% c("(", ")", ".", "/", "\\")
@@ -104,9 +109,9 @@ while (!processed) {
     paste0("'", runningRead, "'"),
     paste0("'", firstChar,   "'"),
     paste(tokens, collapse = ", ")
-  ))
+  )) #paste0 and sprintf are used to create strings but not print them, then cat concatenates and prints to the console.
 
-  if (lastChar %in% c("(", ")", ".") ||
+  if (lastChar %in% c("(", ")", ".", " ") ||
       (IsChar(lastChar) && !IsChar(firstChar))) {
     # ── Token boundary reached: flush runningRead ──
     tokens <- c(tokens, runningRead)

@@ -144,3 +144,7 @@ Functions can have many outputs from a single "input" when variable, so long as 
 **Further work will aim to clarify the concepts of varying levels of detail and categorizing in this framework, with examples of human reasoning, as well as explore more deeply dependent type definitions with examples. Additional exploration of intensional vs extensional definitions, reasoning using abstraction and categorical logic, and defining functions in terms of this formulation are on the docket for upcoming synthesis.**
 
 1:30 synthesize notes from abstraction brainstorming (about half done).
+
+:10 Reviewing R code from AI (looks good for the lexer, next will be the parsing)
+
+:.. Saved my old chat from trying to understand the Traverse function in the github example's code (markdown file 04 and pdf file 05). I'm not sure which format I prefer for documentation. Began new chat to work on the parser and decided to test the lexer while the AI was thinking. Accidentally ran a line of code through the parser and it actually worked quite well, except that I forgot to have spaces break up variable names as I planned. Output recorded in file 06. Reading user input with readline is failing in an interactive session.

@@ -1,0 +1,131 @@
+---
+title: "06 Console output"
+format: html
+---
+
+> library(foreach)
+> 
+> #foreach(i=1:length(fullExpression)) %do% {
+> #  ...
+> #}
+> 
+> fullExpression <- readline(prompt="Enter your expression: ")
+Enter your expression: #print(paste("Hello", name)) is the syntax for printing
+> 
+> #AI code:
+>   # TRUE if character is a non-symbol (letter/digit/etc.), FALSE for ()./\
+> IsChar <- function(ch) {
++   nchar(ch) > 0 && !ch %in% c("(", ")", ".", "/", "\\")
++ } #nchar(ch) > 0 makes sure the argument isn't empty
+> 
+> # Sets runningRead to the first char of fullExpression and advances fullExpression
+> PrimeNewTokenRead <- function() {
++   runningRead    <<- substr(fullExpression, 1, 1)
++   fullExpression <<- substr(fullExpression, 2, nchar(fullExpression))
++ }
+> 
+> # Appends the first char of fullExpression to runningRead and advances fullExpression
+> ReadLetter <- function() {
++   if (fullExpression != "") {
++     runningRead    <<- paste0(runningRead, substr(fullExpression, 1, 1))
++     fullExpression <<- substr(fullExpression, 2, nchar(fullExpression))
++   }
++ }
+> 
+> # ── Main tokenising loop ──────────────────────────────────────────────────────
+> 
+> tokens <- c()
+> PrimeNewTokenRead()
+> 
+> processed <- FALSE
+> while (!processed) {
++ 
++   # Peek at boundary characters
++   lastChar  <- substr(runningRead,    nchar(runningRead),    nchar(runningRead))
++   firstChar <- substr(fullExpression, 1, 1)   # "" when fullExpression is empty
++ 
++   cat(sprintf(
++     "[Reading] runningRead: %-12s | firstChar: %-4s | tokens so far: [%s]\n",
++     paste0("'", runningRead, "'"),
++     paste0("'", firstChar,   "'"),
++     paste(tokens, collapse = ", ")
++   )) #paste0 and sprintf are used to create strings but not print them, then cat concatenates and prints to the console.
++ 
++   if (lastChar %in% c("(", ")", ".") ||
++       (IsChar(lastChar) && !IsChar(firstChar))) {
++     # ── Token boundary reached: flush runningRead ──
++     tokens <- c(tokens, runningRead)
++     if (fullExpression != "") {
++       PrimeNewTokenRead()
++     } else {
++       processed <- TRUE
++     }
++ 
++   } else if (IsChar(firstChar)) {
++     # ── Still inside a multi-char token: keep reading ──
++     ReadLetter()
++ 
++   } else {
++     stop("Parse error: may be trying to bind a syntax symbol ('",
++          firstChar, "').")
++   }
++ }
+[Reading] runningRead: '#'          | firstChar: 'p'  | tokens so far: []
+[Reading] runningRead: '#p'         | firstChar: 'r'  | tokens so far: []
+[Reading] runningRead: '#pr'        | firstChar: 'i'  | tokens so far: []
+[Reading] runningRead: '#pri'       | firstChar: 'n'  | tokens so far: []
+[Reading] runningRead: '#prin'      | firstChar: 't'  | tokens so far: []
+[Reading] runningRead: '#print'     | firstChar: '('  | tokens so far: []
+[Reading] runningRead: '('          | firstChar: 'p'  | tokens so far: [#print]
+[Reading] runningRead: 'p'          | firstChar: 'a'  | tokens so far: [#print, (]
+[Reading] runningRead: 'pa'         | firstChar: 's'  | tokens so far: [#print, (]
+[Reading] runningRead: 'pas'        | firstChar: 't'  | tokens so far: [#print, (]
+[Reading] runningRead: 'past'       | firstChar: 'e'  | tokens so far: [#print, (]
+[Reading] runningRead: 'paste'      | firstChar: '('  | tokens so far: [#print, (]
+[Reading] runningRead: '('          | firstChar: '"'  | tokens so far: [#print, (, paste]
+[Reading] runningRead: '"'          | firstChar: 'H'  | tokens so far: [#print, (, paste, (]
+[Reading] runningRead: '"H'         | firstChar: 'e'  | tokens so far: [#print, (, paste, (]
+[Reading] runningRead: '"He'        | firstChar: 'l'  | tokens so far: [#print, (, paste, (]
+[Reading] runningRead: '"Hel'       | firstChar: 'l'  | tokens so far: [#print, (, paste, (]
+[Reading] runningRead: '"Hell'      | firstChar: 'o'  | tokens so far: [#print, (, paste, (]
+[Reading] runningRead: '"Hello'     | firstChar: '"'  | tokens so far: [#print, (, paste, (]
+[Reading] runningRead: '"Hello"'    | firstChar: ','  | tokens so far: [#print, (, paste, (]
+[Reading] runningRead: '"Hello",'   | firstChar: ' '  | tokens so far: [#print, (, paste, (]
+[Reading] runningRead: '"Hello", '  | firstChar: 'n'  | tokens so far: [#print, (, paste, (]
+[Reading] runningRead: '"Hello", n' | firstChar: 'a'  | tokens so far: [#print, (, paste, (]
+[Reading] runningRead: '"Hello", na' | firstChar: 'm'  | tokens so far: [#print, (, paste, (]
+[Reading] runningRead: '"Hello", nam' | firstChar: 'e'  | tokens so far: [#print, (, paste, (]
+[Reading] runningRead: '"Hello", name' | firstChar: ')'  | tokens so far: [#print, (, paste, (]
+[Reading] runningRead: ')'          | firstChar: ')'  | tokens so far: [#print, (, paste, (, "Hello", name]
+[Reading] runningRead: ')'          | firstChar: ' '  | tokens so far: [#print, (, paste, (, "Hello", name, )]
+[Reading] runningRead: ' '          | firstChar: 'i'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' i'         | firstChar: 's'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is'        | firstChar: ' '  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is '       | firstChar: 't'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is t'      | firstChar: 'h'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is th'     | firstChar: 'e'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the'    | firstChar: ' '  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the '   | firstChar: 's'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the s'  | firstChar: 'y'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the sy' | firstChar: 'n'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syn' | firstChar: 't'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the synt' | firstChar: 'a'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the synta' | firstChar: 'x'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syntax' | firstChar: ' '  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syntax ' | firstChar: 'f'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syntax f' | firstChar: 'o'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syntax fo' | firstChar: 'r'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syntax for' | firstChar: ' '  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syntax for ' | firstChar: 'p'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syntax for p' | firstChar: 'r'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syntax for pr' | firstChar: 'i'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syntax for pri' | firstChar: 'n'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syntax for prin' | firstChar: 't'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syntax for print' | firstChar: 'i'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syntax for printi' | firstChar: 'n'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syntax for printin' | firstChar: 'g'  | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+[Reading] runningRead: ' is the syntax for printing' | firstChar: ''   | tokens so far: [#print, (, paste, (, "Hello", name, ), )]
+> 
+> cat("\nFinal tokens:", paste(tokens, collapse = " | "), "\n")
+
+Final tokens: #print | ( | paste | ( | "Hello", name | ) | ) |  is the syntax for printing 
