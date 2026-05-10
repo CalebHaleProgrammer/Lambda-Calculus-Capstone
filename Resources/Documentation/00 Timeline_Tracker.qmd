@@ -161,11 +161,13 @@ ggraph : <https://r-graph-gallery.com/334-basic-dendrogram-with-ggraph.html>
 
 :55 minutes describing the abstraction formulation to a friend to review it and clarify it.
 
-**Saturday 5/9** ... minutes
+**Saturday 5/9** 60 minutes
 
 :15 reviewing/exploring potential resources
 
 :45 Reformulating the syntax rules for the lexer accounting for spaces and carefully planning possibilities, rewrote code.
+
+**Sunday 5/10** ... minutes
 
 tree visualizing in r
 
