@@ -155,8 +155,18 @@ data.tree : <https://cran.r-project.org/web/packages/data.tree/vignettes/data.tr
 
 ggraph : <https://r-graph-gallery.com/334-basic-dendrogram-with-ggraph.html>
 
-**Friday 5/8** ... minutes
+**Friday 5/8** 90 minutes
 
 :35 Meeting with mentor. Lexer counted space as a token. Learned debugging in RStudio and using source-running for readline to work.
 
-To discuss in meeting: readline for user input, tree visualizing in r, project plan, current formulation of abstraction,
+:55 minutes describing the abstraction formulation to a friend to review it and clarify it.
+
+**Saturday 5/9** ... minutes
+
+:15 reviewing/exploring potential resources
+
+:45 Reformulating the syntax rules for the lexer accounting for spaces and carefully planning possibilities, rewrote code.
+
+tree visualizing in r
+
+To discuss in meeting: current formulation of abstraction,

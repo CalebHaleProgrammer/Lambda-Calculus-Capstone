@@ -58,6 +58,33 @@ fullExpression\[2:\]
 | \\   | set token | set token | set token | throw error | set token   |
 | char | set token | set token | set token | add to read | add to read |
 
+V2.0
+
+Not allowed: a symbol or space after lambda, binding a symbol or space,
+or a parenthesis pair around a binding (detected via closing paren.
+after a period)
+
+\\ then non-char: Syntax error "Binding an invalid term after lambda"
+
+non-char then . : Syntax error "Binding an invalid term before period"
+
+. then ) : Syntax error : Syntax error "Invalid parenthesis around
+binding term"
+
+char or lambda then char : Read
+
+else: set token
+
+|  |  |  |  |  |  |  |
+|----|----|----|----|----|----|----|
+| 2ndV 1st\> | ( | ) | . | \ | " " | char |
+| ( | set token | set token | set token | Syntax error | set token | set token |
+| ) | Syntax error | set token | Syntax error | Syntax error | set token | set token |
+| . | Syntax error | Syntax error | Syntax error | Syntax error | Syntax error | set token |
+| \ | set token | set token | set token | Syntax error | set token | set token |
+| " " | set token | set token | set token | Syntax error | set token | set token |
+| char | set token | set token | set token | Read | set token | Read |
+
 ```{r}
 #install.packages("foreach")
 library(foreach)
