@@ -167,7 +167,9 @@ ggraph : <https://r-graph-gallery.com/334-basic-dendrogram-with-ggraph.html>
 
 :45 Reformulating the syntax rules for the lexer accounting for spaces and carefully planning possibilities, rewrote code.
 
-**Sunday 5/10** ... minutes
+**Monday 5/11** ... minutes
+
+1:15 Brainstorm abt abstraction. Details of a concept are part of the intensional definition of either the main set or the type set; main set for the definition (what you're talking about) and the type set for the descriptions of it (how you're talking about it, how you label and categorize it). That's good for basic "having qualities" and the composition of concepts, but not internal structure or relationships between the pieces. Operations, relations, functions, etc. are all closely related in terms of how they can be defined extensionally with ordered pairs, but intensional definitions are a bigger topic.
 
 tree visualizing in r
 
