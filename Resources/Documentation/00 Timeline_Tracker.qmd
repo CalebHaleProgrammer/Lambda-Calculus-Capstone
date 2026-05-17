@@ -155,9 +155,11 @@ data.tree : <https://cran.r-project.org/web/packages/data.tree/vignettes/data.tr
 
 ggraph : <https://r-graph-gallery.com/334-basic-dendrogram-with-ggraph.html>
 
-**Friday 5/8** 90 minutes
+**Friday 5/8** 120 minutes
 
 :35 Meeting with mentor. Lexer counted space as a token. Learned debugging in RStudio and using source-running for readline to work.
+
+:30 abstraction brainstorming
 
 :55 minutes describing the abstraction formulation to a friend to review it and clarify it.
 
@@ -167,9 +169,49 @@ ggraph : <https://r-graph-gallery.com/334-basic-dendrogram-with-ggraph.html>
 
 :45 Reformulating the syntax rules for the lexer accounting for spaces and carefully planning possibilities, rewrote code.
 
-**Monday 5/11** ... minutes
+**Monday 5/11** 75 minutes
 
 1:15 Brainstorm abt abstraction. Details of a concept are part of the intensional definition of either the main set or the type set; main set for the definition (what you're talking about) and the type set for the descriptions of it (how you're talking about it, how you label and categorize it). That's good for basic "having qualities" and the composition of concepts, but not internal structure or relationships between the pieces. Operations, relations, functions, etc. are all closely related in terms of how they can be defined extensionally with ordered pairs, but intensional definitions are a bigger topic.
+
+**Tuesday 5/12** 120 minutes
+
+1:00 brainstorming and explaining lexer and parser to rubber duck, running some example tests on lexer
+
+1:00 Drafted the following prompt for AI to make a parser, then when getting ready to input it, revisited my older AI chat (file 07). AI suggested tracking depth of the tree for parenthesis matching, but my looping pair-searching that I brainstormed shouldn't need it. Documented my old chat, in which I asked about some topics that came up in preliminary research but are better left for the interpreter (file 07). Did quick research on trees in r to decide whether to use the S3 approach suggested by AI or data.tree or something else. Data.tree allows/uses multiple strictly ordered children, so it should work fine. Tidied drafting space while it thought.
+
+I need a parser for a lambda calculus interpreter based on the following pseudocode description, with "paren" shorthand for parenthesis. Add all tokens except "." in "tokens" list to a nonbinary (more than two nodes allowed at a layer) tree structure on the same layer. When parentheses are matched, the tokens between the parenthesis should be put down a layer in the tree, on their own branch stemming from the location that they were in the list of tokens. define a parseParen function that takes the index of two parentheses and puts the tokens between the parentheses down a branch, with the parenthesis disappearing as the terms are grouped. define a parseBinding function that takes the index and layer within the AST (or however a position would be encoded) and groups that position and the next two terms into a lower branch, similar to the parseParen function but with a specific number of terms (3) and not removing any tokens (i.e. the parentheses). If less than two terms are to the right of the argument position throw "Application Parse Error". #Parsing Parentheses Do the following loop until noParens == True (one of the loops ends without encountering parenthesis) Initialize variables "leftmostRight" and "rightmostLeft". Iterate over the tokens in the first layer; if the token is a left paren, update rightmostLeft with the index of the left paren. Else if the character is a right paren do the following conditional: if the rightmostLeft is left of (lower index than) the scanned token then update leftmostRight to the index of the current token and exit the loop to pair the parens, else throw an "unmatched right parenthesis" error. If the loop reaches the end of the tokens list, then: if you found a left paren (rightmost left) then throw an unmatched left paren error, else no more parens found, set noParens = True to proceed to parse applications. #Parsing Bindings For each layer in the tree repeat the following search loop until no layers of the tree have more or less than three terms (the binding term, the function term, and the input term), counting branch nodes as a single term to reflect use in the application phase. Search from left to right for the rightmost binding term (term whose first character is in the list of "" or "/"), if none found, then you're done, else group the binding term and the two terms to the right of it, (if less than two terms to the right, throw "Application Parse Error").
+
+**Wednesday 5/13** 35 minutes
+
+:35 drafted pseudocode for the interpreter
+
+**Friday 5/15** 45 minutes
+
+:45 meeting with project mentor, reviewed AI parser code a bit
+
+**Saturday 5/16** ... minutes
+
+:20 Review AI generated parser code, added non-empty requirement to lexer. Parser creates parentless nodes then adds them to the tree in two steps. It also tracks root's children and a separate list of nodes at the initialization. Has some extra conditions it checks for (like digits as well as parenthesis). Doesn't actually have some of the function calls. left_parens and right_parens appear to be functions, that I don't understand. It's so messy I'm going to reprompt.
+
+:... Wrote the following follow-up prompt:
+
+A lexer will already have created a list of tokens, as strings, in "tokens". To check for left and right parentheses just use =="(" and ==")" because they will be a single-character token. Don't use grepl. Keep the code brief. To reiterate and clarify, follow this pseudocode description:
+
+For every token in tokens, if token!="." add token to the children of the root node of mainAST.
+
+repeat checkLayerForParens on each layer, recursively going down the tree until every layer has no parentheses left.
+
+checkLayerForParens should read through the tokens of a layer and group all the tokens between pairs of parentheses as children of a new tree node that replaces them using a function called parseParen that takes the indices/positions of the two parentheses. Thus, the only tokens that should disappear from the tree are parentheses after they have been evaluated and their contents "lowered" along a branch. A token list with "a ( b c ) d" should become a list with "a", a branch containing "b" and "c", then "d".
+
+This should be done thus;
+
+Initialize variables "leftmostRight" and "rightmostLeft". Iterate over the tokens in the first layer; if the token is a left paren, update rightmostLeft with the index of the left paren. Else if the character is a right paren do the following conditional: if the rightmostLeft is left of (lower index than) the scanned token then update leftmostRight to the index of the current token and exit the loop to pair the parens, else throw an "unmatched right parenthesis" error.
+
+If the loop reaches the end of the tokens list, then: if you found a left paren (rightmost left) then throw an unmatched left paren error, else no more parens found, set noParens = True to proceed to parse applications.
+
+After the previous loop, as a separate loop repeat checkLayerForBindings on each layer until every layer has exactly three terms.
+
+checkLayerForBindings should read through the tokens of a layer and if there is a binding term followed by two other terms (and the current branch has more than those three terms), then the binding term and the next two terms should be grouped with parseBinding, a function that takes the position of the binding term to select the three terms and replace them with a node that has them as its children.
 
 tree visualizing in r
 

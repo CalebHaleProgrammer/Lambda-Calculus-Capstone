@@ -15,50 +15,9 @@ finished document. To learn more about Quarto see <https://quarto.org>.
 
 Lexer Character by character
 
-For after each normal character, If a special character or space, then
-the running "read" is a token, else keep reading
-
-After a special character, if it was a paren or dot that's it, else if a
-lambda then continue reading for the full token.
-
 \*only accept a not-null, not-empty expression
 
-PrimeNewTokenRead: runningRead = fullExpression\[1\], fullExpression =
-fullExpression\[2:\] #all except the first character
-
-repeat until processed:
-
-if runningRead\[-1\] %in% c("(",")",".") \| (runningRead\[-1\] is a char
-& fullExpression\[1\] is not a char)
-
-then add runningRead to tokens, if fullExpression!="", PrimeNewTokenRead
-
-elseif fullExpression\[1\] is a char
-
-then ReadLetter
-
-else throw error, may be trying to bind a syntax symbol.
-
-console print the reading state for tracking
-
-ReadLetter:
-
-if fullExpression not "",
-
-then runningRead+=fullExpression\[1\],
-
-fullExpression\[2:\]
-
-|      |           |           |           |             |             |
-|------|-----------|-----------|-----------|-------------|-------------|
-|      | (         | )         | .         | \\          | char        |
-| (    | set token | set token | set token | throw error | set token   |
-| )    | set token | set token | set token | throw error | set token   |
-| .    | set token | set token | set token | throw error | set token   |
-| \\   | set token | set token | set token | throw error | set token   |
-| char | set token | set token | set token | add to read | add to read |
-
-V2.0
+V2.0 lexer:
 
 Not allowed: a symbol or space after lambda, binding a symbol or space,
 or a parenthesis pair around a binding (detected via closing paren.
@@ -76,7 +35,7 @@ char or lambda then char : Read
 else: set token
 
 |  |  |  |  |  |  |  |
-|----|----|----|----|----|----|----|
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
 | 2ndV 1st\> | ( | ) | . | \\ | " " | char |
 | ( | set token | set token | set token | Syntax error | set token | set token |
 | ) | Syntax error | set token | Syntax error | Syntax error | set token | set token |
@@ -98,7 +57,7 @@ library(foreach)
 
 if(interactive()) 
   {fullExpression <- readline(prompt="Enter your expression: ")}
-#test
+#test hello world
 
   # TRUE if non-symbol (letter/digit/etc.), FALSE for ()./\
 IsChar <- function(ch) {
@@ -172,6 +131,31 @@ can be done step by step using pairs.
 shouldn't be needed, drop . to process semantics, term after binding is
 bound so no symbol needed.
 
+rightmost left paren, paired with next right paren (innermost paren
+pair)
+
+rightmost binding, paired with next two terms (innermost application
+pair)
+
+search from left to right for left paren and right paren (keeping track
+of rightmost left paren, and leftmost right paren after a left paren).
+If only one is present, throw an unmatched paren error. If the left is
+present, and the right is further left than it, throw a mismatched paren
+error. (Edit, rights are checked against left when encountered as
+described below)
+
+Searching: For each character, if it's a left paren, update "rightmost
+left". If it's a right paren, then if rightmost left is to the left of
+current then update "leftmost right" and group the pair, else throw an
+unmatched right paren error. If you reach the end, then if you found a
+left paren (rightmost left) then throw an unmatched left paren error,
+else no more parens found, proceed to parse applications.
+
+Search from left to right for rightmost binding term, if none found,
+then you're done, else group the binding term and the two terms to the
+right of it, (if less than two terms to the right, throw application
+error).
+
 Binding token and term token together should be the abstraction to apply
 to another term.
 
@@ -187,3 +171,101 @@ Tree visualizing library in R?
 #| echo: false
 #The `echo: false` option disables the printing of code (only output is displayed).
 ```
+
+Interpreter:
+
+I am making an interpreter for lambda calculus in R, and have an AST
+parsed from user input that denotes a lambda calculus expression. Take
+the following pseudocode description and draft me R code.
+
+Make a directional graph where each node is an AST, with the first node
+being the AST previously parsed, called \_\_\_. For each AST in the
+tree, for each binding term in the AST do an application step using that
+binding term, if the resultant AST is not in the directional graph then
+add it to the directional graph (and add it to a running list of "branch
+ends" if that's the preferred method for tracking which nodes to further
+evaluate), and add a connection from it's former state to the new state,
+so that the directional graph shows the possible evaluation paths of the
+expression depending on the order of evaluation. (When each binding term
+of an AST is evaluated and the result mapped into the directional graph,
+it should be removed from the list of "branch ends". Alternatively, the
+directional graph could be traced to find nodes that could be further
+evaluated.
+
+The above process should loop until each "branch end" has no more
+binding terms or has progressed more than depthLimit steps down the
+directional graph from the beginning. depthLimit should be set to 100
+for now. When an AST evaluates to another AST already in the directional
+graph, the result AST should not be considered a branch end, such that
+loops in the directional graph do not contain "branch ends".
+
+After the evaluationGraph directional graph AST has been looped through
+and evaluated, each "branch end" that had no more binding terms (and
+didn't end from hitting the depthLimit restriction) should be put into a
+list of results that is displayed in the console.
+
+Doing an application step should involve taking the binding term,
+removing the first character from the token (the lambda symbol) to get
+the boundVariableToken, searching each term within the next term for
+that token (whether it be a single term or, more likely, a branch of the
+AST, which should be traced recursively to find all instances of the
+bound variable token), then replacing each instance of the
+boundVariableToken with the full token (singular or a branch of the AST)
+to the right of it in the original expression. So, in evaluating a given
+binding, there should be three tokens (individual or branched): the
+binding token, with a first character lambda symbol and the rest being
+the bound variable, the function definition token, and the input token.
+
+Add notes in comments for any code that I didn't specify above, and
+remember to write in R. Also include some notes, either in comment lines
+in the code or as separate text in your response, about possible
+considerations and strategies to add to the evaluation process, such as
+alpha-conversion variable renaming.
+
+Re-prompt of parser:
+
+A lexer will already have created a list of tokens, as strings, in
+"tokens". To check for left and right parentheses just use =="(" and
+==")" because they will be a single-character token. Don't use grepl.
+Keep the code brief. To reiterate and clarify, follow this pseudocode
+description:
+
+For every token in tokens, if token!="." add token to the children of
+the root node of mainAST.
+
+repeat checkLayerForParens on each layer, recursively going down the
+tree until every layer has no parentheses left.
+
+checkLayerForParens should read through the tokens of a layer and group
+all the tokens between pairs of parentheses as children of a new tree
+node that replaces them using a function called parseParen that takes
+the indices/positions of the two parentheses. Thus, the only tokens that
+should disappear from the tree are parentheses after they have been
+evaluated and their contents "lowered" along a branch. A token list with
+"a ( b c ) d" should become a list with "a", a branch containing "b" and
+"c", then "d".
+
+This should be done thus;
+
+Initialize variables "leftmostRight" and "rightmostLeft". Iterate over
+the tokens in the first layer; if the token is a left paren, update
+rightmostLeft with the index of the left paren. Else if the character is
+a right paren do the following conditional: if the rightmostLeft is left
+of (lower index than) the scanned token then update leftmostRight to the
+index of the current token and exit the loop to pair the parens, else
+throw an "unmatched right parenthesis" error.
+
+If the loop reaches the end of the tokens list, then: if you found a
+left paren (rightmost left) then throw an unmatched left paren error,
+else no more parens found, set noParens = True to proceed to parse
+applications.
+
+After the previous loop, as a separate loop repeat checkLayerForBindings
+on each layer until every layer has exactly three terms.
+
+checkLayerForBindings should read through the tokens of a layer and if
+there is a binding term followed by two other terms (and the current
+branch has more than those three terms), then the binding term and the
+next two terms should be grouped with parseBinding, a function that
+takes the position of the binding term to select the three terms and
+replace them with a node that has them as its children.
