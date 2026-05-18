@@ -189,11 +189,11 @@ I need a parser for a lambda calculus interpreter based on the following pseudoc
 
 :45 meeting with project mentor, reviewed AI parser code a bit
 
-**Saturday 5/16** ... minutes
+**Saturday 5/16** 60 minutes
 
 :20 Review AI generated parser code, added non-empty requirement to lexer. Parser creates parentless nodes then adds them to the tree in two steps. It also tracks root's children and a separate list of nodes at the initialization. Has some extra conditions it checks for (like digits as well as parenthesis). Doesn't actually have some of the function calls. left_parens and right_parens appear to be functions, that I don't understand. It's so messy I'm going to reprompt.
 
-:... Wrote the following follow-up prompt:
+:40 Reviewed my previous prompt and wrote the follow-up prompt below. While the AI was thinking, I reviewed its thinking. I actually re-added recursive parentheses checking into the prompt because I forgot that I decided I didn't need it, since I'm processing from the inside out (over each iteration). I think the current level of pseudocode prompt is too vague and needs to be more step-by-step. Also, I have avoided using certain models like Claude that might work better because it doesn't seem to have a built-in way to save the chat, but I might use it to refine my prompt for my primary AI or explore ways of saving the chat.
 
 A lexer will already have created a list of tokens, as strings, in "tokens". To check for left and right parentheses just use =="(" and ==")" because they will be a single-character token. Don't use grepl. Keep the code brief. To reiterate and clarify, follow this pseudocode description:
 
@@ -212,6 +212,8 @@ If the loop reaches the end of the tokens list, then: if you found a left paren 
 After the previous loop, as a separate loop repeat checkLayerForBindings on each layer until every layer has exactly three terms.
 
 checkLayerForBindings should read through the tokens of a layer and if there is a binding term followed by two other terms (and the current branch has more than those three terms), then the binding term and the next two terms should be grouped with parseBinding, a function that takes the position of the binding term to select the three terms and replace them with a node that has them as its children.
+
+**Monday 5/18** ... minutes
 
 tree visualizing in r
 
