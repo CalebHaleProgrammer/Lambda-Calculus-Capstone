@@ -215,6 +215,20 @@ checkLayerForBindings should read through the tokens of a layer and if there is 
 
 **Monday 5/18** ... minutes
 
+:40 Reviewing Parser code. Prepped the following prompt, which for speed and quality I will give to a different AI along with the code I got and reviewed (documented in files 08).
+
+I am building a lambda calculus interpreter in R and have already created a lexer that provides a list of tokens (strings) in "tokens". The following is some code I received and my notes about how to revise it. Please provide a detailed pseudocode overview of how you would write the program (with an emphasis on readability and clarity), along with any follow-up questions or clarifications you have, and then rewrite the provided code as you would write it, given the revision feedback provided below.
+
+In parseParen, we need to add the node that is the parent node of the lowered inner_tokens (paren_node) to have the same parent as the layer that they came from, and be in the same position order as the inner_tokens were. Likewise in parseBinding, we need binding_node to have the same parents as the current layer and be in the same position order as the three tokens originally were. These requirements need to be the case so that during evaluation all the tokens that were originally in the input are in the AST and effectively in the same order, only parsed for application. It looks like you might be trying to address this in the main parsing loop rather than the functions.
+
+Because parenthesis are being evaluated from the inside pairs outward, we only need the parenthesis parsing to iterate over the first layer, please make that change and ensure that if a branching parent node becomes itself a child node in a parenthesis parsing step that the new lowered copy/version of it still has the children it had before. So, if B has a child C, and B becomes moved down to become a child of A, then B still has a child C.
+
+Also, make a function initializeAST that does the initial creation of the AST and replace it's code in the main code chunk with the function call for readability. You should not need to use grepl.
+
+parseParen?
+
+Explain this line: new_len \<- old_len - (i - rightmostLeft + 1) + 1
+
 tree visualizing in r
 
 To discuss in meeting: current formulation of abstraction,

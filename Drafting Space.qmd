@@ -269,3 +269,6 @@ branch has more than those three terms), then the binding term and the
 next two terms should be grouped with parseBinding, a function that
 takes the position of the binding term to select the three terms and
 replace them with a node that has them as its children.
+
+#seq_along() generates a **sequence of integers** (indices) from 1 to
+the length of a given object.
