@@ -215,7 +215,9 @@ checkLayerForBindings should read through the tokens of a layer and if there is 
 
 **Monday 5/18** ... minutes
 
-:40 Reviewing Parser code. Prepped the following prompt, which for speed and quality I will give to a different AI along with the code I got and reviewed (documented in files 08).
+:40 Reviewing Parser code. Prepped the following prompt, which for speed and quality I will give to Claude along with the code I got and reviewed (documented in files 08). I will document the response code with a copy of it in the drafting space and/or main.R. The chat: <https://claude.ai/chat/118eedd1-9f57-43af-aad0-4aee137a8ccf>
+
+:40 Reviewed new parser code, looks great. Go Claude!
 
 I am building a lambda calculus interpreter in R and have already created a lexer that provides a list of tokens (strings) in "tokens". The following is some code I received and my notes about how to revise it. Please provide a detailed pseudocode overview of how you would write the program (with an emphasis on readability and clarity), along with any follow-up questions or clarifications you have, and then rewrite the provided code as you would write it, given the revision feedback provided below.
 

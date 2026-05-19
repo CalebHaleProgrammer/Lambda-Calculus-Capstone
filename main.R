@@ -93,208 +93,176 @@ cat("\nFinal tokens:", paste(tokens, collapse = " , "), "\n")
 #The AST should be made using the data.tree package if possible. Add notes in comments for any code that I didn't specify above, including a method for viewing the resultant AST in the console.
 
 
-# Install the data.tree package if not already installed
-if (!require(data.tree)) {
-  install.packages("data.tree")
-}
 library(data.tree)
+
 # ==============================================================================
-# Takes the indices of two parentheses and lowers the tokens between 
-# them down a branch of a the tree, Parentheses disappear after evaluation.
-parseParen <- function(current_layer, left_idx, right_idx) {
-  # Extract tokens between parens (exclusive).
-  # Note: 'current_layer' is the list of nodes at this depth.
-  inner_tokens <- c()
-  for (i in seq(left_idx + 1, right_idx - 1)) {
-    if (!is.null(current_layer[[i]]$token)) {
-      inner_tokens <- c(inner_tokens, current_layer[[i]]$token)
-    }
-  }
-  
-  # Create new node to replace the pair and its contents
-  paren_node <- Node$new("Group_Paren", parent = NULL)
-  for (t in inner_tokens) {
-    child <- Node$new(t, parent = NULL)
-    paren_node$children[[length(paren_node$children) + 1]] <<- child
-  }
-  
-  return(list(new_node = paren_node, range_to_remove = c(left_idx, right_idx)))
+# isBindingToken
+# Returns TRUE if the token begins with \ or /, marking a lambda binder.
+# Uses substr rather than a regex since we only need the first character.
+# ==============================================================================
+isBindingToken <- function(token) {
+  substr(token, 1, 1) %in% c("\\", "/")
 }
 
 # ==============================================================================
-# Takes the position of a binding term to select three terms (term, arg, input) 
-# and replace them with a node that has them as children.
-parseBinding <- function(current_layer, bind_idx) {
-  # Note: 'current_layer' is the list of nodes at this depth.
-  
-  # Check if less than two terms are to the right (need index +1 and +2)
-  if ((bind_idx + 2) > length(current_layer)) {
-    stop("Application Parse Error") 
-  }
-  
-  binding_node <- Node$new("Binding_Group", parent = NULL)
-  
-  # Add binding term and next two terms
-  for (k in bind_idx:(bind_idx + 2)) {
-    child <- Node$new(current_layer[[k]]$token, parent = NULL)
-    binding_node$children[[length(binding_node$children) + 1]] <<- child
-  }
-  
-  return(list(new_node = binding_node, range_to_remove = c(bind_idx, bind_idx + 2)))
-}
-
+# initializeAST
+# Filters out "." separator tokens, creates a Root node, and attaches all
+# remaining tokens as children in their original order.
 # ==============================================================================
-# Helper Function: viewAST
-# Method for viewing the resultant AST in the console.
-# ==============================================================================
-viewAST <- function(node) {
-  print(paste("Node:", node$type))
-  if (length(node$children) > 0) {
-    for (child in as.list(node$children)) {
-      viewAST(child)
-    }
-  }
-}
-
-# ==============================================================================
-# Main Parser Function
-# Implements the parsing logic described: Tokenizing, Parentheses Reduction, 
-# Binding Reduction, and Recursive Layer Processing.
-# ==============================================================================
-parse_lambda <- function(tokens_list) {
-  # Filter tokens: Add all except "." in "tokens" list to root children.
+initializeAST <- function(tokens_list) {
   valid_tokens <- tokens_list[tokens_list != "."]
-  
   if (length(valid_tokens) == 0) return(Node$new("Empty"))
   
-  mainAST <- Node$new("Root")
-  for (t in valid_tokens) {
-    n <- Node$new(t, parent = NULL)
-    mainAST$children[[length(mainAST$children) + 1]] <<- n
+  root <- Node$new("Root")
+  for (token in valid_tokens) {
+    root$children[[length(root$children) + 1]] <- Node$new(token)
   }
-  
-  # Process layers recursively. 
-  # We iterate depth-first to handle nested structures as they are formed.
-  reduce_layer_recursive(mainAST)
-  
-  return(mainAST)
+  return(root)
 }
 
-# Recursive function to process tree nodes and their layers until stable
-reduce_layer_recursive <- function(node, visited_depth = NULL) {
-  if (!is.null(visited_depth)) {
-    # If we have already processed children of this node in a previous pass 
-    # (simple check for stability could be added here), skip. 
-    # For brevity and robustness with the prompt's "repeat" instruction, 
-    # we just recurse into newly formed nodes if they contain sub-layers.
+# ==============================================================================
+# parseParen
+# Collects all nodes between a matched parenthesis pair and places them as
+# children of a new Group_Paren node. The group node replaces the paren range
+# in parent_node's children at the same position. Existing subtrees of inner
+# nodes are preserved because we move the node objects themselves, not copies.
+# ==============================================================================
+parseParen <- function(parent_node, left_idx, right_idx) {
+  children <- as.list(parent_node$children)
+  n        <- length(children)
+  
+  pre_nodes   <- if (left_idx > 1)            children[seq(1, left_idx - 1)]      else list()
+  inner_nodes <- if (right_idx > left_idx + 1) children[seq(left_idx + 1, right_idx - 1)] else list()
+  post_nodes  <- if (right_idx < n)           children[seq(right_idx + 1, n)]     else list()
+  
+  paren_node <- Node$new("Group_Paren")
+  for (inner in inner_nodes) {
+    paren_node$children[[length(paren_node$children) + 1]] <- inner
   }
   
-  # Base case: Leaf node or no children to process
-  if (is.null(node$children) || length(node$children) == 0) return()
+  parent_node$children <- c(pre_nodes, list(paren_node), post_nodes)
+}
+
+# ==============================================================================
+# parseBinding
+# Collects a binding token and its two following siblings into a new
+# Binding_Group node. The group replaces the three nodes in parent_node's
+# children at the same starting position. Subtrees of all three are preserved.
+# ==============================================================================
+parseBinding <- function(parent_node, bind_idx) {
+  children <- as.list(parent_node$children)
+  n        <- length(children)
   
-  layer_nodes <- node$children
+  if (bind_idx + 2 > n) {
+    stop("Application Parse Error: binding term must be followed by two terms")
+  }
   
-  # --- Loop for Parentheses Reduction ---
+  pre_nodes     <- if (bind_idx > 1)      children[seq(1, bind_idx - 1)]      else list()
+  binding_nodes <- children[seq(bind_idx, bind_idx + 2)]
+  post_nodes    <- if (bind_idx + 3 <= n) children[seq(bind_idx + 3, n)]      else list()
+  
+  binding_node <- Node$new("Binding_Group")
+  for (member in binding_nodes) {
+    binding_node$children[[length(binding_node$children) + 1]] <- member
+  }
+  
+  parent_node$children <- c(pre_nodes, list(binding_node), post_nodes)
+}
+
+# ==============================================================================
+# reduceParentheses
+# Scans only node's immediate children (not deeper). Tracks the rightmost "("
+# seen so far; when a ")" is found, the most recent "(" forms an innermost
+# pair and is resolved via parseParen. Repeats until no parentheses remain
+# at this level. Scanning from inside-out naturally handles nesting: inner
+# pairs are always resolved before outer ones reach a closing ")".
+# ==============================================================================
+reduceParentheses <- function(node) {
   repeat {
-    noParens <- TRUE
+    children       <- as.list(node$children)
+    rightmost_left <- NULL
+    found_pair     <- FALSE
     
-    # Scan logic as per pseudocode
-    rightmostLeft <- NULL
-    
-    for (i in seq_along(layer_nodes)) {
-      token <- as.character(layer_nodes[[i]]$token)
+    for (i in seq_along(children)) {
+      token <- children[[i]]$name
       
       if (token == "(") {
-        rightmostLeft <- i # Update index of left paren
-        noParens <- FALSE 
+        rightmost_left <- i
+        
       } else if (token == ")") {
-        if (!is.null(rightmostLeft)) {
-          if (rightmostLeft < i) {
-            # Found a pair, exit loop to process this match
-            result <- parseParen(layer_nodes, rightmostLeft, i)
-            
-            # Replace the range in parent's children list
-            old_len <- length(node$children)
-            new_len <- old_len - (i - rightmostLeft + 1) + 1
-            
-            node$children <- as.list()
-            for (k in 1:(old_len - 1)) { # Keep everything before start index
-              if (k < rightmostLeft) node$children[[length(node$children)+1]] <<- layer_nodes[[k]]
-            }
-            node$children[[length(node$children)+1]] <<- result$new_node
-            for (k in (i+1):old_len) { # Keep everything after end index
-              if (!is.null(layer_nodes[[k]])) node$children[[length(node$children)+1]] <<- layer_nodes[[k]]
-            }
-            
-            # Reset rightmostLeft to allow finding next pair if multiple exist? 
-            # Pseudocode implies "exit loop". So we stop scanning for this pass.
-            break 
-          } else {
-            stop("unmatched right parenthesis")
-          }
-        } else {
-          noParens <- FALSE
-        }
+        if (is.null(rightmost_left)) stop("Parse Error: unmatched right parenthesis")
+        parseParen(node, rightmost_left, i)
+        found_pair <- TRUE
+        break  # restart scan against the updated children list
       }
     }
     
-    # If loop finishes without match and unmatched left paren found:
-    if (!is.null(rightmostLeft)) {
-      stop("unmatched left paren error")
+    if (!found_pair) {
+      if (!is.null(rightmost_left)) stop("Parse Error: unmatched left parenthesis")
+      break  # no parentheses remain at this level
     }
-    
-    if (noParens) break
-  }
-  
-  # --- Loop for Binding Reduction ---
-  repeat {
-    binding_found <- FALSE
-    
-    # Search from left to right for the rightmost binding term 
-    # Note: Prompt says "repeat checkLayerForBindings... until every layer has exactly three terms".
-    # This implies we reduce as long as possible.
-    # To strictly follow "Search from left to right", we iterate once per pass.
-    
-    changed_layer <- FALSE
-    
-    for (i in seq_along(layer_nodes)) {
-      token <- as.character(layer_nodes[[i]]$token)
-      
-      # Check binding term: first char is \ or /
-      if (!is.null(token) && grepl("^[\\\\/]", token)) {
-        # Binding found at i. 
-        # Note: The instruction "rightmost" implies we might want to prioritize the last one?
-        # But logic says "followed by two terms". If multiple exist, finding any valid triplet is fine for brevity.
-        # However, "Search from left to right... if none found then you're done". 
-        # This implies sequential processing.
-        
-        result <- parseBinding(layer_nodes, i)
-        
-        # Replace nodes in layer_nodes context (simulated by rebuilding parent list later)
-        start_idx <- i
-        end_idx <- i + 2
-        
-        node$children <- as.list()
-        for (k in seq_along(layer_nodes)) {
-          if (k < start_idx || k > end_idx) {
-            node$children[[length(node$children)+1]] <<- layer_nodes[[k]]
-          } else {
-            # Replace this triplet with the new binding node
-            node$children[[length(node$children)+1]] <<- result$new_node
-            break
-          }
-        }
-        
-        changed_layer <- TRUE
-        break # Restart layer check to re-index
-      }
-    }
-    
-    if (!changed_layer) break 
-  }
-  
-  # Recurse down into the newly formed layers (children of this node's children)
-  for (child in as.list(node$children)) {
-    reduce_layer_recursive(child, visited_depth = TRUE)
   }
 }
+
+# ==============================================================================
+# reduceBindings
+# Scans node's immediate children left to right. On finding a binding token,
+# groups it and its two following siblings via parseBinding and restarts.
+# Repeats until no binding terms remain at this level.
+# ==============================================================================
+reduceBindings <- function(node) {
+  repeat {
+    children      <- as.list(node$children)
+    found_binding <- FALSE
+    
+    for (i in seq(length(children), 1)) {
+      if (isBindingToken(children[[i]]$name)) {
+        parseBinding(node, i)
+        found_binding <- TRUE
+        break  # restart scan against the updated children list
+      }
+    }
+    
+    if (!found_binding) break
+  }
+}
+
+# ==============================================================================
+# processNode
+# Reduces parentheses then bindings in node's immediate children, then
+# recurses into each child. Parentheses are resolved before bindings so that
+# a grouped expression can appear as the argument or body of a binding.
+# ==============================================================================
+processNode <- function(node) {
+  reduceParentheses(node)
+  reduceBindings(node)
+  for (child in as.list(node$children)) {
+    processNode(child)
+  }
+}
+
+# ==============================================================================
+# parse_lambda
+# Entry point. Builds the initial flat AST from the token list, then
+# processes it into a fully parsed tree.
+# ==============================================================================
+parse_lambda <- function(tokens_list) {
+  ast <- initializeAST(tokens_list)
+  processNode(ast)
+  return(ast)
+}
+
+# ==============================================================================
+# viewAST
+# Prints the AST to the console with indentation showing tree depth.
+# ==============================================================================
+viewAST <- function(node, depth = 0) {
+  cat(strrep("  ", depth), node$name, "\n", sep = "")
+  for (child in as.list(node$children)) {
+    viewAST(child, depth + 1)
+  }
+}
+
+
+
+parse_lambda(tokens)
