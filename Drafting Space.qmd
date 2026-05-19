@@ -272,3 +272,9 @@ replace them with a node that has them as its children.
 
 #seq_along() generates a **sequence of integers** (indices) from 1 to
 the length of a given object.
+
+I have a project in R that is in a single file. I would like to break up
+the program into parts that I can export and import so I can have clean
+code. I'm using RStudio linked to a Github account, and am a little new
+at both of those. What is the syntax for files to import and export
+within the same folder?

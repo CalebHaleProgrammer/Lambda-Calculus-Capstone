@@ -1,5 +1,11 @@
 #install.packages("foreach")
 library(foreach)
+#source("file.R")   # loads everything defined in other files
+#A Few Tips
+#Path is relative to your working directory, not the file doing the sourcing. 
+# In RStudio, your working directory is usually your project root (check with getwd()). 
+#source() runs the whole file top to bottom, so avoid putting loose "script-style" code in helper files — keep them to function and variable definitions only.
+#Order matters — if analysis.R uses functions from utils.R, source utils.R first.
 
 
 if(interactive()) {
@@ -135,7 +141,7 @@ parseParen <- function(parent_node, left_idx, right_idx) {
   inner_nodes <- if (right_idx > left_idx + 1) children[seq(left_idx + 1, right_idx - 1)] else list()
   post_nodes  <- if (right_idx < n)           children[seq(right_idx + 1, n)]     else list()
   
-  paren_node <- Node$new("Group_Paren")
+  paren_node <- Node$new("Paren_Group")
   for (inner in inner_nodes) {
     paren_node$children[[length(paren_node$children) + 1]] <- inner
   }
@@ -215,11 +221,13 @@ reduceBindings <- function(node) {
     children      <- as.list(node$children)
     found_binding <- FALSE
     
-    for (i in seq(length(children), 1)) {
-      if (isBindingToken(children[[i]]$name)) {
-        parseBinding(node, i)
-        found_binding <- TRUE
-        break  # restart scan against the updated children list
+    if (length(children) > 3) {
+      for (i in rev(seq_along(children))) { #or i in seq(length(children), 1), but rev-seq_along is supposedly safer
+        if (isBindingToken(children[[i]]$name)) {
+          parseBinding(node, i)
+          found_binding <- TRUE
+          break # restart scan against the updated children list
+        }
       }
     }
     
@@ -234,8 +242,10 @@ reduceBindings <- function(node) {
 # a grouped expression can appear as the argument or body of a binding.
 # ==============================================================================
 processNode <- function(node) {
-  reduceParentheses(node)
-  reduceBindings(node)
+  if (node$name != "Binding_Group") {
+    reduceParentheses(node)
+    reduceBindings(node)
+  }
   for (child in as.list(node$children)) {
     processNode(child)
   }
@@ -265,4 +275,5 @@ viewAST <- function(node, depth = 0) {
 
 
 
-parse_lambda(tokens)
+initAST<-parse_lambda(tokens)
+viewAST(initAST)
