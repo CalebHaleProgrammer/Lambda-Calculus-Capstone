@@ -1,5 +1,11 @@
 #install.packages("foreach")
+#install.packages("igraph")
 library(foreach)
+#library(DiagrammeR)
+library(igraph)
+library(data.tree)
+source("lexer.R")
+
 #source("file.R")   # loads everything defined in other files
 #A Few Tips
 #Path is relative to your working directory, not the file doing the sourcing. 
@@ -15,91 +21,12 @@ if(interactive()) {
   }
   }
 
-# TRUE if non-symbol (letter/digit/etc.), FALSE for ()./\
-IsChar <- function(ch) {
-  nchar(ch) > 0 && !ch %in% c("(", ")", ".", "/", "\\", " ")
-}
-
-PrimeNewTokenRead <- function() { # Sets the first char of fullExpression to runningRead, taking first char
-  runningRead    <<- substr(fullExpression, 1, 1)
-  fullExpression <<- substr(fullExpression, 2, nchar(fullExpression))
-}
-
-ReadLetter <- function() { # Moves the first char of fullExpression to runningRead
-  if (fullExpression != "") {
-    runningRead    <<- paste0(runningRead, substr(fullExpression, 1, 1))
-    fullExpression <<- substr(fullExpression, 2, nchar(fullExpression))
-  }
-}
-
-lastChar<-function(){substr(runningRead,    nchar(runningRead),    nchar(runningRead))}
-firstChar<-function(){substr(fullExpression, 1, 1)}
-
-# ── Main tokenising loop ──────────────────────────────────────────────────────
-
-tokens <- c()
-PrimeNewTokenRead()
-
-processed <- FALSE
-#browser()
-while (!processed) {
-  
-  cat(sprintf("[Reading] runningRead: %-12s | firstChar: %-4s | tokens so far: [%s]\n",
-    paste0("'", runningRead, "'"),
-    paste0("'", firstChar(),   "'"),
-    paste(tokens, collapse = ", ")
-  )) #paste0 and sprintf are used to create strings but not print them, then cat concatenates and prints to the console.
-  
-  
-  #\ then non-char: Syntax error "Binding an invalid term after lambda"
-  #non-char then . : Syntax error "Binding an invalid term before period"
-  #. then ) : Syntax error : Syntax error "Invalid parenthesis around binding term"
-  #char or lambda then char : Read
-  #else: set token
-  if (lastChar() %in% c("\\","/") && !IsChar(firstChar())){
-    stop("Syntax Error: Binding an invalid term after lambda; ",firstChar())
-  }else if (!IsChar(lastChar()) && firstChar()=="."){
-    stop("Syntax Error: Binding an invalid term before period; ",lastChar())
-  }else if (lastChar()=="."&&firstChar()==")"){
-    stop("Syntax Error: Invalid parenthesis around binding term.")
-  }else if ((IsChar(lastChar())||lastChar()%in% c("\\","/")) &&
-            (IsChar(firstChar()))){
-    ReadLetter()
-  }else{
-    #set token, discard if a space
-    if (runningRead!=" "){
-      tokens <- c(tokens, runningRead)
-    }
-    if (fullExpression != "") {
-      PrimeNewTokenRead()
-    } else {
-      processed <- TRUE
-    }
-    }
-    
-}
-
-cat("\nFinal tokens:", paste(tokens, collapse = " , "), "\n")
+tokens<-LexerTokenize(fullExpression)
 
 # ── Main Parsing loop ──────────────────────────────────────────────────────
 
-#I need a parser for a lambda calculus interpreter based on the following pseudocode description, with "paren" shorthand for parenthesis.
-#Add all tokens except "." in "tokens" list to a nonbinary (more than two nodes allowed at a layer) tree structure on the same layer.
-#When parentheses are matched, the tokens between the parenthesis should be put down a layer in the tree, on their own branch stemming from the location that they were in the list of tokens.
-#define a parseParen function that takes the index of two parentheses and puts the tokens between the parentheses down a branch, with the parenthesis disappearing as the terms are grouped.
-#define a parseBinding function that takes the index and layer within the AST (or however a position would be encoded) and groups that position and the next two terms into a lower branch, similar to the parseParen function but with a specific number of terms (3) and not removing any tokens (i.e. the parentheses). If less than two terms are to the right of the argument position throw "Application Parse Error".
-#Parsing Parentheses
-#Do the following loop until noParens == True (one of the loops ends without encountering parenthesis)
-#Initialize variables "leftmostRight" and "rightmostLeft".
-#Iterate over the tokens in the first layer; if the token is a left paren, update rightmostLeft with the index of the left paren. Else if the character is a right paren do the following conditional: if the rightmostLeft is left of (lower index than) the scanned token then update leftmostRight to the index of the current token and exit the loop to pair the parens, else throw an "unmatched right parenthesis" error.
-#If the loop reaches the end of the tokens list, then: if you found a left paren (rightmost left) then throw an unmatched left paren error, else no more parens found, set noParens = True to proceed to parse applications.
-#Parsing Bindings
-#For each layer in the tree repeat the following search loop until no layers of the tree have more or less than three terms (the binding term, the function term, and the input term), counting branch nodes as a single term to reflect use in the application phase.
-#Search from left to right for the rightmost binding term (term whose first character is in the list of "\" or "/"), if none found, then you're done, else group the binding term and the two terms to the right of it, (if less than two terms to the right, throw "Application Parse Error").
-#The AST should be made using the data.tree package if possible. Add notes in comments for any code that I didn't specify above, including a method for viewing the resultant AST in the console.
 
 
-library(data.tree)
 
 # ==============================================================================
 # isBindingToken
@@ -277,3 +204,5 @@ viewAST <- function(node, depth = 0) {
 
 initAST<-parse_lambda(tokens)
 viewAST(initAST)
+plot(initAST)
+

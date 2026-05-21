@@ -35,7 +35,7 @@ char or lambda then char : Read
 else: set token
 
 |  |  |  |  |  |  |  |
-|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+|----|----|----|----|----|----|----|
 | 2ndV 1st\> | ( | ) | . | \\ | " " | char |
 | ( | set token | set token | set token | Syntax error | set token | set token |
 | ) | Syntax error | set token | Syntax error | Syntax error | set token | set token |

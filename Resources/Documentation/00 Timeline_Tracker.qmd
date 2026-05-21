@@ -229,12 +229,22 @@ Because parenthesis are being evaluated from the inside pairs outward, we only n
 
 Also, make a function initializeAST that does the initial creation of the AST and replace it's code in the main code chunk with the function call for readability. You should not need to use grepl.
 
-**Tuesday 5/19** ... minutes
+**Tuesday 5/19** 25 minutes
 
-parseParen?
+:25 Began a bit of research into visualizing R trees, which would be nice both for testing and a final product. DiagrammeR looks good but doesn't seem to see the final tree after parsing, it's all in one layer still. Other options include ggtree (via treeverse), igraph (plus tidygraph and ggraph), etc. according to AI chat, but I'd like to prioritize compatibility with the data.tree I already have for now (igraph might be nice to switch to if data.tree doesn't cut it).
 
-Explain this line: new_len \<- old_len - (i - rightmostLeft + 1) + 1
+**Wednesday 5/20** 70 minutes
 
-tree visualizing in r
+:35 Continued research in visualizing. Pursuing igraph; make_graph() to create, then plot() to view, add_vertices and add_edges with the graph then the addition(s) to edit, or use + syntax like +edges(c(...)). directed=TRUE by default. IDs are contiguous from 1 to n and dynamically renumbered when the graph is edited. graph_from_literal allows listing each node and what it connects to, seems more intuitive (Start - Connection1:Connection2:... , Start2 - ... is the syntax). There's lots of creation functions. The \$ operator is a shortcut to get and set graph attributes, along with graph_attr() and set_graph_attr(). But, like dataframes, \$ refers to the whole variables (like a df column) and must use an index \[i\] to specify a single node for change if you don't want to use a vector to define every one.
 
-To discuss in meeting: current formulation of abstraction,
+Documentation for igraph: <https://r.igraph.org/articles/igraph.html>
+
+:55 Began breaking up program into separate .R files for readability and organization. Ran into some bugs. Learned a bit about scope and the data management for function calls through chat: <https://claude.ai/chat/f5e75897-2889-45e5-946a-e5867331620f>. Manually changed functions to be helper functions that return values rather than editing a global variable. Lexer separated, parser will be next.
+
+**Thursday 5/21** ... minutes
+
+Turn data.tree to graph node (metagraph)
+
+Visualize each graph with ggraph (layout reingold tilford)
+
+ggsave to save output to HTML or PDF
