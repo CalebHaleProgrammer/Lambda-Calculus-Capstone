@@ -204,5 +204,5 @@ viewAST <- function(node, depth = 0) {
 
 initAST<-parse_lambda(tokens)
 viewAST(initAST)
-plot(initAST)
+plot(parse_lambda(tokens))
 
