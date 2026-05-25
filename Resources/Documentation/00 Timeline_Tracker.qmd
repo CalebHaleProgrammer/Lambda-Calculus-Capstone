@@ -251,6 +251,14 @@ Documentation for igraph: <https://r.igraph.org/articles/igraph.html>
 
 :15 Annotated Turing
 
+:? Presentation prep
+
+**Monday 5/25** ... minutes
+
+:5 Organized parser code into its own file. Program still works as it did. "Plot" still doesn't register depth when displaying ASTs.
+
+:10 Skimmed tree converter code from AI, it has an error. Also grabbed ggraph display code, which also has an error.
+
 Turn data.tree to graph node (metagraph)
 
 Visualize each graph with ggraph (layout reingold tilford)
