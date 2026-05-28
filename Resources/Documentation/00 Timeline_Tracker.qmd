@@ -253,11 +253,19 @@ Documentation for igraph: <https://r.igraph.org/articles/igraph.html>
 
 :? Presentation prep
 
-**Monday 5/25** ... minutes
+**Monday 5/25** 15 minutes
 
 :5 Organized parser code into its own file. Program still works as it did. "Plot" still doesn't register depth when displaying ASTs.
 
 :10 Skimmed tree converter code from AI, it has an error. Also grabbed ggraph display code, which also has an error.
+
+**Tuesday 5/26** 55 minutes
+
+:55 Worked on getting data.tree structure into igraph structure. Decided that since I already had viewAST that correctly interprets the tree that rather than trying to work between two unfamiliar data structures I would take the output of viewAST and work with that. However, the mechanisms of that proved complicated (cat vs paste0 vs keeping a running list, etc.) It maybe ended up complicating things even more but I'm learning more R now.
+
+**Thursday 5/28** ... minutes
+
+:... I'm gonna focus on AI because I don't want to get bogged down in the technical side of things and I want more time to explore types. I got more AI help for displaying trees, Claude this time <https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab>.
 
 Turn data.tree to graph node (metagraph)
 

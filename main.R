@@ -6,7 +6,8 @@ library(igraph)
 library(data.tree)
 source("lexer.R")
 source("parser.R")
-source("treeConverter.R")
+source("treePlotter.R")
+#source("treeConverter.R")
 
 #source("file.R")   # loads everything defined in other files
 #A Few Tips
@@ -38,4 +39,5 @@ initAST<-parse_lambda(tokens)
 
 viewAST(initAST)
 plot(initAST)
+plotAST(initAST)
 
