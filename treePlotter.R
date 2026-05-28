@@ -1,5 +1,3 @@
-# Install if needed:
-# install.packages(c("igraph", "data.tree"))
 library(igraph)
 library(data.tree)
 
@@ -18,14 +16,25 @@ library(data.tree)
 # but this guards against it).
 # ==============================================================================
 
-HIDDEN_NAMES <- c("Paren_Group", "Binding_Group")
+SPECIAL_NAMES <- c("Paren_Group", "Binding_Group", "Root")
+NodeDisplayText = list(Paren_Group= "( )", Binding_Group="f(x)", Root= "")
 DROP_NAMES   <- c("(", ")")
+
+# Node type classifier — used both for sizing and future coloring
+getNodeRole <- function(name) {
+  if (name == "Binding_Group")                return("functionAbstraction")
+  if (name == "Paren_Group")                  return("parenGroup")
+  if (name == "Root")                         return("root")
+  if (substr(name, 1, 1) %in% c("\\", "/"))  return("bindingTerm")
+  return("term")
+}
 
 astToEdgeList <- function(node,
                           parent_id  = NULL,
                           counter    = new.env(parent = emptyenv()),
                           edges      = list(),
-                          labels     = character(0)) {
+                          labels     = character(0),
+                          roles     = character(0)) {
   
   # --- assign a unique integer ID to this node ---
   # new.env + counter$n is a simple way to share a mutable counter
@@ -36,9 +45,10 @@ astToEdgeList <- function(node,
   
   # --- decide display label ---
   raw_name   <- node$name
-  if (raw_name %in% DROP_NAMES) return(list(edges = edges, labels = labels))
+  if (raw_name %in% DROP_NAMES) return(list(edges = edges, labels = labels, roles = roles))
   display    <- if (raw_name %in% HIDDEN_NAMES) "" else raw_name
   labels[as.character(my_id)] <- display
+  roles[as.character(my_id)]  <- getNodeRole(raw_name)
   
   # --- record edge from parent to me ---
   if (!is.null(parent_id)) {
@@ -51,12 +61,14 @@ astToEdgeList <- function(node,
                             parent_id = my_id,
                             counter   = counter,
                             edges     = edges,
-                            labels    = labels)
+                            labels    = labels,
+                            roles)
     edges  <- result$edges
     labels <- result$labels
+    roles  <- result$roles
   }
   
-  return(list(edges = edges, labels = labels))
+  return(list(edges = edges, labels = labels, roles=roles))
 }
 
 # ==============================================================================
@@ -72,23 +84,43 @@ buildIgraph <- function(ast) {
     # Edge case: single-node tree (empty or one token)
     g <- make_empty_graph(n = 1, directed = TRUE)
     V(g)$label <- raw$labels[["1"]]
+    V(g)$roles  <- raw$roles[["1"]]
     return(g)
   }
   
   # Stack the edge pairs into a 2-column matrix
   edge_matrix <- do.call(rbind, raw$edges)   # each row: c(from=N, to=M)
   
+  # When there is only one edge, do.call(rbind) produces a named vector
+  # instead of a matrix, and t() then transposes it the wrong way.
+  # matrix(..., ncol = 2) forces the correct shape regardless of row count.
+  edge_matrix <- matrix(edge_matrix, ncol = 2)
+  
   # igraph wants a flat vector: c(from1,to1, from2,to2, ...)
   g <- make_graph(as.vector(t(edge_matrix)), directed = TRUE)
   
   # Attach labels in vertex-ID order
   n_vertices      <- vcount(g)
-  ordered_labels  <- raw$labels[as.character(seq_len(n_vertices))]
-  V(g)$label      <- ifelse(is.na(ordered_labels), "", ordered_labels)
+  V(g)$label     <- ifelse(is.na(raw$labels[as.character(seq_len(n_vertices))]), "",
+                           raw$labels[as.character(seq_len(n_vertices))])
+  V(g)$roles <- raw$roles[as.character(seq_len(n_vertices))]
   
   return(g)
 }
 
+debugAST <- function(ast) {
+  raw         <- astToEdgeList(ast)
+  edge_matrix <- do.call(rbind, raw$edges)
+  edge_matrix <- matrix(edge_matrix, ncol = 2)
+  cat("Edge matrix:\n")
+  print(edge_matrix)
+  cat("Flat edge vector:\n")
+  print(as.vector(t(edge_matrix)))
+  cat("Labels:\n")
+  print(raw$labels)
+  cat("nodeRoles:\n")
+  print(raw$roles)
+}
 # ==============================================================================
 # plotAST
 # Plots the igraph object as a top-down tree using the Reingold-Tilford
@@ -97,11 +129,23 @@ buildIgraph <- function(ast) {
 # Vertex styling:
 #   - Token nodes  : filled circle, label shown
 #   - Group nodes  : smaller, light gray (structural, no label)
+# colorScheme is a named list with entries: root, binding, token, group
+# Each entry is a hex color string. Defaults to a single neutral blue.
+# igraph does not auto-size nodes for text. We estimate width from label
+# length and convert to igraph's size units (which are roughly "% of plot
+# width"). nchar() gives character count; multiplying by a scale factor
+# and adding padding gives a reasonable circle radius for each label.
 # ==============================================================================
 
-plotAST <- function(ast, title = "Lambda Calculus AST") {
+plotAST <- function(ast, title = "Lambda Calculus AST",
+                    colorScheme = list(root    = "#AAAAAA",
+                                       bindingTerm = "#5B8DB8",
+                                       term   = "#5B8DB8",
+                                       functionAbstraction   = "#AAAAAA",
+                                       parenGroup   = "#AAAAAA")) {
   g      <- buildIgraph(ast)
   labels <- V(g)$label
+  roles  <- V(g)$roles
   
   is_group <- labels == ""   # TRUE for Paren_Group / Binding_Group nodes
   
@@ -110,9 +154,21 @@ plotAST <- function(ast, title = "Lambda Calculus AST") {
   
   # Per-vertex visual properties
   v_color <- ifelse(is_group, "#CCCCCC", "#4A90D9")   # gray vs blue
-  v_size  <- ifelse(is_group, 8, 18)                   # smaller for groups
   v_label <- labels                                     # "" for groups
-  v_label_color <- "white"
+  
+  # --- node sizing ---
+  # Base size covers short labels; the nchar() term adds width per character.
+  # Group nodes (blank label) stay small since they show no text.
+  char_count <- nchar(labels)
+  v_size     <- ifelse(roles == "group",
+                       10,
+                       pmax(18, char_count * 4.5 + 10))
+  
+  # --- colors from scheme ---
+  v_color <- sapply(roles, function(t) colorScheme[[t]])
+  
+  # --- label color: white on darker nodes, hidden on group nodes ---
+  v_label_color <- ifelse(roles == "group", "#AAAAAA", "white")
   
   plot(
     g,

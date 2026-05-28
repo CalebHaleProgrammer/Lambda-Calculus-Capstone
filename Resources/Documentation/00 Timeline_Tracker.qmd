@@ -265,7 +265,7 @@ Documentation for igraph: <https://r.igraph.org/articles/igraph.html>
 
 **Thursday 5/28** ... minutes
 
-:... I'm gonna focus on AI because I don't want to get bogged down in the technical side of things and I want more time to explore types. I got more AI help for displaying trees, Claude this time <https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab>.
+2:10 I'm gonna focus on AI because I don't want to get bogged down in the technical side of things and I want more time to explore types. I got more AI help for displaying trees, Claude this time <https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab>. Reviewed code, integrated code suggestions and tested, repeated. Tree now displays, custom size and color of nodes. Getting a feel for the generated code and customizing it to my liking (e.g. replacing custom text for connective nodes, renaming variables and functions to be more intuitive to me).
 
 Turn data.tree to graph node (metagraph)
 

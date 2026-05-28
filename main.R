@@ -38,6 +38,6 @@ tokens<-LexerTokenize(fullExpression)
 initAST<-parse_lambda(tokens)
 
 viewAST(initAST)
-plot(initAST)
+#plot(initAST)
 plotAST(initAST)
-
+#viewAST(parse_lambda(c("\\x", ".", "\\y", ".", "x", "y")))
