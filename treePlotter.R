@@ -3,21 +3,17 @@ library(data.tree)
 
 # ==============================================================================
 # astToEdgeList
-# Walks the data.tree recursively (same logic as viewAST) and records
-# every parent->child edge as a pair of unique node IDs.
+# Walks the data.tree recursively and records every parent->child edge as a pair of unique node IDs.
 #
 # Returns a list with:
 #   $edges   — a 2-column data frame: from_id, to_id
 #   $labels  — a named character vector: id -> display label
 #
-# Group nodes (Paren_Group, Binding_Group) get an empty string label.
-# Syntax tokens "(", ")" are dropped entirely (they become group nodes
-# in your parser, so they shouldn't appear in a parsed tree anyway,
-# but this guards against it).
+# Syntax tokens "(", ")" are dropped entirely just in case any got through the parser
 # ==============================================================================
 
 SPECIAL_NAMES <- c("Paren_Group", "Binding_Group", "Root")
-NodeDisplayText = list(Paren_Group= "( )", Binding_Group="f(x)", Root= "")
+NodeDisplayText = list(Paren_Group= "( )", Binding_Group="f(x)", Root= "")#I think convention might prefer `Paren_Group` etc. as strings when it will be looked up by strings, but R understands this anyway
 DROP_NAMES   <- c("(", ")")
 
 # Node type classifier — used both for sizing and future coloring
@@ -46,7 +42,7 @@ astToEdgeList <- function(node,
   # --- decide display label ---
   raw_name   <- node$name
   if (raw_name %in% DROP_NAMES) return(list(edges = edges, labels = labels, roles = roles))
-  display    <- if (raw_name %in% HIDDEN_NAMES) "" else raw_name
+  display <- if (raw_name %in% SPECIAL_NAMES) NodeDisplayText[[raw_name]] else raw_name #to lookup the alternate display text. []gets a list (pair) from the named list, [[]] gets the actual value
   labels[as.character(my_id)] <- display
   roles[as.character(my_id)]  <- getNodeRole(raw_name)
   
@@ -62,7 +58,7 @@ astToEdgeList <- function(node,
                             counter   = counter,
                             edges     = edges,
                             labels    = labels,
-                            roles)
+                            roles     = roles)
     edges  <- result$edges
     labels <- result$labels
     roles  <- result$roles
@@ -84,7 +80,7 @@ buildIgraph <- function(ast) {
     # Edge case: single-node tree (empty or one token)
     g <- make_empty_graph(n = 1, directed = TRUE)
     V(g)$label <- raw$labels[["1"]]
-    V(g)$roles  <- raw$roles[["1"]]
+    V(g)$nodeRole  <- raw$roles[["1"]]
     return(g)
   }
   
@@ -103,7 +99,7 @@ buildIgraph <- function(ast) {
   n_vertices      <- vcount(g)
   V(g)$label     <- ifelse(is.na(raw$labels[as.character(seq_len(n_vertices))]), "",
                            raw$labels[as.character(seq_len(n_vertices))])
-  V(g)$roles <- raw$roles[as.character(seq_len(n_vertices))]
+  V(g)$nodeRole <- raw$roles[as.character(seq_len(n_vertices))]
   
   return(g)
 }
@@ -145,7 +141,7 @@ plotAST <- function(ast, title = "Lambda Calculus AST",
                                        parenGroup   = "#AAAAAA")) {
   g      <- buildIgraph(ast)
   labels <- V(g)$label
-  roles  <- V(g)$roles
+  nodeRole  <- V(g)$nodeRole
   
   is_group <- labels == ""   # TRUE for Paren_Group / Binding_Group nodes
   
@@ -153,22 +149,22 @@ plotAST <- function(ast, title = "Lambda Calculus AST",
   layout <- layout_as_tree(g, root = 1, mode = "out", flip.y = TRUE)
   
   # Per-vertex visual properties
-  v_color <- ifelse(is_group, "#CCCCCC", "#4A90D9")   # gray vs blue
   v_label <- labels                                     # "" for groups
   
   # --- node sizing ---
   # Base size covers short labels; the nchar() term adds width per character.
   # Group nodes (blank label) stay small since they show no text.
   char_count <- nchar(labels)
-  v_size     <- ifelse(roles == "group",
+  v_size     <- ifelse(nodeRole %in% c("parenGroup", "functionAbstraction", "root"),
                        10,
                        pmax(18, char_count * 4.5 + 10))
   
   # --- colors from scheme ---
-  v_color <- sapply(roles, function(t) colorScheme[[t]])
+  #sapply here means "apply this function to every element of nodeRole and collect the results into a vector" — so it maps each role string to its corresponding color from colorScheme
+  v_color <- sapply(nodeRole, function(r) colorScheme[[r]])
   
   # --- label color: white on darker nodes, hidden on group nodes ---
-  v_label_color <- ifelse(roles == "group", "#AAAAAA", "white")
+  v_label_color <- ifelse(nodeRole %in% c("parenGroup", "functionAbstraction"), "#AAAAAA", "white")
   
   plot(
     g,
