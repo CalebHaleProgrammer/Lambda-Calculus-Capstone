@@ -263,9 +263,19 @@ Documentation for igraph: <https://r.igraph.org/articles/igraph.html>
 
 :55 Worked on getting data.tree structure into igraph structure. Decided that since I already had viewAST that correctly interprets the tree that rather than trying to work between two unfamiliar data structures I would take the output of viewAST and work with that. However, the mechanisms of that proved complicated (cat vs paste0 vs keeping a running list, etc.) It maybe ended up complicating things even more but I'm learning more R now.
 
-**Thursday 5/28** ... minutes
+**Thursday 5/28** 180 minutes
 
-2:10 I'm gonna focus on AI because I don't want to get bogged down in the technical side of things and I want more time to explore types. I got more AI help for displaying trees, Claude this time <https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab>. Reviewed code, integrated code suggestions and tested, repeated. Tree now displays, custom size and color of nodes. Getting a feel for the generated code and customizing it to my liking (e.g. replacing custom text for connective nodes, renaming variables and functions to be more intuitive to me).
+3:00 I'm gonna focus on AI because I don't want to get bogged down in the technical side of things and I want more time to explore types. I got more AI help for displaying trees, Claude this time <https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab>. Reviewed code, integrated code suggestions and tested, repeated. Tree now displays, custom size and color of nodes. Getting a feel for the generated code and customizing it to my liking (e.g. replacing custom text for connective nodes, renaming variables and functions to be more intuitive to me). Got a nice tree working that should be customizeable, all the UI stuff will be through the Shiny library. A live responsive UI is now available that renders a tree and can be color-coded! Parenthesis grouping are not seen as function groups even when only a function trio is present. (E.g. \x. x y \a (b ((\s c d))) e)
+
+**Friday 5/29** 35 minutes
+
+:35 Meeting with mentor, he suggested test-driven development with test cases to monitor development, like the testthat library (expect_error, expect_equal, expect_no_error, etc.).
+
+Next up: change presets to be more meaningful, display text bigger, create interpreter, create test cases for "unit testing", test-driven development
+
+**Saturday 5/30** ... minutes
+
+1:00 Reading Annotated Turing
 
 Turn data.tree to graph node (metagraph)
 

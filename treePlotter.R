@@ -137,7 +137,7 @@ plotAST <- function(ast, title = "Lambda Calculus AST",
                     colorScheme = list(root    = "#AAAAAA",
                                        bindingTerm = "#5B8DB8",
                                        term   = "#5B8DB8",
-                                       functionAbstraction   = "#AAAAAA",
+                                       functionAbstraction   = "#AAAAFF",
                                        parenGroup   = "#AAAAAA")) {
   g      <- buildIgraph(ast)
   labels <- V(g)$label
