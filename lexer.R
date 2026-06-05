@@ -2,7 +2,7 @@ library(foreach)
 
 # TRUE if non-symbol (letter/digit/etc.), FALSE for ()./\
 IsChar <- function(ch) {
-  nchar(ch) > 0 && !ch %in% c("(", ")", ".", "/", "\\", " ")
+  nchar(ch) > 0 && !ch %in% c("(", ")", ".", "/", "\\", " ", "λ")
 }
 
 PrimeNewTokenRead <- function(runningRead, fullExpression) { # Sets the first char of fullExpression to runningRead, taking first char
@@ -56,13 +56,13 @@ while (!processed) {
   #. then ) : Syntax error : Syntax error "Invalid parenthesis around binding term"
   #char or lambda then char : Read
   #else: set token
-  if (lc %in% c("\\","/") && !IsChar(fc)){
+  if (lc %in% c("\\","/", "λ") && !IsChar(fc)){
     stop("Syntax Error: Binding an invalid term after lambda; ",fc)
   }else if (!IsChar(lc) && fc=="."){
     stop("Syntax Error: Binding an invalid term before period; ",lc)
   }else if (lc=="."&&fc==")"){
     stop("Syntax Error: Invalid parenthesis around binding term.")
-  }else if ((IsChar(lc)||lc%in% c("\\","/")) &&
+  }else if ((IsChar(lc)||lc%in% c("\\","/","λ")) &&
             (IsChar(fc))){
     state          <- ReadLetter(runningRead, fullExpression)
     runningRead    <- state$runningRead

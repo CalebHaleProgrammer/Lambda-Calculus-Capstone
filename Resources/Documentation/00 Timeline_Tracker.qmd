@@ -273,12 +273,16 @@ Documentation for igraph: <https://r.igraph.org/articles/igraph.html>
 
 Next up: change presets to be more meaningful, display text bigger, create interpreter, create test cases for "unit testing", test-driven development
 
-**Saturday 5/30** ... minutes
+**Saturday 5/30** 60 minutes
 
 1:00 Reading Annotated Turing
 
-Turn data.tree to graph node (metagraph)
+**Monday 6/1** 30 minutes
 
-Visualize each graph with ggraph (layout reingold tilford)
+:30 Added functionality for actual λ symbols as well as slashes. Wrote up a prompt to start into the interpreter, continuing in the same conversation (<https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab>).
 
-ggsave to save output to HTML or PDF
+**Friday 6/5** ... minutes
+
+:15 meeting with mentor
+
+increase text size on nodes, input box and dropdowns, clean up UI.

@@ -47,7 +47,7 @@ ui <- fluidPage(
         label       = "Token string",
         placeholder = "e.g.  \\x. x a"
       ),
-      helpText("Spaces between unique variable tokens are required. Use \\ or / for lambda. Period immediately after binding term, (optional)."),
+      helpText("Spaces between unique variable tokens are required. Use \\, /, or λ for lambda. Period immediately after binding term, (optional)."),
       
       hr(),
       
