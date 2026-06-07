@@ -285,12 +285,14 @@ Next up: change presets to be more meaningful, display text bigger, create inter
 
 :15 meeting with mentor
 
-**Saturday 6/6** ... minutes
+**Saturday 6/6** 35 minutes
 
 :15 Reading the Intro to LC. Regarding types, Curry's view includes terms allowed to have different types (almost like categorizations), while Church's are limited to unique types (up to an equivalence relation). These correspond to two paradigms in programming: implicit and explicit typing. (Perhaps seen as less fundamental to the LC and more fundamental to the LC). Which functions can be typed (not all can) ties in with deeper theory regarding computability, the halting problem, orders of arithmetic, etc. "Normalization of terms corresponds in the formulas-as-types interpretation tonormalisation of proofs in the sense of Prawitz."
 
 :20 Types are constants, variables, or functions between existing types, constructions allow defining new types. Type functions use right association, aligning with currying, so 1-\>2-\>3 means 1-\>(2-\>3). Statements are typed terms, e.g. M:o, where o is the predicate and M is the subject of the statement. Type derivations rely on modus ponens and another inference rule I don't understand (definition 5.3, maybe something like casting or inter-type functions). A basis is mutually exclusive or "linearly independent"-typed statements that form the basic workspace of assumptions, almost like a basis vector defining a space.
 
 I think the second inference is something like "you can have a function go from the type of any input you know the type of, to another existing type, by having the input be that known term:type." Sort of like how in propositional logic you can have P-\>Q with anything for P if Q is true. Anything can map to an existing term:type. Left off pg 36.
+
+**Saturday 6/6** ... minutes
 
 increase text size on nodes, input box and dropdowns, clean up UI.
