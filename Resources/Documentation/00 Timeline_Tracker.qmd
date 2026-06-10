@@ -293,6 +293,12 @@ Next up: change presets to be more meaningful, display text bigger, create inter
 
 I think the second inference is something like "you can have a function go from the type of any input you know the type of, to another existing type, by having the input be that known term:type." Sort of like how in propositional logic you can have P-\>Q with anything for P if Q is true. Anything can map to an existing term:type. Left off pg 36.
 
-**Saturday 6/6** ... minutes
+**Tuesday 6/9** 25 minutes
 
-increase text size on nodes, input box and dropdowns, clean up UI.
+:25 Read AI response for interpreter, same AI conversation from earlier. (<https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab>). Wrote up clarifying instructions.
+
+**Wednesday 6/10** ... minutes
+
+increase text size on nodes, input box and dropdowns, clean up UI. pg 36 Intro to LC.
+
+Read AI output for interpreter stuff
