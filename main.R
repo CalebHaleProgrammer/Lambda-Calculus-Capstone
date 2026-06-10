@@ -36,6 +36,7 @@ if(interactive()) {
 tokens<-LexerTokenize(fullExpression)
 
 initAST<-parse_lambda(tokens)
+initAST <- identifyBindingGroups(initAST)
 
 viewAST(initAST)
 #plot(initAST)

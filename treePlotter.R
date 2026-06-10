@@ -134,11 +134,13 @@ debugAST <- function(ast) {
 # ==============================================================================
 
 plotAST <- function(ast, title = "Lambda Calculus AST",
+                    labelStructural  = FALSE,
                     colorScheme = list(root    = "#AAAAAA",
                                        bindingTerm = "#5B8DB8",
                                        term   = "#5B8DB8",
                                        functionAbstraction   = "#AAAAFF",
-                                       parenGroup   = "#AAAAAA")) {
+                                       parenGroup   = "#AAAAAA",
+                                       labelColor          = "#FFFFFF")) {
   g      <- buildIgraph(ast)
   labels <- V(g)$label
   nodeRole  <- V(g)$nodeRole
@@ -148,23 +150,36 @@ plotAST <- function(ast, title = "Lambda Calculus AST",
   # Reingold-Tilford layout: designed for trees, top-down with root=1
   layout <- layout_as_tree(g, root = 1, mode = "out", flip.y = TRUE)
   
-  # Per-vertex visual properties
-  v_label <- labels                                     # "" for groups
+  # Node labels
+  is_structural <- nodeRole %in% c("parenGroup", "functionAbstraction", "root")
+  v_label       <- ifelse(is_structural & !labelStructural, "", labels)                                   # "" for groups
   
   # --- node sizing ---
   # Base size covers short labels; the nchar() term adds width per character.
   # Group nodes (blank label) stay small since they show no text.
   char_count <- nchar(labels)
   v_size     <- ifelse(nodeRole %in% c("parenGroup", "functionAbstraction", "root"),
-                       10,
-                       pmax(18, char_count * 4.5 + 10))
+                       16,
+                       pmax(20, char_count * 4.5 + 10))
   
   # --- colors from scheme ---
   #sapply here means "apply this function to every element of nodeRole and collect the results into a vector" — so it maps each role string to its corresponding color from colorScheme
   v_color <- sapply(nodeRole, function(r) colorScheme[[r]])
   
   # --- label color: white on darker nodes, hidden on group nodes ---
-  v_label_color <- ifelse(nodeRole %in% c("parenGroup", "functionAbstraction"), "#AAAAAA", "white")
+  #v_label_color <- ifelse(nodeRole %in% c("parenGroup", "functionAbstraction"), "#AAAAAA", "white")
+  
+  #structural nodes (no label) get their own color so the "" doesn't show
+  #v_label_color <- ifelse(
+  #  nodeRole %in% c("parenGroup", "functionAbstraction", "root"),
+  #  colorScheme[["parenGroup"]],   # invisible against node color
+  #  colorScheme[["labelColor"]]
+  #)
+  v_label_color <- ifelse(
+    is_structural & !labelStructural,
+    colorScheme[["parenGroup"]],
+    colorScheme[["labelColor"]]
+  )
   
   plot(
     g,
@@ -173,10 +188,36 @@ plotAST <- function(ast, title = "Lambda Calculus AST",
     vertex.size       = v_size,
     vertex.label      = v_label,
     vertex.label.color = v_label_color,
-    vertex.label.cex  = 0.85,
+    vertex.label.cex  = 1.4,
     vertex.frame.color = NA,          # no border ring on nodes
     edge.arrow.size   = 0.3,
     edge.color        = "#888888",
     main              = title
   )
+}
+
+# ==============================================================================
+# identifyBindingGroups
+# Post-processing step called after parse_lambda. Walks the entire tree and
+# renames any Paren_Group or Root node to Binding_Group if it has exactly
+# three children where the first child is a bindingTerm.
+# This allows Paren_Group and Root nodes that contain a complete function
+# expression to be treated as binding groups for evaluation and display.
+# ==============================================================================
+identifyBindingGroups <- function(node) {
+  children <- as.list(node$children)
+  
+  if (node$name %in% c("Paren_Group", "Root") &&
+      length(children) == 3 &&
+      getNodeRole(children[[1]]$name) == "bindingTerm") {
+    node$name <- "Binding_Group"
+  }
+  
+  for (child in children) {
+    identifyBindingGroups(child)
+  }
+  
+  invisible(node)  # invisible() returns the value but suppresses auto-printing
+  #since data.tree nodes are modified in place, unlike most R objects which are copied, 
+  #the function modifies the tree directly without needing to pass the result back up
 }

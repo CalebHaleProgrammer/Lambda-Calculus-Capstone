@@ -29,42 +29,56 @@ PRESETS <- list(
 ui <- fluidPage(
   titlePanel("Lambda Calculus AST Viewer"),
   
+  tags$style(HTML("
+    .color-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 12px;
+    }
+    .color-grid .form-group { margin-bottom: 6px; }
+    .colour-input .form-control { height: 28px; padding: 2px 6px; font-size: 12px; }
+    .colour-input label { font-size: 12px; margin-bottom: 2px; }
+  ")),
+  
   sidebarLayout(
     position = "right",
     
     sidebarPanel(
       width = 4,
       
-      # --- Expression input ---
       h4("Expression"),
       selectInput(
-        inputId  = "preset",
-        label    = "Load a preset",
-        choices  = c("-- type your own --", names(PRESETS))
+        inputId = "preset",
+        label   = "Load a preset",
+        choices = c("-- type your own --", names(PRESETS))
       ),
       textInput(
         inputId     = "expression",
         label       = "Token string",
-        placeholder = "e.g.  \\x. x a"
+        placeholder = "e.g.  \\x . x"
       ),
-      helpText("Spaces between unique variable tokens are required. Use \\, /, or λ for lambda. Period immediately after binding term, (optional)."),
+      helpText("Spaces between tokens are required. Use \\ or / for lambda."),
+      
+      checkboxInput("labelStructural", "Label structural nodes", value = FALSE), #toggles f(x) display
       
       hr(),
       
-      # --- Color controls ---
-      # colourInput() from the colourpicker package gives a color swatch
-      # that opens a picker with both a palette and a hex input field.
       h4("Node colors"),
-      colourInput("col_root",                "Root",
-                  value = "#AAAAAA", showColour = "background"),
-      colourInput("col_bindingTerm",         "Binding term  (\\x)",
-                  value = "#5B8DB8", showColour = "background"),
-      colourInput("col_term",                "Term  (variable / name)",
-                  value = "#5B8DB8", showColour = "background"),
-      colourInput("col_functionAbstraction", "Function abstraction",
-                  value = "#AAAAAA", showColour = "background"),
-      colourInput("col_parenGroup",          "Parentheses group",
-                  value = "#AAAAAA", showColour = "background"),
+      # tags$div with a class lets us apply the two-column CSS grid above
+      tags$div(class = "color-grid",
+               colourInput("col_root",                "Root",
+                           value = "#AAAAAA", showColour = "background"),
+               colourInput("col_bindingTerm",         "Binding term",
+                           value = "#5B8DB8", showColour = "background"),
+               colourInput("col_term",                "Term",
+                           value = "#5B8DB8", showColour = "background"),
+               colourInput("col_functionAbstraction", "Function abstraction",
+                           value = "#AAAAAA", showColour = "background"),
+               colourInput("col_parenGroup",          "Paren group",
+                           value = "#AAAAAA", showColour = "background"),
+               colourInput("col_label",               "Label text",
+                           value = "#FFFFFF", showColour = "background")
+      ),
       
       hr(),
       actionButton("resetColors", "Reset colors")
@@ -102,6 +116,7 @@ server <- function(input, output, session) {
     updateColourInput(session, "col_term",                value = "#5B8DB8")
     updateColourInput(session, "col_functionAbstraction", value = "#AAAAAA")
     updateColourInput(session, "col_parenGroup",          value = "#AAAAAA")
+    updateColourInput(session, "col_label", value = "#FFFFFF")
   })
   
   # --- Reactive expression that parses the input string ---
@@ -113,7 +128,7 @@ server <- function(input, output, session) {
     expr <- trimws(input$expression)
     req(nchar(expr) > 0)
     tokens <- LexerTokenize(expr)
-    parse_lambda(tokens)
+    identifyBindingGroups(parse_lambda(tokens))
   })
   
   # --- Render the plot ---
@@ -132,10 +147,11 @@ server <- function(input, output, session) {
       bindingTerm         = input$col_bindingTerm,
       term                = input$col_term,
       functionAbstraction = input$col_functionAbstraction,
-      parenGroup          = input$col_parenGroup
+      parenGroup          = input$col_parenGroup,
+      labelColor          = input$col_label
     )
     
-    plotAST(ast, colorScheme = scheme)
+    plotAST(ast, labelStructural = input$labelStructural, colorScheme = scheme)
   })
   
   # --- Show parse errors to the user ---

@@ -295,10 +295,18 @@ I think the second inference is something like "you can have a function go from 
 
 **Tuesday 6/9** 25 minutes
 
-:25 Read AI response for interpreter, same AI conversation from earlier. (<https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab>). Wrote up clarifying instructions.
+:25 Read AI response for interpreter, same AI conversation from earlier. (<https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab>). Wrote up clarifying instructions. Going to have two views, one for ASTs and one for the solution graph.
 
 **Wednesday 6/10** ... minutes
 
-increase text size on nodes, input box and dropdowns, clean up UI. pg 36 Intro to LC.
+:10 Clarified with AI more. We'll use alpha equivalence (allowing variable renaming) when checking whether two ASTs are the same. Updated UI and display a bit. Reviewing code and orienting myself for identifying binding group nodes hiding in the structural nodes, and to be ready to get into the weeds with the interpreter. Added identifyBindingGroups to replace parenthesis groups and the root with binding groups if they are a function grouping. This is in treePlotter.R and is ran in parsedAST in app.R immediately following the parsing step.
+
+allow non-evaluation expressions
+
+```         
+Parse error: Application Parse Error: binding term must be followed by two terms
+```
+
+. pg 36 Intro to LC.
 
 Read AI output for interpreter stuff
