@@ -57,7 +57,7 @@ ui <- fluidPage(
         label       = "Token string",
         placeholder = "e.g.  \\x . x"
       ),
-      helpText("Spaces between tokens are required. Use \\ or / for lambda."),
+      helpText("Spaces between tokens are required. Use \\, /, or λ for lambda. Period immediately after binding term, (optional)."),
       
       checkboxInput("labelStructural", "Label structural nodes", value = FALSE), #toggles f(x) display
       

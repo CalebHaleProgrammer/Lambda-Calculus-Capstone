@@ -27,7 +27,7 @@ lastChar<-function(runningRead){substr(runningRead, nchar(runningRead), nchar(ru
 firstChar<-function(fullExpression){substr(fullExpression, 1, 1)}
 
 # ── Main tokenizing loop ──────────────────────────────────────────────────────
-LexerTokenize <- function(inputText){
+LexerTokenize <- function(inputText=""){
 fullExpression<-inputText
 runningRead<-""
 tokens <- c()

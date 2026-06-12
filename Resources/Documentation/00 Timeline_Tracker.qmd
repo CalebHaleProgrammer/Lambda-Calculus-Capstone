@@ -299,7 +299,7 @@ I think the second inference is something like "you can have a function go from 
 
 **Wednesday 6/10** ... minutes
 
-:10 Clarified with AI more. We'll use alpha equivalence (allowing variable renaming) when checking whether two ASTs are the same. Updated UI and display a bit. Reviewing code and orienting myself for identifying binding group nodes hiding in the structural nodes, and to be ready to get into the weeds with the interpreter. Added identifyBindingGroups to replace parenthesis groups and the root with binding groups if they are a function grouping. This is in treePlotter.R and is ran in parsedAST in app.R immediately following the parsing step.
+1:20 Clarified with AI more. We'll use alpha equivalence (allowing variable renaming) when checking whether two ASTs are the same. Updated UI and display a bit. Reviewing code and orienting myself for identifying binding group nodes hiding in the structural nodes, and to be ready to get into the weeds with the interpreter. Added identifyBindingGroups to replace parenthesis groups and the root with binding groups if they are a function grouping. This is in treePlotter.R and is ran in parsedAST in app.R immediately following the parsing step.
 
 allow non-evaluation expressions
 
@@ -307,6 +307,12 @@ allow non-evaluation expressions
 Parse error: Application Parse Error: binding term must be followed by two terms
 ```
 
+**Friday 6/12** ... minutes
+
+:35 meet with mentor, start work on tests.
+
 . pg 36 Intro to LC.
+
+test-driven development with test cases to monitor development, like the testthat library (expect_error, expect_equal, expect_no_error, etc.).
 
 Read AI output for interpreter stuff
