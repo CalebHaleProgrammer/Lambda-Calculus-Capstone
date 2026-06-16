@@ -51,9 +51,9 @@ parseBinding <- function(parent_node, bind_idx) {
   children <- as.list(parent_node$children)
   n        <- length(children)
   
-  if (bind_idx + 2 > n) {
-    stop("Application Parse Error: binding term must be followed by two terms")
-  }
+  #if (bind_idx + 2 > n) return(invisible(NULL))
+  #This guard is redundant since reduceBinding now checks if there are two terms following a binding
+  #The return(invisible(NULL)) is R's idiomatic way of saying "exit early, return nothing meaningful, and don't print anything." Since parseBinding modifies parent_node in place and the caller doesn't use its return value, returning NULL here is clean and safe.
   
   pre_nodes     <- if (bind_idx > 1)      children[seq(1, bind_idx - 1)]      else list()
   binding_nodes <- children[seq(bind_idx, bind_idx + 2)]
@@ -113,12 +113,13 @@ reduceBindings <- function(node) {
     children      <- as.list(node$children)
     found_binding <- FALSE
     
-    if (length(children) > 3) {
-      for (i in rev(seq_along(children))) { #or i in seq(length(children), 1), but rev-seq_along is supposedly safer
-        if (isBindingToken(children[[i]]$name)) {
+    for (i in rev(seq_along(children))) {
+      if (isBindingToken(children[[i]]$name)) {
+        # Only attempt if two following siblings exist
+        if (i + 2 <= length(children)) {
           parseBinding(node, i)
           found_binding <- TRUE
-          break # restart scan against the updated children list
+          break
         }
       }
     }

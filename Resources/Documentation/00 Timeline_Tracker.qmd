@@ -311,8 +311,25 @@ Parse error: Application Parse Error: binding term must be followed by two terms
 
 :35 meet with mentor, start work on tests.
 
+**Tuesday 6/16** ... minutes
+
+1:00 worked on the interpreter. Got alphaEquivalence code from AI, reviewed alphaEquivalence a bit.
+
+:35 Got interpreter code from AI, reviewed it a bit. Had unwanted reduction entry in record, ... read up until substituteName
+
 . pg 36 Intro to LC.
 
 test-driven development with test cases to monitor development, like the testthat library (expect_error, expect_equal, expect_no_error, etc.).
 
 Read AI output for interpreter stuff
+
+named character vector env in alphaEquivalence
+
+My lexer allows almost anything as a valid token, and I'd like a stronger naming insurance. Let's have the renaming run a loop to increment the variable until it is original and doesn't match. This will usually only run once, but if the renaming would create a conflict then it will simply continue increment-renaming.
+
+In the interpreter, let's not have reduction, since it is not needed and would differ depending on which AST the current AST came from in the hyper-graph. Also explain the following:\
+The term added to the list of results; list(list(node = node, path = path)),
+
+The function body of collectNames
+
+The console isn't ideal for testing, so let's update app.R first, do some preliminary testing, then we'll set up some testing with the testthat library

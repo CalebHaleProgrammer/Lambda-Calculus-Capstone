@@ -42,3 +42,5 @@ viewAST(initAST)
 #plot(initAST)
 plotAST(initAST)
 #viewAST(parse_lambda(c("\\x", ".", "\\y", ".", "x", "y")))
+
+viewAST(identifyBindingGroups(parse_lambda(LexerTokenize("(/x. x) y"))))
