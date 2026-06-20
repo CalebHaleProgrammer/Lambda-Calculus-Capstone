@@ -311,25 +311,28 @@ Parse error: Application Parse Error: binding term must be followed by two terms
 
 :35 meet with mentor, start work on tests.
 
-**Tuesday 6/16** ... minutes
+**Tuesday 6/16** 180 minutes
 
 1:00 worked on the interpreter. Got alphaEquivalence code from AI, reviewed alphaEquivalence a bit.
 
-:35 Got interpreter code from AI, reviewed it a bit. Had unwanted reduction entry in record, ... read up until substituteName
+2:00 Got interpreter code from AI, reviewed it a bit, read up until buildHyperGraph and asked followup questions, gave suggestions, refined the design and broke it down to double check it. Still a little shaky on renameTermInPlace and renameBoundVar, especially with recursion. Mostly looks pretty good, except I haven't gone over the UI stuff as much.
 
-. pg 36 Intro to LC.
+**Friday 6/19** 60 minutes
+
+:45 Read a bit more Intro to LC. pg 42 has presentable boolean logic examples. "error" when dividing by zero is of type Z, the same as the integers. Weird. I went to read Types and Programming Languages but saw I only had the table of contents. The text is available at <https://theswissbay.ch/pdf/Gentoomen%20Library/Maths/Comp%20Sci%20Math/Benjamin_C._Pierce-Types_and_Programming_Languages-The_MIT_Press%282002%29.pdf> and has been added to my resources folder for offline use. Also skimmed this video <https://www.youtube.com/watch?v=TrYosPPCQAY>, which clarified type-checking a little as modus-ponens-style logic to chain inputs and outputs of functions to determine results' types. Reasoning with types allows different orders of abstraction for logic (first-order vs second-order vs ...etc.). A frame is a set of sets that defines the types, including a truth-value type and a compound "function" type between two types. Abstractions' types are the type of the output. Higher-order logic and the metaphysics of the logic systems is definitely something to think about more.
+
+:15 Skimmed Types and Programming Languages, same sort of stuff, deriving function types from the types of its components, various terms for invalid values, like 0 or "wrong", or what we'd probably get NULL in a program from or UNDEFINED on a calculator. It seems to get a little more into the ins and outs, including type to term ideas, closer to how we'd think about sets or groupings. Depth, derivations, permutations are mentioned in 9.3. 9.4 gets into Curry-Howard Correspondence for propositions. Arrow constructors describe the creation of a type via an introduction rule (dependencies, functions, implications) and using a type with an elimination rule (result, output, modus ponens). This was interesting:
+
+"Most compilers for full-scale programming languages actually avoid carrying annotations at run time: they are usedduring typechecking (and during code generation, in more sophisticated compilers), but do not appear in thecompiled form of the program. In effect, programs are converted back to an untyped form before they are evaluated.This style of semantics can be formalized using an erasure function mapping simply typed terms into thecorresponding untyped terms." pg 109
+
+STLC can either be evaluated as simply typed or compiled to an untyped version and evaluted as untyped.
+
+"An important commonality of the two styles is that, in both, itmakes sense to talk about the behavior of a term t, whether or not t is actually well typed. This form of languagedefinition is often called Curry-style. We first define the terms, then define a semantics showing how they behave, thengive a type system that rejects some terms whose behaviors we don't like. Semantics is prior to typing.
+
+A rather different way of organizing a language definition is to define terms, then identify the well-typed terms, thengive semantics just to these. In these so-called Church-style systems, typing is prior to semantics: we never even askthe question "what is the behavior of an ill-typed term?" Indeed, strictly speaking, what we actually evaluate inChurch-style systems is typing derivations, not terms." pg111
+
+**Saturday 6/20** ... minutes
 
 test-driven development with test cases to monitor development, like the testthat library (expect_error, expect_equal, expect_no_error, etc.).
 
-Read AI output for interpreter stuff
-
 named character vector env in alphaEquivalence
-
-My lexer allows almost anything as a valid token, and I'd like a stronger naming insurance. Let's have the renaming run a loop to increment the variable until it is original and doesn't match. This will usually only run once, but if the renaming would create a conflict then it will simply continue increment-renaming.
-
-In the interpreter, let's not have reduction, since it is not needed and would differ depending on which AST the current AST came from in the hyper-graph. Also explain the following:\
-The term added to the list of results; list(list(node = node, path = path)),
-
-The function body of collectNames
-
-The console isn't ideal for testing, so let's update app.R first, do some preliminary testing, then we'll set up some testing with the testthat library

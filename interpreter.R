@@ -116,8 +116,6 @@ substituteName <- function(node, varName, replacementNode,
     
     substituteName(node$children[[2]], varName, replacementNode,
                    c(boundVars, boundVar))
-    substituteName(node$children[[3]], varName, replacementNode,
-                   c(boundVars, boundVar))
     
   } else if (getNodeRole(node$name) == "term" &&
              node$name == varName &&
@@ -210,7 +208,7 @@ renameTermInPlace <- function(node, oldName, newName) {
   children <- as.list(node$children)
   for (i in seq_along(children)) {
     child <- children[[i]]
-    if (child$name == "Binding_Group") {
+    if (child$name == "Binding_Group") { #if your child is a binding group, get the bound variable name from your grandchild binding term
       innerChildren <- as.list(child$children)
       if (length(innerChildren) == 3) {
         innerVar <- substr(innerChildren[[1]]$name, 2,
@@ -284,10 +282,7 @@ reconstructExpression <- function(node) {
     return(paste0("(", inner, ")"))
   }
   
-  if (name %in% c("Binding_Group", "Root")) {
-    return(inner)
-  }
-  
+  #Binding_Group and Root default through
   inner
 }
 
