@@ -16,15 +16,7 @@ source("treePlotter.R")
 #source() runs the whole file top to bottom, so avoid putting loose "script-style" code in helper files — keep them to function and variable definitions only.
 #Order matters — if analysis.R uses functions from utils.R, source utils.R first.
 
-# ==============================================================================
-# viewAST   Prints the AST to the console with indentation showing tree depth.
-# ==============================================================================
-viewAST <- function(node, depth = 0) {
-  cat(strrep("  ", depth), node$name, "\n", sep = "")
-  for (child in as.list(node$children)) {
-    viewAST(child, depth + 1)
-  }
-}
+
 
 if(interactive()) {
   repeat{

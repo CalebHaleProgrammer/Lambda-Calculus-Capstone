@@ -16,6 +16,7 @@
 # ==============================================================================
 
 source("alphaEquivalence.R")
+source("treePlotter.R")
 
 # ==============================================================================
 # findReducibleNodes
@@ -418,3 +419,31 @@ markRecursingChains <- function(graph) {
 #path is an integer vector of child indices from the root to a given node. nodeAtPath replays those indices to find the same logical node in a cloned tree. This is necessary because Clone() produces new node objects, so you can't use the original node reference to locate a node in the clone.
 #substituteName works by modifying the parent's children[[i]] slot rather than the node itself, because in data.tree you can't replace a node by modifying it from within — you have to reach it from its parent.
 #The queue in buildHyperGraph is a breadth-first traversal, which means shallower ASTs are always processed before deeper ones, making the depth tracking straightforward.
+
+debugReduce <- function(exprString) {
+  tokens <- LexerTokenize(exprString)
+  ast    <- parse_lambda(tokens)
+  ast    <- identifyBindingGroups(ast)
+  
+  cat("=== Initial AST ===\n")
+  viewAST(ast)
+  
+  reducible <- findReducibleNodes(ast)
+  cat("\n=== Reducible nodes found:", length(reducible), "===\n")
+  
+  for (i in seq_along(reducible)) {
+    cat("\nReduction", i, "- path:", reducible[[i]]$path, "\n")
+    result <- tryCatch(
+      betaReduce(ast, reducible[[i]]$path),
+      error = function(e) {
+        cat("  ERROR:", e$message, "\n")
+        NULL
+      }
+    )
+    if (!is.null(result)) {
+      cat("  Result:\n")
+      viewAST(result)
+    }
+  }
+}
+

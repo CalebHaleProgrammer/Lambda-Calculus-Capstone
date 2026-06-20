@@ -331,7 +331,13 @@ STLC can either be evaluated as simply typed or compiled to an untyped version a
 
 A rather different way of organizing a language definition is to define terms, then identify the well-typed terms, thengive semantics just to these. In these so-called Church-style systems, typing is prior to semantics: we never even askthe question "what is the behavior of an ill-typed term?" Indeed, strictly speaking, what we actually evaluate inChurch-style systems is typing derivations, not terms." pg111
 
-**Saturday 6/20** ... minutes
+**Saturday 6/20** 70 minutes
+
+:20 Working on interpreter, debugging. ViewAST moved to TreePlotter.R. Going to start making test systems. How should I handle input like (\x. x) y?
+
+:50 More work on interpreter. Debugged a bit, changed identifyBindingGroups to also work with just the function abstractions, since functions might not have an input. Gonna focus on debugging, really understanding the whole theory and program, and fixing up the UI. Since compilers often don't even use types in the final code and there's not a lot of time remaining for my project, I don't think I'll do typing. It's getting hard to keep track of the program, so testing will be helpful.
+
+**Sunday 6/21** ... minutes
 
 test-driven development with test cases to monitor development, like the testthat library (expect_error, expect_equal, expect_no_error, etc.).
 
