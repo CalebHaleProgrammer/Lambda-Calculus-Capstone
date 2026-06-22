@@ -337,7 +337,11 @@ A rather different way of organizing a language definition is to define terms, t
 
 :50 More work on interpreter. Debugged a bit, changed identifyBindingGroups to also work with just the function abstractions, since functions might not have an input. Gonna focus on debugging, really understanding the whole theory and program, and fixing up the UI. Since compilers often don't even use types in the final code and there's not a lot of time remaining for my project, I don't think I'll do typing. It's getting hard to keep track of the program, so testing will be helpful.
 
-**Sunday 6/21** ... minutes
+**Sunday 6/21** 35 minutes
+
+:35 YT Research into type theory in general; Martin-Lof type theory and HoTT (connecting this project to future application and context). Type theory "hides implementation details", so the different ways of defining numbers from sets, for example, are not distinguished. The Univalence principle defines equality and equivalence to be the same. An element of one type is not an instance of any other type (differing from set theory's flexbility). Equality of equalities cannot always be proven true (higher-order indeterminability).
+
+**Monday 6/22** ... minutes
 
 test-driven development with test cases to monitor development, like the testthat library (expect_error, expect_equal, expect_no_error, etc.).
 
