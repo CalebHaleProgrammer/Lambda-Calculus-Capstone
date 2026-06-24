@@ -196,38 +196,3 @@ plotAST <- function(ast, title = "Lambda Calculus AST",
   )
 }
 
-# ==============================================================================
-# identifyBindingGroups
-# Post-processing step called after parse_lambda. Walks the entire tree and
-# renames any Paren_Group or Root node to Binding_Group if it has exactly
-# three children where the first child is a bindingTerm.
-# This allows Paren_Group and Root nodes that contain a complete function
-# expression to be treated as binding groups for evaluation and display.
-# ==============================================================================
-identifyBindingGroups <- function(node) {
-  children <- as.list(node$children)
-  
-  if (node$name %in% c("Paren_Group", "Root") &&
-      length(children) >= 2 &&
-      getNodeRole(children[[1]]$name) == "bindingTerm") {
-    node$name <- "Binding_Group"
-  }
-  
-  for (child in children) {
-    identifyBindingGroups(child)
-  }
-  
-  invisible(node)  # invisible() returns the value but suppresses auto-printing
-  #since data.tree nodes are modified in place, unlike most R objects which are copied, 
-  #the function modifies the tree directly without needing to pass the result back up
-}
-
-# ==============================================================================
-# viewAST   Prints the AST to the console with indentation showing tree depth.
-# ==============================================================================
-viewAST <- function(node, depth = 0) {
-  cat(strrep("  ", depth), node$name, "\n", sep = "")
-  for (child in as.list(node$children)) {
-    viewAST(child, depth + 1)
-  }
-}

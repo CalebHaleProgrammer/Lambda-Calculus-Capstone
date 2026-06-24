@@ -16,7 +16,8 @@
 # ==============================================================================
 
 source("alphaEquivalence.R")
-source("treePlotter.R")
+source("treePlotter.R") #This might be outdated now that identifyBindingGroup is in parser.R, idk if it's needed for anything else.
+source("parser.R")
 
 # ==============================================================================
 # findReducibleNodes
@@ -134,7 +135,7 @@ substituteName <- function(node, varName, replacementNode,
           child$name == varName &&
           !varName %in% boundVars) {
         # Replace this child with a clone of the replacement
-        node$children[[i]] <- replacementNode$Clone(recursive = TRUE)
+        node$children[[i]] <- Clone(replacementNode)
       } else {
         substituteName(child, varName, replacementNode, boundVars)
       }
@@ -231,14 +232,14 @@ renameTermInPlace <- function(node, oldName, newName) {
 # If the Binding_Group is the root, the substituted body becomes the new root.
 # ==============================================================================
 betaReduce <- function(ast, path) {
-  newAST   <- ast$Clone(recursive = TRUE)
+  newAST   <- Clone(ast)
   target   <- nodeAtPath(newAST, path)
   children <- as.list(target$children)
   
   bindingToken <- children[[1]]$name
   varName      <- substr(bindingToken, 2, nchar(bindingToken))
-  body         <- children[[2]]$Clone(recursive = TRUE)
-  input        <- children[[3]]$Clone(recursive = TRUE)
+  body         <- Clone(children[[2]])
+  input        <- Clone(children[[3]])
   
   # Substitute input for varName throughout body
   substituteName(body, varName, input)

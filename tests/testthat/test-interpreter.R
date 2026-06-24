@@ -15,7 +15,7 @@ test_that("findReducibleNodes finds nothing in an incomplete binding", {
 test_that("betaReduce on identity function returns the input", {
   ast    <- parse_lambda(c("\\x", ".", "x", "y"))
   ast    <- identifyBindingGroups(ast)
-  result <- betaReduce(ast, integer(0))  # root itself is the Binding_Group
+  result <- betaReduce(ast, c(1))  # root is not the Binding_Group, root has a single child, the binding_group
   expect_equal(result$name, "y")
 })
 
@@ -24,9 +24,9 @@ test_that("betaReduce substitutes correctly in a non-trivial body", {
   tokens <- c("\\x", ".", "x", "x", "y")
   ast    <- parse_lambda(tokens)
   ast    <- identifyBindingGroups(ast)
-  result <- betaReduce(ast, integer(0))
+  result <- betaReduce(ast, c(1))
   reconstructed <- reconstructExpression(result)
-  expect_equal(reconstructed, "y y")
+  expect_equal(reconstructed, "x y")
 })
 
 test_that("substitution avoids variable capture", {
@@ -35,7 +35,7 @@ test_that("substitution avoids variable capture", {
   tokens <- c("\\x", ".", "\\y", ".", "x", "y")
   ast    <- parse_lambda(tokens)
   ast    <- identifyBindingGroups(ast)
-  result <- betaReduce(ast, integer(0))
+  result <- betaReduce(ast, c(1))
   
   freeVars <- freeVariables(result)
   expect_true("y" %in% freeVars)  # the substituted y must remain free

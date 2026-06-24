@@ -5,12 +5,20 @@ test_that("simple binding parses into a Binding_Group", {
   expect_equal(ast$children[[1]]$name, "Binding_Group")
 })
 
-test_that("binding without two following terms is left unparsed", {
+#This may change in the future if no-input functions are treated as a binding group
+test_that("a binding with only a body and no input stays ungrouped", {
   ast <- parse_lambda(c("\\x", ".", "x"))
-  # Only one token follows \x (the body), no third term for input —
-  # so this should NOT become a complete Binding_Group requiring 3 children
-  bindingNode <- ast$children[[1]]
-  expect_equal(length(bindingNode$children), 2)
+  expect_equal(ast$name, "Root")
+  expect_equal(length(ast$children), 2)
+  expect_equal(ast$children[[1]]$name, "\\x")
+  expect_equal(ast$children[[2]]$name, "x")
+})
+
+test_that("a binding with body and input forms a Binding_Group", {
+  ast <- parse_lambda(c("\\x", ".", "x", "y"))
+  expect_equal(ast$name, "Root")
+  expect_equal(length(ast$children), 1)
+  expect_equal(ast$children[[1]]$name, "Binding_Group")
 })
 
 test_that("parentheses group their contents", {

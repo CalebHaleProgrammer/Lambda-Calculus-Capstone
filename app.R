@@ -20,6 +20,7 @@ PRESETS <- list(
   "and: \\p. \\q. p q p"    = "\\p. \\q. p q p",
   "or: \\p. \\q. p q p"    = "\\p. \\q. p p q",
   "not: \\p. p false true"    = "\\p. p false true",
+  "not (full): \\p. p (\\x. \\y. y) (\\x. \\y. x)"    = "\\p. p (\\x. \\y. y) (\\x. \\y. x)",
   "if: \\p. \\a. \\b. p a b"    = "\\p. \\a. \\b. p a b"
 )
 

@@ -39,7 +39,7 @@ normalizeNames <- function(node,
                            env     = character(0),
                            counter = new.env(parent = emptyenv())) {
   if (is.null(counter$n)) counter$n <- 0L
-  result <- node$Clone(recursive = TRUE)
+  result <- Clone(node)
   normalizeNamesInPlace(result, env, counter)
   result
 }

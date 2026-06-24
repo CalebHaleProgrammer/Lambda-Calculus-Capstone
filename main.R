@@ -2,7 +2,7 @@
 #install.packages("igraph")
 library(foreach)
 #library(DiagrammeR)
-library(igraph)
+#library(igraph)
 library(data.tree)
 source("lexer.R")
 source("parser.R")

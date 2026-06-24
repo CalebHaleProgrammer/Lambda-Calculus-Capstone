@@ -341,8 +341,14 @@ A rather different way of organizing a language definition is to define terms, t
 
 :35 YT Research into type theory in general; Martin-Lof type theory and HoTT (connecting this project to future application and context). Type theory "hides implementation details", so the different ways of defining numbers from sets, for example, are not distinguished. The Univalence principle defines equality and equivalence to be the same. An element of one type is not an instance of any other type (differing from set theory's flexbility). Equality of equalities cannot always be proven true (higher-order indeterminability).
 
-**Monday 6/22** ... minutes
+**Monday 6/22** 65 minutes
 
-test-driven development with test cases to monitor development, like the testthat library (expect_error, expect_equal, expect_no_error, etc.).
+:40 More YT research into type theory (mainly computerphile). J Rule says proofs for reflexivity are sufficient to prove equality. Equality is a groupoid, as a group describes the patterns that govern equality for any closed system (closure describable by operation results belonging to the type of the operated elements). J Rule allows any equality to be treated as a groupoid? Using group behavior we can see the impossibility of proving any two equalities are equal because you can't prove any two integers are equal (integers being elements of a group under addition). Correspondence allows defining any mappable-comparable things as being equal, e.g. any collection of equal size? Natural numbers and integers are the same under this view. However, operations and other structures/patterns can break these correspondences. UIP (Uniqueness of Identity Proof) fails when there are multiple potential correspondences (mappings) – there must be only one correspondence. Since type theory is implementation-independent, it aligns with black-box methodology for function design in programming (plug-and-play, focusing on results at each step and not the process). HoTT idea came about with types as geometric objects and elements of types as the points on the surface, equality as a path from one point to another. Triviality of the uniqueness of equality asks "up to isomorphism" so topologically "same" paths are considered the same and must be non-trivially different to be considered different equalities. The univalence principle then comes into effect for comparing *types*, as equal if there is a one-to-one correspondence. HoTT expands from set theory with flexibility comparable to how non-euclidean geometry generalizes from the assumptions of euclidean geometry. In a plane there is only one path between two points, but in other geometries there can be more, which can't be expressed as plain sets.
 
-named character vector env in alphaEquivalence
+:25 Worked on interpreter. Replaced name\$Clone(recursive=TRUE) syntax with Clone(name) syntax because the version I'm working with is automatically recursive when it creates a clone of a tree and that's the correct syntax. Gradually fixing bugs and trying to get the testthat results to come back clean.
+
+**Tuesday 6/23** ... minutes
+
+1:00 Working on interpreter. Moved identifyBindingGroups to be in parser.R instead of treePlotter because that's more intuitive to me. More work with testthat and a lot of code review and cleanup to make sure I still know what's going on. Still using [the same AI chat](https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab).
+
+testthat::test_dir("tests/testthat")
