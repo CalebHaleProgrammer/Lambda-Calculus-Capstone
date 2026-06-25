@@ -27,7 +27,7 @@ if(interactive()) {
 
 tokens<-LexerTokenize(fullExpression)
 
-initAST<-parse_lambda(tokens)
+initAST<-parse_expression(tokens)
 initAST <- identifyBindingGroups(initAST)
 
 viewAST(initAST)
@@ -35,4 +35,4 @@ viewAST(initAST)
 plotAST(initAST)
 #viewAST(parse_lambda(c("\\x", ".", "\\y", ".", "x", "y")))
 
-viewAST(identifyBindingGroups(parse_lambda(LexerTokenize("(/x. x) y"))))
+viewAST(identifyBindingGroups(parse_expression(LexerTokenize("(/x. x) y"))))

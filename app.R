@@ -168,12 +168,21 @@ server <- function(input, output, session) {
   # re-runs when one of the input values it reads has changed.
   # This one re-runs whenever input$expression changes.
   parsedAST <- reactive({
-    req(input$expression)  # req() pauses execution if the value is empty
+    req(input$expression)
     expr <- trimws(input$expression)
     req(nchar(expr) > 0)
-    tokens <- LexerTokenize(expr)
-    ast    <- parse_lambda(tokens)
-    identifyBindingGroups(parse_lambda(tokens))
+    
+    # tryCatch here turns a parse error into a plain NULL value, rather than
+    # letting the error propagate to every reactive value that depends on
+    # parsedAST(). Without this, one bad expression freezes the whole app
+    # until a valid expression is typed.
+    tryCatch({
+      tokens <- LexerTokenize(expr)
+      ast    <- parse_expression(tokens)
+      identifyBindingGroups(ast)
+    }, error = function(e) {
+      NULL
+    })
   })
   
   # --- Color scheme ---
@@ -249,9 +258,17 @@ server <- function(input, output, session) {
   
   
   # --- Show errors to the user ---
+  #output$errorMsg <- renderText({
+  #  tryCatch({ parsedAST(); "" },
+  #           error = function(e) paste("Parse error:", e$message))
+  #})
   output$errorMsg <- renderText({
-    tryCatch({ parsedAST(); "" },
-             error = function(e) paste("Parse error:", e$message))
+    ast <- parsedAST()
+    if (is.null(ast)) {
+      "Parse error: check that parentheses are matched and the expression is valid."
+    } else {
+      ""
+    }
   })
   
   # --- Hyper-graph UI ---

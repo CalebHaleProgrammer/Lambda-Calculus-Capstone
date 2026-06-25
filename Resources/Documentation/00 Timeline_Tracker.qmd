@@ -347,8 +347,18 @@ A rather different way of organizing a language definition is to define terms, t
 
 :25 Worked on interpreter. Replaced name\$Clone(recursive=TRUE) syntax with Clone(name) syntax because the version I'm working with is automatically recursive when it creates a clone of a tree and that's the correct syntax. Gradually fixing bugs and trying to get the testthat results to come back clean.
 
-**Tuesday 6/23** ... minutes
+**Tuesday 6/23** 60 minutes
 
 1:00 Working on interpreter. Moved identifyBindingGroups to be in parser.R instead of treePlotter because that's more intuitive to me. More work with testthat and a lot of code review and cleanup to make sure I still know what's going on. Still using [the same AI chat](https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab).
+
+**Wednesday 6/24** 65 minutes
+
+1:05 Began conducting full review of all code. I want to double-check behavior when parsing empty parens. reduceBindings calls parseBinding on each binding term trio to structure the AST, this is where I first made the decision to view the binding terms, function bodies, and inputs together. Since only these trios can be evaluated, all the Binding_Group nodes should act as markers for every evaluate-able reduction step. I'm renaming parser.R's parse_lambda to parse_expression. I've gone over the full lexing and parsing except I'm still looking over identifyBindingGroups
+
+**Thursday 6/25** ... minutes
+
+:45 Continued full review of all code. Fixed bug for recognizing lambda symbols as binding terms as well as slashes. structural nodes include "functionAbstraction" for a binding term, function body and input together, even though in normal terminology function abstraction refers to only the first two parts. Since this will be used for evaluation, I only use it when there are all three parts. Also, using "Root" as a variable name will color the "root" nodes accordingly lol. Added try_catch so UI doesn't freeze from invalid parsing while getting user input.
+
+fix freezes when lexing/parsing error happens
 
 testthat::test_dir("tests/testthat")

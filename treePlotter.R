@@ -1,6 +1,7 @@
 library(igraph)
 library(data.tree)
 
+source("parser.R")
 # ==============================================================================
 # astToEdgeList
 # Walks the data.tree recursively and records every parent->child edge as a pair of unique node IDs.
@@ -16,14 +17,7 @@ SPECIAL_NAMES <- c("Paren_Group", "Binding_Group", "Root")
 NodeDisplayText = list(Paren_Group= "( )", Binding_Group="f(x)", Root= "")#I think convention might prefer `Paren_Group` etc. as strings when it will be looked up by strings, but R understands this anyway
 DROP_NAMES   <- c("(", ")")
 
-# Node type classifier — used both for sizing and future coloring
-getNodeRole <- function(name) {
-  if (name == "Binding_Group")                return("functionAbstraction")
-  if (name == "Paren_Group")                  return("parenGroup")
-  if (name == "Root")                         return("root")
-  if (substr(name, 1, 1) %in% c("\\", "/"))  return("bindingTerm")
-  return("term")
-}
+
 
 astToEdgeList <- function(node,
                           parent_id  = NULL,

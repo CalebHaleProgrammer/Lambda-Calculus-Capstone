@@ -2,6 +2,15 @@ isBindingToken <- function(token) {
   substr(token, 1, 1) %in% c("\\", "/","λ")
 }
 
+# Node type classifier — used both for sizing and future coloring
+getNodeRole <- function(name) {
+  if (name == "Binding_Group")                return("functionAbstraction")
+  if (name == "Paren_Group")                  return("parenGroup")
+  if (name == "Root")                         return("root")
+  if (substr(name, 1, 1) %in% c("\\", "/", "λ"))  return("bindingTerm")
+  return("term")
+}
+
 # ==============================================================================
 # initializeAST
 # Filters out "." separator tokens, creates a Root node, and attaches all
@@ -51,7 +60,7 @@ parseBinding <- function(parent_node, bind_idx) {
   children <- as.list(parent_node$children)
   n        <- length(children)
   
-  #if (bind_idx + 2 > n) return(invisible(NULL))
+  if (bind_idx + 2 > n) return(invisible(NULL))
   #This guard is redundant since reduceBinding now checks if there are two terms following a binding
   #The return(invisible(NULL)) is R's idiomatic way of saying "exit early, return nothing meaningful, and don't print anything." Since parseBinding modifies parent_node in place and the caller doesn't use its return value, returning NULL here is clean and safe.
   
@@ -149,9 +158,9 @@ processNode <- function(node) {
 # Entry point. Builds the initial flat AST from the token list, then
 # processes it into a fully parsed tree.
 # ==============================================================================
-parse_lambda <- function(tokens_list) {
+parse_expression <- function(tokens_list) {
   ast <- initializeAST(tokens_list)
-  processNode(ast)
+  processNode(ast) #processNode acts directly on ast and doesn't return anything, since trees are mutable objects passed by reference, not value.
   return(ast)
 }
 
@@ -169,20 +178,21 @@ identifyBindingGroups <- function(node) {
   
   # --- Case 1: relabel ---
   if (node$name %in% c("Paren_Group", "Root") &&
-      length(children) >= 2 &&
+      length(children) >= 3 &&
       getNodeRole(children[[1]]$name) == "bindingTerm") {
     node$name <- "Binding_Group"
   }
   
   # --- Case 2: collapse redundant single-child wrappers ---
-  # Re-fetch children since Case 1 may have changed node$name (not children)
-  children <- as.list(node$children)
+  # Re-fetch not needed before since Case 1 may have changed node$name (not children)
+  # During just to make sure it's targetting the children not the removed redundant nodes that were removed
   for (i in seq_along(children)) {
+    children <- as.list(node$children) #Revisit if needed
     child <- children[[i]]
     if (child$name == "Paren_Group") {
       grandchildren <- as.list(child$children)
       if (length(grandchildren) == 1 &&
-          grandchildren[[1]]$name == "Binding_Group") {
+          grandchildren[[1]]$name %in% c("Binding_Group", "Paren_Group")) {
         node$children[[i]] <- grandchildren[[1]]
       }
     }
