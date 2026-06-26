@@ -357,7 +357,17 @@ A rather different way of organizing a language definition is to define terms, t
 
 **Thursday 6/25** ... minutes
 
-:45 Continued full review of all code. Fixed bug for recognizing lambda symbols as binding terms as well as slashes. structural nodes include "functionAbstraction" for a binding term, function body and input together, even though in normal terminology function abstraction refers to only the first two parts. Since this will be used for evaluation, I only use it when there are all three parts. Also, using "Root" as a variable name will color the "root" nodes accordingly lol. Added try_catch so UI doesn't freeze from invalid parsing while getting user input.
+1:40 Continued full review of all code. Fixed bug for recognizing lambda symbols as binding terms as well as slashes. structural nodes include "functionAbstraction" for a binding term, function body and input together, even though in normal terminology function abstraction refers to only the first two parts. Since this will be used for evaluation, I only use it when there are all three parts. Also, using "Root" as a variable name will color the "root" nodes accordingly lol. Added try_catch and is.null check so UI doesn't freeze from invalid parsing while getting user input, but lost specific error messages.
+
+I had to make a hard decision for how to interpret parentheses around the binding term and next terms:
+
+(\\x. x b) a
+
+1- \\x. x b a ; using default rules to take one term as body and the next as input
+
+2- \\x. (x b) a
+
+Which should it be equivalent to? Should parentheses group a function and input, or just a function? I'm going with option 1. Evaluation goes from the "inside" out, one term at a time, and entire function-input pairs can be grouped by parentheses. (\x. x) y is a weirder case, because I wouldn't put parentheses around just a function abstraction usually. Parentheses group together terms as a single term, e.g. a single function body. Reviewed parsing, interpreter will be next.
 
 fix freezes when lexing/parsing error happens
 
