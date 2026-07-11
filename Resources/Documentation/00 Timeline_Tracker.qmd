@@ -355,7 +355,7 @@ A rather different way of organizing a language definition is to define terms, t
 
 1:05 Began conducting full review of all code. I want to double-check behavior when parsing empty parens. reduceBindings calls parseBinding on each binding term trio to structure the AST, this is where I first made the decision to view the binding terms, function bodies, and inputs together. Since only these trios can be evaluated, all the Binding_Group nodes should act as markers for every evaluate-able reduction step. I'm renaming parser.R's parse_lambda to parse_expression. I've gone over the full lexing and parsing except I'm still looking over identifyBindingGroups
 
-**Thursday 6/25** ... minutes
+**Thursday 6/25** 100 minutes
 
 1:40 Continued full review of all code. Fixed bug for recognizing lambda symbols as binding terms as well as slashes. structural nodes include "functionAbstraction" for a binding term, function body and input together, even though in normal terminology function abstraction refers to only the first two parts. Since this will be used for evaluation, I only use it when there are all three parts. Also, using "Root" as a variable name will color the "root" nodes accordingly lol. Added try_catch and is.null check so UI doesn't freeze from invalid parsing while getting user input, but lost specific error messages.
 
@@ -369,6 +369,42 @@ I had to make a hard decision for how to interpret parentheses around the bindin
 
 Which should it be equivalent to? Should parentheses group a function and input, or just a function? I'm going with option 1. Evaluation goes from the "inside" out, one term at a time, and entire function-input pairs can be grouped by parentheses. (\x. x) y is a weirder case, because I wouldn't put parentheses around just a function abstraction usually. Parentheses group together terms as a single term, e.g. a single function body. Reviewed parsing, interpreter will be next.
 
-fix freezes when lexing/parsing error happens
+**Friday 6/26** 40 minutes
+
+:40 met with mentor. Went over some tests and cases.
+
+**Monday 6/29** 15 minutes
+
+:15 Working on interpreter. Identified issue with substitution protocol that prevents atomic-term bodies from being replaced.
+
+**Tuesday 6/30** 90 minutes
+
+1:15 in progress. Continuing code review. FYI findReducibleNodes in interpreter and freeVariables in interpreter both use exactly three children of a binding group for their checks. Also renameBoundVar. Variables are considered free until they are bound by a binding term /in a binding group/. If there is no input, for example, then the bound variable is considered free because the binding doesn't belong to a binding group. If there is no substitution or evaluation to happen anyways, this hopefully shouldn't affect the results.
+
+Fixed the atomic-term body substitution bug. collectNames collects entire binding terms, not just the variable name. This shouldn't be an issue, since if the bound variable exists in the body it will be counted in the collection, and if it isn't, then there's no conflict anyway, in terms of evaluation. I think.
+
+Renaming issues are hard to iron out, as I'm a little shaky on the finer details of what needs to happen to avoid variable capture. Variable capture only happens in multi-layer functions, (e.g. currying), so the testing examples have to be a bit more complicated.
+
+:15 Gave practice presentation for the project.
+
+**Saturday 7/11** ... minutes
+
+:45 Added recursive name replacement for evaluation into the inputs of nested function abstractions to ensure that all non-conflicted variables get renamed properly (some were missed when inputs were ignored to prevent variable capture, but variable capture only happens for bound variables that might have name conflicts, not inputs). Continued code review.
+
+AI flagged a redundant complexity to maybe fix in the future (where "Step 2" refers to checking node\$name=="Binding_Group" and the length of children is \>=2, or ==3, and "Step 3" is if not both conditions are true and each child gets checked for a match, as a free variable, with the variable to be substituted.):
+
+in Step 2, the recursion into the body passes `c(boundVars, boundVar)` as the new `boundVars` for the recursive call. This extends the `boundVars` vector with the current inner binding's variable. But look at what `substituteName` actually uses `boundVars` for — only in Step 3's check: `!varName %in% boundVars`. This check prevents substitution when `varName` has been rebound by an enclosing scope. However, since Step 2 already returns early when `boundVar == varName` (the rebinding case), the `c(boundVars, boundVar)` passed into the recursive call would only ever add a variable that is different from `varName` — so it would never actually affect the `!varName %in% boundVars` check in any subsequent call. This means `boundVars` as currently used is effectively always empty or irrelevant when it reaches Step 3.
+
+\*\*Note to self, something to review later.
+
+Might also want to double-check loop identifying for the UI display, and checking for recursive chains with ASTs that have multiple parent ASTs in the graph.
+
+.
+
+.
+
+.
+
+\x. a \y. b \z. q ; q doesn't parse as body for z, adding another term allows it to be a binding group and parse correctly
 
 testthat::test_dir("tests/testthat")

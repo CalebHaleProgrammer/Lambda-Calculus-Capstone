@@ -14,13 +14,12 @@ options(shiny.launch.browser = TRUE)
 PRESETS <- list(
   "Identity: \\x. x"                     = "\\x. x",
   "Constant: \\x. y"               = "\\x. y",
-  "Application: (\\x. x b) a"              = "(\\x. x b) a",
+  "Application: \\x. (x b) a"              = "\\x. (x b) a",
   "true: \\x. \\y. x"    = "\\x. \\y. x",
   "false: \\x. \\y. y"    = "\\x. \\y. y",
   "and: \\p. \\q. p q p"    = "\\p. \\q. p q p",
   "or: \\p. \\q. p q p"    = "\\p. \\q. p p q",
-  "not: \\p. p false true"    = "\\p. p false true",
-  "not (full): \\p. p (\\x. \\y. y) (\\x. \\y. x)"    = "\\p. p (\\x. \\y. y) (\\x. \\y. x)",
+  "not: \\p. p false true"    = "\\p. p (\\x. \\y. y) (\\x. \\y. x)",
   "if: \\p. \\a. \\b. p a b"    = "\\p. \\a. \\b. p a b"
 )
 

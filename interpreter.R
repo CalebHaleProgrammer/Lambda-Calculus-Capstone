@@ -16,8 +16,8 @@
 # ==============================================================================
 
 source("alphaEquivalence.R")
-source("treePlotter.R") #This might be outdated now that identifyBindingGroup is in parser.R, idk if it's needed for anything else.
-source("parser.R")
+#source("treePlotter.R") #This is outdated now that identifyBindingGroup is in parser.R. treePlotter is only needed by app.R I think
+#source("parser.R") #getNodeRole is from here, but app.R should source everything fine. If testing in isolation, source this.
 
 # ==============================================================================
 # findReducibleNodes
@@ -119,15 +119,6 @@ substituteName <- function(node, varName, replacementNode,
     substituteName(node$children[[2]], varName, replacementNode,
                    c(boundVars, boundVar))
     
-  } else if (getNodeRole(node$name) == "term" &&
-             node$name == varName &&
-             !node$name %in% boundVars) {
-    # This is a free occurrence of varName — replace with a clone of input
-    # We need to replace this node in its parent, so we modify the parent.
-    # data.tree does not give leaf nodes a parent-replace method, so
-    # replacement is handled by the parent loop below via replaceChild().
-    # This branch is reached only for leaf terms; the parent handles swap.
-    
   } else {
     for (i in seq_along(children)) {
       child <- children[[i]]
@@ -158,7 +149,7 @@ freeVariables <- function(node, boundVars = character(0)) {
     boundVar     <- substr(bindingToken, 2, nchar(bindingToken))
     newBound     <- c(boundVars, boundVar)
     c(freeVariables(children[[2]], newBound),
-      freeVariables(children[[3]], newBound))
+      freeVariables(children[[3]], boundVars)) #newly bound variables don't bind the inputs, otherwise free variables could be recursively falsely bound
     
   } else if (getNodeRole(node$name) == "term") {
     if (!node$name %in% boundVars) node$name else character(0)
@@ -208,6 +199,7 @@ renameTermInPlace <- function(node, oldName, newName) {
     return(invisible(NULL))
   }
   children <- as.list(node$children)
+  
   for (i in seq_along(children)) {
     child <- children[[i]]
     if (child$name == "Binding_Group") { #if your child is a binding group, get the bound variable name from your grandchild binding term
@@ -215,7 +207,10 @@ renameTermInPlace <- function(node, oldName, newName) {
       if (length(innerChildren) == 3) {
         innerVar <- substr(innerChildren[[1]]$name, 2,
                            nchar(innerChildren[[1]]$name))
-        if (innerVar == oldName) next  # re-bound, stop here
+        if (innerVar == oldName){
+          renameTermInPlace(as.list(child$children)[[3]], oldName, newName)
+          next  # re-bound, stop here...?
+        } 
       }
     }
     renameTermInPlace(child, oldName, newName)
@@ -242,7 +237,14 @@ betaReduce <- function(ast, path) {
   input        <- Clone(children[[3]])
   
   # Substitute input for varName throughout body
-  substituteName(body, varName, input)
+  # If the body is itself a single variable matching varName, substituteName
+  # cannot replace it, since substituteName only replaces a node's children,
+  # never the node it was directly called on. This case is handled here instead.
+  if (getNodeRole(body$name) == "term" && body$name == varName) {
+    body <- input
+  } else {
+    substituteName(body, varName, input)
+  }
   
   # Replace the Binding_Group with the reduced body in its parent
   if (length(path) == 0) {
@@ -280,7 +282,7 @@ reconstructExpression <- function(node) {
   parts <- lapply(children, reconstructExpression)
   inner <- paste(parts, collapse = " ")
   
-  if (name == "Paren_Group") {
+  if (name == "Paren_Group") { #this is where I might add code to add more parentheses for clarity on some non-paren-groups
     return(paste0("(", inner, ")"))
   }
   
