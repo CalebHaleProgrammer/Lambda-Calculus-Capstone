@@ -387,9 +387,9 @@ Renaming issues are hard to iron out, as I'm a little shaky on the finer details
 
 :15 Gave practice presentation for the project.
 
-**Saturday 7/11** ... minutes
+**Saturday 7/11** 105 minutes
 
-:45 Added recursive name replacement for evaluation into the inputs of nested function abstractions to ensure that all non-conflicted variables get renamed properly (some were missed when inputs were ignored to prevent variable capture, but variable capture only happens for bound variables that might have name conflicts, not inputs). Continued code review.
+1:45 Added recursive name replacement for evaluation into the inputs of nested function abstractions to ensure that all non-conflicted variables get renamed properly (some were missed when inputs were ignored to prevent variable capture, but variable capture only happens for bound variables that might have name conflicts, not inputs). Continued code review.
 
 AI flagged a redundant complexity to maybe fix in the future (where "Step 2" refers to checking node\$name=="Binding_Group" and the length of children is \>=2, or ==3, and "Step 3" is if not both conditions are true and each child gets checked for a match, as a free variable, with the variable to be substituted.):
 
@@ -397,7 +397,19 @@ in Step 2, the recursion into the body passes `c(boundVars, boundVar)` as the ne
 
 \*\*Note to self, something to review later.
 
-Might also want to double-check loop identifying for the UI display, and checking for recursive chains with ASTs that have multiple parent ASTs in the graph.
+Might also want to double-check loop identifying for the UI display, and checking for recursive chains with ASTs that have multiple parent ASTs in the graph. Removed display cards that weren't working anyway, doing plain circle nodes until I can make mini ASTs in the graph. Those work now, basically.
+
+Now any nodes with multiple parents is flagged as a loop. Still using the chat <https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab>
+
+AI response:
+
+\\x. x a works just fine, and all the main functionality is basically working, at a glance. Testing other examples shows that seemingly any nodes with multiple parents are flagged as a loop even if no path forms a loop.
+
+Additionally, I may need to add restrictions into which evaluations can be completed or what they use for inputs, to reflect the associativity rules in LC, especially where currying is concerned. For example, in the OR TRUE FALSE expression (\\p. \\q. p p q)(\\x. \\y. x)(\\x. \\y. y) the tree doesn't include a two-step curried evaluation yielding anything like (\\x. \\y. x)(\\x. \\y. x)(\\x. \\y. y) two layers down the tree, nor does it simplify to (\\x. \\y. x) as either of the options. It instead gives the solutions "p /y /y" or "q /y /y".
+
+**Friday 7/17** .. minutes
+
+:15 Added a readme to the project
 
 .
 
@@ -407,4 +419,4 @@ Might also want to double-check loop identifying for the UI display, and checkin
 
 \x. a \y. b \z. q ; q doesn't parse as body for z, adding another term allows it to be a binding group and parse correctly
 
-testthat::test_dir("tests/testthat")
+#run tests with testthat::test_dir("tests/testthat")

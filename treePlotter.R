@@ -190,3 +190,134 @@ plotAST <- function(ast, title = "Lambda Calculus AST",
   )
 }
 
+
+
+# ==============================================================================
+# hyperGraphToVisNetwork
+# Converts the hyper-graph record list from buildHyperGraph into two
+# data frames suitable for visNetwork:
+#   $nodes — one row per visible node, with id, label, title, and color
+#   $edges — one row per edge between nodes, with from and to
+#
+# Recursing nodes are hidden except for the first child of a branching node,
+# which is shown normally. All subsequent recursing nodes in the chain are
+# replaced by a single "..." node connected to that first visible child.
+# ==============================================================================
+hyperGraphToVisNetwork <- function(graph) {
+  
+  STATUS_COLORS <- list(
+    normal   = "#222222",
+    loop     = "#888888",
+    maxDepth = "#B22222",
+    recursing = "#888888"
+  )
+  
+  nodes <- data.frame(
+    id    = integer(0),
+    label = character(0),
+    title = character(0),
+    color = character(0),
+    stringsAsFactors = FALSE
+  )
+  edges <- data.frame(
+    from = integer(0),
+    to   = integer(0),
+    stringsAsFactors = FALSE
+  )
+  
+  # Track which "..." placeholder nodes have already been added,
+  # keyed by the id of the branching parent node.
+  # This prevents adding multiple "..." nodes for the same branch.
+  ellipsisAdded <- c()
+  
+  for (rec in graph) {
+    
+    if (rec$status == "recursing") {
+      # Check if this is the direct child of a branching node.
+      # If so, show it normally — it's the first visible node of the chain.
+      # If not, replace the rest of the chain with a single "..." node
+      # attached to the first visible node of the chain.
+      
+      isDirectChildOfBranch <- FALSE
+      for (parentId in rec$parents) {
+        parentRec <- graph[[as.character(parentId)]]
+        if (length(parentRec$children) > 1) {
+          isDirectChildOfBranch <- TRUE
+          break
+        }
+      }
+      
+      if (isDirectChildOfBranch) {
+        # Show this node normally
+        label <- tryCatch(
+          reconstructExpression(rec$ast),
+          error = function(e) "(error)"
+        )
+        title <- paste(capture.output(viewAST(rec$ast)), collapse = "\n")
+        nodes <- rbind(nodes, data.frame(
+          id    = rec$id,
+          label = label,
+          title = title,
+          color = STATUS_COLORS[["recursing"]],
+          stringsAsFactors = FALSE
+        ))
+        for (parentId in rec$parents) {
+          edges <- rbind(edges, data.frame(
+            from = parentId,
+            to   = rec$id,
+            stringsAsFactors = FALSE
+          ))
+        }
+        
+        # Add a "..." node connected to this node, if not already added
+        # for this chain. Use a negative id to avoid colliding with real ids.
+        ellipsisId <- -rec$id
+        if (!ellipsisId %in% ellipsisAdded) {
+          ellipsisAdded <- c(ellipsisAdded, ellipsisId)
+          nodes <- rbind(nodes, data.frame(
+            id    = ellipsisId,
+            label = "...",
+            title = "Recursing chain hidden",
+            color = STATUS_COLORS[["recursing"]],
+            stringsAsFactors = FALSE
+          ))
+          edges <- rbind(edges, data.frame(
+            from = rec$id,
+            to   = ellipsisId,
+            stringsAsFactors = FALSE
+          ))
+        }
+        
+      }
+      # All other recursing nodes are simply not added — they are hidden.
+      next
+    }
+    
+    # All non-recursing nodes are added normally
+    label <- tryCatch(
+      reconstructExpression(rec$ast),
+      error = function(e) "(error)"
+    )
+    title <- paste(capture.output(viewAST(rec$ast)), collapse = "\n")
+    
+    nodes <- rbind(nodes, data.frame(
+      id    = rec$id,
+      label = label,
+      title = title,
+      color = STATUS_COLORS[[rec$status]],
+      stringsAsFactors = FALSE
+    ))
+    
+    # Add edges from each parent to this node
+    for (parentId in rec$parents) {
+      edges <- rbind(edges, data.frame(
+        from = parentId,
+        to   = rec$id,
+        stringsAsFactors = FALSE
+      ))
+    }
+  }
+  
+  list(nodes = nodes, edges = edges)
+}
+

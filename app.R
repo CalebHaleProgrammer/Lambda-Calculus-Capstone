@@ -1,3 +1,4 @@
+library(visNetwork)
 library(shiny)
 library(colourpicker)  # install.packages("colourpicker") if needed
 library(igraph)
@@ -18,7 +19,7 @@ PRESETS <- list(
   "true: \\x. \\y. x"    = "\\x. \\y. x",
   "false: \\x. \\y. y"    = "\\x. \\y. y",
   "and: \\p. \\q. p q p"    = "\\p. \\q. p q p",
-  "or: \\p. \\q. p q p"    = "\\p. \\q. p p q",
+  "or: \\p. \\q. p p q"    = "\\p. \\q. p p q",
   "not: \\p. p false true"    = "\\p. p (\\x. \\y. y) (\\x. \\y. x)",
   "if: \\p. \\a. \\b. p a b"    = "\\p. \\a. \\b. p a b"
 )
@@ -118,7 +119,7 @@ ui <- fluidPage(
         # Left: hyper-graph panel
         column(6,
                h4("Evaluation graph"),
-               uiOutput("hyperGraphUI"),
+               visNetworkOutput("hyperGraphVis", height = "500px"),
                div(class = "solution-box",
                    strong("Solution(s):"),
                    verbatimTextOutput("solutionText")
@@ -229,9 +230,13 @@ server <- function(input, output, session) {
     selectedNodeId(NULL)
   })
   
-  # Receive click from hyper-graph UI
+  # --- Update selected AST when a hyper-graph node is clicked ---
   observeEvent(input$hyperNodeClick, {
-    selectedNodeId(input$hyperNodeClick)
+    clicked <- input$hyperNodeClick
+    # Ignore clicks on "..." ellipsis nodes, which have negative ids
+    if (!is.null(clicked) && clicked > 0) {
+      selectedNodeId(clicked)
+    }
   })
   
   
@@ -269,51 +274,37 @@ server <- function(input, output, session) {
       ""
     }
   })
-  
-  # --- Hyper-graph UI ---
-  # Renders the hyper-graph as HTML with clickable node cards.
-  # Each card shows the viewAST text for that AST.
-  # JavaScript sends the clicked node id to input$hyperNodeClick.
-  output$hyperGraphUI <- renderUI({
+
+  #Hypergraph display
+  # --- Render the visNetwork hyper-graph ---
+  output$hyperGraphVis <- renderVisNetwork({
     graph <- tryCatch(hyperGraph(), error = function(e) NULL)
     req(graph)
     
-    # Build HTML for each node
-    nodeCards <- lapply(graph, function(rec) {
-      if (rec$status == "recursing") return(NULL)
-      
-      astText <- capture.output({
-        viewAST(rec$ast)
-      })
-      astText <- paste(astText, collapse = "\n")
-      
-      cssClass <- paste("hypergraph-node", rec$status)
-      if (!is.null(selectedNodeId()) &&
-          rec$id == as.integer(selectedNodeId())) {
-        cssClass <- paste(cssClass, "selected")
-      }
-      
-      # Each card is a div that on click calls Shiny.setInputValue
-      # to send the node id back to the server
-      tags$div(
-        class   = cssClass,
-        onclick = sprintf(
-          "Shiny.setInputValue('hyperNodeClick', %d, {priority: 'event'})",
-          rec$id
-        ),
-        # Show "..." for direct children of branching nodes above recursing chains
-        if (any(sapply(graph[as.character(rec$children)],
-                       function(c) !is.null(c) && c$status == "recursing"))) {
-          tags$div(astText, tags$div("  ..."))
-        } else {
-          astText
-        }
-      )
-    })
+    visData <- hyperGraphToVisNetwork(graph)
     
-    # Filter NULLs (recursing nodes)
-    nodeCards <- Filter(Negate(is.null), nodeCards)
-    do.call(tags$div, nodeCards)
+    visNetwork(visData$nodes, visData$edges) |>
+      visEdges(
+        arrows = "to",
+        color  = list(color = "#888888")
+      ) |>
+      visNodes(
+        shape     = "circle",
+        font      = list(color = "#FFFFFF", size = 14),
+        borderWidth = 0
+      ) |>
+      visHierarchicalLayout(
+        direction  = "UD",   # top to bottom, matching AST view
+        sortMethod = "directed"
+      ) |>
+      visOptions(
+        highlightNearest = TRUE
+      ) |>
+      visEvents(
+        selectNode = "function(nodes) {
+        Shiny.setInputValue('hyperNodeClick', nodes.nodes[0], {priority: 'event'});
+      }"
+      )
   })
   
   # --- Solution text ---
