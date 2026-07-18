@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Timeline_Tracker</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="00 Timeline_Tracker_files/libs/clipboard/clipboard.min.js"></script>
+<script src="00 Timeline_Tracker_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="00 Timeline_Tracker_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="00 Timeline_Tracker_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="00 Timeline_Tracker_files/libs/quarto-html/popper.min.js"></script>
+<script src="00 Timeline_Tracker_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="00 Timeline_Tracker_files/libs/quarto-html/anchor.min.js"></script>
+<link href="00 Timeline_Tracker_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="00 Timeline_Tracker_files/libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="00 Timeline_Tracker_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="00 Timeline_Tracker_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="00 Timeline_Tracker_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Timeline_Tracker</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>Week 1</strong> 205+ minutes</p>
+<p>:20 reading Turing’s paper for theoretical foundations</p>
+<p>:20 reviewing plan and resources</p>
+<p>1:00+ brainstorming abt abstraction</p>
+<p>:15 reading Turing</p>
+<p>:30 reading Intro to Lambda Calculus</p>
+<p>:25 more Intro … reading and trying to figure out abstraction</p>
+<p>:35 looking at a JS lambda calculus interpreter on Github (tadeuzagallo)</p>
+<p><strong>Monday 4/27</strong> 110 minutes</p>
+<p>:25 Reading Turing</p>
+<p>:5 Reading Intro to LC</p>
+<p>1:20 Github and article on LC int</p>
+<p><strong>Tuesday 4/28</strong> 15 minutes</p>
+<p>:15 Reading Turing</p>
+<p><strong>Thursday 4/30</strong> 120 minutes</p>
+<p><strong>Checkpoint Report:</strong></p>
+<p><strong>I will use checkpoint reports to make note of when I reach a small-step milestone of understanding or work.</strong></p>
+<p><strong>I recorded previous AI chats 01, 02, and 03, for understanding abstraction, the token class, and the main interpreter part of the lc-js repo, respectively. I still don’t really get the conceptual aspect of abstraction as it relates to lambda calculus, but I’ll give me thoughts below. The token class acts as an interface between text and an object definition, which I guess is helpful when it comes to lexing but I don’t see as strictly necessary, since each token of interest is a single character, and we can track the input text, it seems we could process character by character until we’re done and not need specially defined tokens at all. The interpreter was tricky, but the traverse function takes its arguments to recursively call a function to create (and return) a “config” object that describes how to process the “node” argument. I’m still a bit uncomfortable with the recursion, since that makes it seem that each argument will be treated as a node at a deeper layer of recursion. I got a bit burned out by the end of chat 03 and started again later in chat 04, which I will record later, soon. I also switched AI tools so that I can export conversations instead of copying the text, which hopefully will yield prettier documentation.</strong></p>
+<p><strong>My thoughts on Abstraction:</strong> <strong>abstraction is the process of creating an abstract object, also called an abstraction, which includes some data/definition and has some data/definition which is not defined or included. That which is defined is that which remains constant and is more often the focus in mathematics, because it offers reliable unchanging information that you can use in all cases. That which is not defined is that which can change in the application of an abstraction and is more often the focus in computer science, because if offers flexibility and descriptive power across varied cases.</strong></p>
+<p><strong>Cont.:</strong> <strong>In everyday language groups and classifications are examples of abstractions, such as “dog”, which is defined by some criteria (four legs, tame-able, “man’s best friend”, etc.) and which can vary by undefined criteria (color, who owns it as a pet, breed, etc.). Proving that dogs have more legs than flamingos would use the defined criteria, more akin to a math proof, while a business creating a service that creates custom dog clothes that match their fur color would employ techniques that can vary by the undefined criteria. Thus, both aspects are useful; one for broad, powerful principle-based reasoning, the other for varied, dynamic/flexible situation-based action. One uses a single “variable” (constant) to represent many unchanging values, while the other uses a single variable to represent many changing values.</strong></p>
+<p><strong>Cont.: I think this is a strong conceptual formulation, but I’m not completely sure how it aligns with abstraction in the technical sense. Functions in both normal programming and LC are called abstractions, (the “defined” aspect being the code in the function and the “undefined” aspect being the arguments), and the term “abstraction” is also used in programming when talking about a system’s structure: having separate specialized methods that can act as a black box and be used without worrying much about the details of how it is implemented. These allow higher-level reasoning based on functionality (e.g.&nbsp;“determine eligibility”-&gt;“report eligibility to user”) similar to how grouping and classification is used in everyday reasoning (e.g.&nbsp;you don’t need to know a dog’s color to determine how many legs you would expect it to have, any more than you’d need to know the workings of a function to know what it does). Thus, referring to functions as abstractions and referring to program abstraction (as a methodology or structure) can use the same idea of abstraction, as I understand it, but take advantage of different aspects (what varies, for functions, what remains the same, for fulfilling functionality needs).</strong></p>
+<p>1:25 Set up Github, create folders and files for work up until now</p>
+<p>:5 Saved Resources for offline use</p>
+<p>:30 Reaching out to acquaintence about understanding abstraction</p>
+<p>Saved resources:</p>
+<p>Introduction to Lambda Calculus from <a href="https://www.cse.chalmers.se/research/group/logic/TypesSS05/Extra/geuvers.pdf" class="uri">https://www.cse.chalmers.se/research/group/logic/TypesSS05/Extra/geuvers.pdf</a></p>
+<p>Types and Programming Languages from <a href="https://www.cis.upenn.edu/~bcpierce/tapl/" class="uri">https://www.cis.upenn.edu/~bcpierce/tapl/</a></p>
+<p>Cloned example untyped LC interpreter repo (not in resources folder bc I was afraid of git issues) <a href="https://github.com/tadeuzagallo/lc-js" class="uri">https://github.com/tadeuzagallo/lc-js</a></p>
+<p><strong>Friday 5/1</strong> 135 minutes</p>
+<p><strong>Term and free variable definitions are inductively defined, allowing for constructive generation of more. Bound variables are syntactically part of the function definition, so they can no longer be treated as constants or have constants substituted. Closed terms only have bound variables, so the function is self-contained and “deterministic”.</strong></p>
+<p>1:00 Meeting with a project mentor</p>
+<p>1:15 Reading Intro to Lambda Calculus</p>
+<p>Meaning of “abstraction” as the term for binding a variable</p>
+<p>bound meaning to be considered in full “domain” vs free variables can be treated as/substituted with a constant?</p>
+<p>Valid terms and free variables are defined inductively; variable, application, and abstraction for terms, variable as free, application having free variables of it’s parts, abstraction binding variables which are otherwise free.</p>
+<p>Substitution is only for free variables because the bound variables need to be part of the definition, used in application. Closed terms have no free variables (are deterministic).</p>
+<p>Compatibility rules make sense, are they reversible (do terms have inverses?)</p>
+<p>Future research: de Bruijn notation to address alpha-conversion requirements</p>
+<p><strong>Saturday 5/2</strong> 120 minutes</p>
+<p><strong>I have a good handle on the LC syntax, and have decided a good way to think about bound and free variables is variables which are placeholders meant to be defined (by inputs) and undefined variables, respectively. I will focus more on personally working through the concepts and designing as best I can without studying/relying on outside resources as much.</strong></p>
+<p>:5 Reading Intro to LC and reviewing notes</p>
+<p>1:55 Brainstorming, reviewing knowledge and orienting myself</p>
+<p><strong>Sunday 5/3</strong> 90 minutes</p>
+<p>1:30 brainstorming abt abstraction</p>
+<p>Constants and variables can be reformulated as a line of dependencies considering contextual information, where more concrete ideas are dependent on their abstractions, with additional information forming them at each level (terrier is an instance of dog, which is an instance of mammal, etc.) Functions with no arguments are constants, functions with untyped arguments are variable based on constant(s) (the arguments), functions with simply typed arguments are variable based on variable (the argument) based on a constant (the type), and functions with dependent-typed arguments are variable based on variable (argument) based on a variable (type with dependency) based on a constant (the independent variable defining the type).</p>
+<p>This is interesting, but almost feels like all varieties of LC could be reduced to untyped LC, with the constants being inputs, the variables being the function definition, or something like that. Also, what it means to depend on another variable or to be an abstraction is still a little messy.</p>
+<p>I also formulated two levels of related-ness, like constants that describe variables (can function as an abstraction that describes them) vs constants that have to do with variables but don’t really convey information about them, e.g.&nbsp;“x exists” applies the constant info of “existence” to it but that doesn’t really tell us anything, it’s like the ultimate abstraction - almost useless, except when considering relationships between things in abstract math or something like that. Also, names “apply” information to a thing without really indicating anything about it in and of itself, since name-ability is just as abstract of a category as “exists”. (Whether a name is appropriate, descriptive, or intuitive is a different matter.)</p>
+<p>Ideally a satisfactory formulation of abstraction would be able to align conceptually with computer functions with or without arguments, math functions with inputs and outputs, (which should be very closely conceptual to the former) and math abstractions, and should also support multiple levels of classification and reasoning using that definition of abstraction.</p>
+<p>I also had the thought that a chain of built-up definitions is more akin to LLM vector definitions and/or the hierarchical structure of OOP inheritance, while a good system of abstraction should handle flexibility more like an ECS (which, being something implemented in software is obviously expressible in the LC/Turing formulation).</p>
+<p>Also, in my brainstorming I think I conflated two types of “depending on” other values, which could work with my “informational” vs “empty” formulation, namely, information like type, meta-information, which shapes the nature of a variable directly by what it can be, vs information like independent variables, outside/contextual information, which shapes the value of a variable almost indirectly (in that it’s not tied to the nature of the variable?) when it is plugged in…? Or, meta-information about the “domain” of a variable vs arbitrary information about which values or “slice” or “instance” to look at.</p>
+<p>Although abstractions are defined by what remains constant, it is not the adding/setting/restricting of constants to a variable system that creates/“does” abstraction, but adding variable flexibility to a constant, since terrier-&gt;dog-&gt;mammal deals with more and more variable flexibility at higher abstraction. Abstraction, then, is replacing a constant by a variable of that constant’s type or “domain”. When there are no constants remaining it is maximally abstract.</p>
+<p><strong>Monday 5/4</strong> 110 minutes</p>
+<p><strong>Intensional definitions have less detail and function as and/or are abstractions, but may correspond to a single extension/referent – “simply typed definition” – or to a extension of a class of referents based on it’s relative/dependent definition – “dependently typed definition”. The former yields neat hierarchies like OOP, while the latter allows more flexibility.</strong></p>
+<p>1:00 Brainstorming about abstraction</p>
+<p>:50 brainstorming, reviewing notes, summarizing ideas</p>
+<p>Abstraction is about replacing a constant with a variable of its type to broaden the possibilities, creating a class representative of a similar thing to the original object. New information cannot be added, because the flexibility in value only extends to the scope or type of the constant being replaced. I.e. removing the detail of breed and appearance can abstract from a dog to the idea of dog, but vagueness/generalness on the subject of breed cannot imply qualities of flight or feathers to include birds in the abstraction. Only when you remove the relevant information and go more abstract can you do so (dog-&gt;animal, losing detail about body shape and composition).</p>
+<p>More detail about type and the connection/dependencies of variables not yet explored, but the flexibility of type came up again.</p>
+<p>Using the two examples of f(2x)=x^2 - x +3 being solvable by substituting for x -&gt; f(x)=(x/2)^2 - x/2 +3 and, as an arbitrary example, x^2 = x+2, in which you cannot freely substitute for x, I brainstormed the distinction between “intensional” and “extensional” definitions. In the former example, the two sides are equal by definition and substituting a different variable into it cannot change its equality any more than a thing can be different than itself – it’s part of the definition of equality that that is impossible. Since f() is just shorthand for ()^2 -()+3, they cannot be unequal. In the second example, each side is its own expression, they are equal not by intension but by extension – they refer to the same thing – which can be seen more clearly by different notation. f1(x)=f2(x) is only equal when the effect of f1 is the same as the effect of f2, that is, when ()^2 = ()+2.</p>
+<p>Using the “intensional” definition as something like “what a function does” and “extensional” as “what effect or end result it has” reveals a distinction between two types of intensional definitions, which I think correspond somewhat with simple and dependent types. In plain algebra you can “do the same thing to both sides” when solving an equation, but “dividing by 3” and “square” have two different natures: the first is a single operation, while the second one describes an infinite number of operations, that is “multiplying by x” for the x being squared, and thus can lead to issues with changing equality states when not careful, like making -1=1. Thus, a “simply typed” intensional definition corresponds to a single extension, while a “dependently typed” intensional definition corresponds to a whole class or set of extensions. For objects rather than functions, constants vs variables have the same or similar behavior.</p>
+<p>Functions can have many outputs from a single “input” when variable, so long as no single input goes to multiple outputs.*</p>
+<p><strong>Tuesday 5/5</strong> 25 minutes</p>
+<p>:25 planning lexer and parser</p>
+<p><strong>Wednesday 5/6</strong> 40 minutes</p>
+<p>:40 planning lexer, generate code from pseudocode with AI, review code</p>
+<p><strong>Thursday 5/7</strong> 170 minutes</p>
+<p><strong>New formulation: Objects are either a single value (constant), a single unknown value (“existential variable” or “false variable”), or a variety of values (“universal variable” or simply “variable”) from a collection that defines it, i.e.&nbsp;a set. What I termed existential variables would likely be called “false variables” but I refer to them as variables since “what they can be” can vary, although in practice they function as an unknown constant. Any of these value(s) can then be stated to belong to another set of values, which further describes the value(s), and which corresponds to a type. Thus, an individual dog can be of type dog, mammal, vertebrate, pet, etc.</strong></p>
+<p><strong>Then, abstraction is the process of specifying a constant or variable to be in a larger set than previously defined; C|Ve|Vu + _|type -&gt; Vu + type (such that the type is a larger superset of the previous type, which if not specified would just be the set of the thing itself, it belonging to a collection of nothing but itself at the very least). Of note is that the primary defining term, i.e.&nbsp;the constant or variable itself, becomes a “universal”/true variable because the abstract object is a class that includes the original object. Without this change, the term would simply refer to the same object in more vague/broad terms.</strong></p>
+<p><strong>As sets can be defined by set-builder notation or enumerated elements, this corresponds to intensional and extensional definitions, and either can be used in the definition of the primary C|V term and the type term. When the type term’s definition is intensionally based on the primary C|V term, it is a dependent type. When the primary C|V term is a variable defined from another term/obj, then that is a bound variable. Existence is the property of having an element in the extension of a set as defined intensionally (e.g.&nbsp;set builder notation).</strong></p>
+<p><strong>This formulation encapsulates well my brainstorming on different levels of detail in description, natures of definition, ways variables (or what we so call) are used, types, and constant descriptions/definitions of variable objects.</strong></p>
+<p><strong>Further work will aim to clarify the concepts of varying levels of detail and categorizing in this framework, with examples of human reasoning, as well as explore more deeply dependent type definitions with examples. Additional exploration of intensional vs extensional definitions, reasoning using abstraction and categorical logic, and defining functions in terms of this formulation are on the docket for upcoming synthesis.</strong></p>
+<p>1:30 synthesize notes from abstraction brainstorming (about half done).</p>
+<p>:10 Reviewing R code from AI (looks good for the lexer, next will be the parsing)</p>
+<p>:50 Saved my old chat from trying to understand the Traverse function in the github example’s code (markdown file 04 and pdf file 05). I’m not sure which format I prefer for documentation. Began new chat to work on the parser and decided to test the lexer while the AI was thinking. Accidentally ran a line of code through the parser and it actually worked quite well, except that I forgot to have spaces break up variable names as I planned. Output recorded in file 06. Reading user input with readline is failing in an interactive session.</p>
+<p>:20 Looked at options for tree visualizing in R, ggraph seems nice but I’ll need to convert my tree into a dataframe I think. There’s the data.tree library for making trees, but AI also mentioned S3 classes that can represent tree hierarchies, so I’m looking at that too.</p>
+<p>data.tree : <a href="https://cran.r-project.org/web/packages/data.tree/vignettes/data.tree.html" class="uri">https://cran.r-project.org/web/packages/data.tree/vignettes/data.tree.html</a></p>
+<p>ggraph : <a href="https://r-graph-gallery.com/334-basic-dendrogram-with-ggraph.html" class="uri">https://r-graph-gallery.com/334-basic-dendrogram-with-ggraph.html</a></p>
+<p><strong>Friday 5/8</strong> 120 minutes</p>
+<p>:35 Meeting with mentor. Lexer counted space as a token. Learned debugging in RStudio and using source-running for readline to work.</p>
+<p>:30 abstraction brainstorming</p>
+<p>:55 minutes describing the abstraction formulation to a friend to review it and clarify it.</p>
+<p><strong>Saturday 5/9</strong> 60 minutes</p>
+<p>:15 reviewing/exploring potential resources</p>
+<p>:45 Reformulating the syntax rules for the lexer accounting for spaces and carefully planning possibilities, rewrote code.</p>
+<p><strong>Monday 5/11</strong> 75 minutes</p>
+<p>1:15 Brainstorm abt abstraction. Details of a concept are part of the intensional definition of either the main set or the type set; main set for the definition (what you’re talking about) and the type set for the descriptions of it (how you’re talking about it, how you label and categorize it). That’s good for basic “having qualities” and the composition of concepts, but not internal structure or relationships between the pieces. Operations, relations, functions, etc. are all closely related in terms of how they can be defined extensionally with ordered pairs, but intensional definitions are a bigger topic.</p>
+<p><strong>Tuesday 5/12</strong> 120 minutes</p>
+<p>1:00 brainstorming and explaining lexer and parser to rubber duck, running some example tests on lexer</p>
+<p>1:00 Drafted the following prompt for AI to make a parser, then when getting ready to input it, revisited my older AI chat (file 07). AI suggested tracking depth of the tree for parenthesis matching, but my looping pair-searching that I brainstormed shouldn’t need it. Documented my old chat, in which I asked about some topics that came up in preliminary research but are better left for the interpreter (file 07). Did quick research on trees in r to decide whether to use the S3 approach suggested by AI or data.tree or something else. Data.tree allows/uses multiple strictly ordered children, so it should work fine. Tidied drafting space while it thought.</p>
+<p>I need a parser for a lambda calculus interpreter based on the following pseudocode description, with “paren” shorthand for parenthesis. Add all tokens except “.” in “tokens” list to a nonbinary (more than two nodes allowed at a layer) tree structure on the same layer. When parentheses are matched, the tokens between the parenthesis should be put down a layer in the tree, on their own branch stemming from the location that they were in the list of tokens. define a parseParen function that takes the index of two parentheses and puts the tokens between the parentheses down a branch, with the parenthesis disappearing as the terms are grouped. define a parseBinding function that takes the index and layer within the AST (or however a position would be encoded) and groups that position and the next two terms into a lower branch, similar to the parseParen function but with a specific number of terms (3) and not removing any tokens (i.e.&nbsp;the parentheses). If less than two terms are to the right of the argument position throw “Application Parse Error”. #Parsing Parentheses Do the following loop until noParens == True (one of the loops ends without encountering parenthesis) Initialize variables “leftmostRight” and “rightmostLeft”. Iterate over the tokens in the first layer; if the token is a left paren, update rightmostLeft with the index of the left paren. Else if the character is a right paren do the following conditional: if the rightmostLeft is left of (lower index than) the scanned token then update leftmostRight to the index of the current token and exit the loop to pair the parens, else throw an “unmatched right parenthesis” error. If the loop reaches the end of the tokens list, then: if you found a left paren (rightmost left) then throw an unmatched left paren error, else no more parens found, set noParens = True to proceed to parse applications. #Parsing Bindings For each layer in the tree repeat the following search loop until no layers of the tree have more or less than three terms (the binding term, the function term, and the input term), counting branch nodes as a single term to reflect use in the application phase. Search from left to right for the rightmost binding term (term whose first character is in the list of “” or “/”), if none found, then you’re done, else group the binding term and the two terms to the right of it, (if less than two terms to the right, throw “Application Parse Error”).</p>
+<p><strong>Wednesday 5/13</strong> 35 minutes</p>
+<p>:35 drafted pseudocode for the interpreter</p>
+<p><strong>Friday 5/15</strong> 45 minutes</p>
+<p>:45 meeting with project mentor, reviewed AI parser code a bit</p>
+<p><strong>Saturday 5/16</strong> 60 minutes</p>
+<p>:20 Review AI generated parser code, added non-empty requirement to lexer. Parser creates parentless nodes then adds them to the tree in two steps. It also tracks root’s children and a separate list of nodes at the initialization. Has some extra conditions it checks for (like digits as well as parenthesis). Doesn’t actually have some of the function calls. left_parens and right_parens appear to be functions, that I don’t understand. It’s so messy I’m going to reprompt.</p>
+<p>:40 Reviewed my previous prompt and wrote the follow-up prompt below. While the AI was thinking, I reviewed its thinking. I actually re-added recursive parentheses checking into the prompt because I forgot that I decided I didn’t need it, since I’m processing from the inside out (over each iteration). I think the current level of pseudocode prompt is too vague and needs to be more step-by-step. Also, I have avoided using certain models like Claude that might work better because it doesn’t seem to have a built-in way to save the chat, but I might use it to refine my prompt for my primary AI or explore ways of saving the chat.</p>
+<p>A lexer will already have created a list of tokens, as strings, in “tokens”. To check for left and right parentheses just use ==“(” and ==“)” because they will be a single-character token. Don’t use grepl. Keep the code brief. To reiterate and clarify, follow this pseudocode description:</p>
+<p>For every token in tokens, if token!=“.” add token to the children of the root node of mainAST.</p>
+<p>repeat checkLayerForParens on each layer, recursively going down the tree until every layer has no parentheses left.</p>
+<p>checkLayerForParens should read through the tokens of a layer and group all the tokens between pairs of parentheses as children of a new tree node that replaces them using a function called parseParen that takes the indices/positions of the two parentheses. Thus, the only tokens that should disappear from the tree are parentheses after they have been evaluated and their contents “lowered” along a branch. A token list with “a ( b c ) d” should become a list with “a”, a branch containing “b” and “c”, then “d”.</p>
+<p>This should be done thus;</p>
+<p>Initialize variables “leftmostRight” and “rightmostLeft”. Iterate over the tokens in the first layer; if the token is a left paren, update rightmostLeft with the index of the left paren. Else if the character is a right paren do the following conditional: if the rightmostLeft is left of (lower index than) the scanned token then update leftmostRight to the index of the current token and exit the loop to pair the parens, else throw an “unmatched right parenthesis” error.</p>
+<p>If the loop reaches the end of the tokens list, then: if you found a left paren (rightmost left) then throw an unmatched left paren error, else no more parens found, set noParens = True to proceed to parse applications.</p>
+<p>After the previous loop, as a separate loop repeat checkLayerForBindings on each layer until every layer has exactly three terms.</p>
+<p>checkLayerForBindings should read through the tokens of a layer and if there is a binding term followed by two other terms (and the current branch has more than those three terms), then the binding term and the next two terms should be grouped with parseBinding, a function that takes the position of the binding term to select the three terms and replace them with a node that has them as its children.</p>
+<p><strong>Monday 5/18</strong> 105 minutes</p>
+<p>:40 Reviewing Parser code. Prepped the following prompt, which for speed and quality I will give to Claude along with the code I got and reviewed (documented in files 08). I will document the response code with a copy of it in the drafting space and/or main.R. The chat: <a href="https://claude.ai/chat/118eedd1-9f57-43af-aad0-4aee137a8ccf" class="uri">https://claude.ai/chat/118eedd1-9f57-43af-aad0-4aee137a8ccf</a></p>
+<p>:40 Reviewed new parser code, looks great. Go Claude! Needs some fine-tuning though.</p>
+<p>:25 Fine tuning and initial test, seems to work. Tried .\x.f (n f x). Will start breaking up R files for organization.</p>
+<p>I am building a lambda calculus interpreter in R and have already created a lexer that provides a list of tokens (strings) in “tokens”. The following is some code I received and my notes about how to revise it. Please provide a detailed pseudocode overview of how you would write the program (with an emphasis on readability and clarity), along with any follow-up questions or clarifications you have, and then rewrite the provided code as you would write it, given the revision feedback provided below.</p>
+<p>In parseParen, we need to add the node that is the parent node of the lowered inner_tokens (paren_node) to have the same parent as the layer that they came from, and be in the same position order as the inner_tokens were. Likewise in parseBinding, we need binding_node to have the same parents as the current layer and be in the same position order as the three tokens originally were. These requirements need to be the case so that during evaluation all the tokens that were originally in the input are in the AST and effectively in the same order, only parsed for application. It looks like you might be trying to address this in the main parsing loop rather than the functions.</p>
+<p>Because parenthesis are being evaluated from the inside pairs outward, we only need the parenthesis parsing to iterate over the first layer, please make that change and ensure that if a branching parent node becomes itself a child node in a parenthesis parsing step that the new lowered copy/version of it still has the children it had before. So, if B has a child C, and B becomes moved down to become a child of A, then B still has a child C.</p>
+<p>Also, make a function initializeAST that does the initial creation of the AST and replace it’s code in the main code chunk with the function call for readability. You should not need to use grepl.</p>
+<p><strong>Tuesday 5/19</strong> 25 minutes</p>
+<p>:25 Began a bit of research into visualizing R trees, which would be nice both for testing and a final product. DiagrammeR looks good but doesn’t seem to see the final tree after parsing, it’s all in one layer still. Other options include ggtree (via treeverse), igraph (plus tidygraph and ggraph), etc. according to AI chat, but I’d like to prioritize compatibility with the data.tree I already have for now (igraph might be nice to switch to if data.tree doesn’t cut it).</p>
+<p><strong>Wednesday 5/20</strong> 70 minutes</p>
+<p>:35 Continued research in visualizing. Pursuing igraph; make_graph() to create, then plot() to view, add_vertices and add_edges with the graph then the addition(s) to edit, or use + syntax like +edges(c(…)). directed=TRUE by default. IDs are contiguous from 1 to n and dynamically renumbered when the graph is edited. graph_from_literal allows listing each node and what it connects to, seems more intuitive (Start - Connection1:Connection2:… , Start2 - … is the syntax). There’s lots of creation functions. The $ operator is a shortcut to get and set graph attributes, along with graph_attr() and set_graph_attr(). But, like dataframes, $ refers to the whole variables (like a df column) and must use an index [i] to specify a single node for change if you don’t want to use a vector to define every one.</p>
+<p>Documentation for igraph: <a href="https://r.igraph.org/articles/igraph.html" class="uri">https://r.igraph.org/articles/igraph.html</a></p>
+<p>:55 Began breaking up program into separate .R files for readability and organization. Ran into some bugs. Learned a bit about scope and the data management for function calls through chat: <a href="https://claude.ai/chat/f5e75897-2889-45e5-946a-e5867331620f" class="uri">https://claude.ai/chat/f5e75897-2889-45e5-946a-e5867331620f</a>. Manually changed functions to be helper functions that return values rather than editing a global variable. Lexer separated, parser will be next.</p>
+<p><strong>Friday 5/22</strong> 70 minutes</p>
+<p>:25 Meeting with mentor</p>
+<p>:45 Annotated Turing Reading</p>
+<p><strong>Saturday 5/23</strong> 15 minutes</p>
+<p>:15 Annotated Turing</p>
+<p>:? Presentation prep</p>
+<p><strong>Monday 5/25</strong> 15 minutes</p>
+<p>:5 Organized parser code into its own file. Program still works as it did. “Plot” still doesn’t register depth when displaying ASTs.</p>
+<p>:10 Skimmed tree converter code from AI, it has an error. Also grabbed ggraph display code, which also has an error.</p>
+<p><strong>Tuesday 5/26</strong> 55 minutes</p>
+<p>:55 Worked on getting data.tree structure into igraph structure. Decided that since I already had viewAST that correctly interprets the tree that rather than trying to work between two unfamiliar data structures I would take the output of viewAST and work with that. However, the mechanisms of that proved complicated (cat vs paste0 vs keeping a running list, etc.) It maybe ended up complicating things even more but I’m learning more R now.</p>
+<p><strong>Thursday 5/28</strong> 180 minutes</p>
+<p>3:00 I’m gonna focus on AI because I don’t want to get bogged down in the technical side of things and I want more time to explore types. I got more AI help for displaying trees, Claude this time <a href="https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab" class="uri">https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab</a>. Reviewed code, integrated code suggestions and tested, repeated. Tree now displays, custom size and color of nodes. Getting a feel for the generated code and customizing it to my liking (e.g.&nbsp;replacing custom text for connective nodes, renaming variables and functions to be more intuitive to me). Got a nice tree working that should be customizeable, all the UI stuff will be through the Shiny library. A live responsive UI is now available that renders a tree and can be color-coded! Parenthesis grouping are not seen as function groups even when only a function trio is present. (E.g. . x y (b ((c d))) e)</p>
+<p><strong>Friday 5/29</strong> 35 minutes</p>
+<p>:35 Meeting with mentor, he suggested test-driven development with test cases to monitor development, like the testthat library (expect_error, expect_equal, expect_no_error, etc.).</p>
+<p>Next up: change presets to be more meaningful, display text bigger, create interpreter, create test cases for “unit testing”, test-driven development</p>
+<p><strong>Saturday 5/30</strong> 60 minutes</p>
+<p>1:00 Reading Annotated Turing</p>
+<p><strong>Monday 6/1</strong> 30 minutes</p>
+<p>:30 Added functionality for actual λ symbols as well as slashes. Wrote up a prompt to start into the interpreter, continuing in the same conversation (<a href="https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab" class="uri">https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab</a>).</p>
+<p><strong>Friday 6/5</strong> 15 minutes</p>
+<p>:15 meeting with mentor</p>
+<p><strong>Saturday 6/6</strong> 35 minutes</p>
+<p>:15 Reading the Intro to LC. Regarding types, Curry’s view includes terms allowed to have different types (almost like categorizations), while Church’s are limited to unique types (up to an equivalence relation). These correspond to two paradigms in programming: implicit and explicit typing. (Perhaps seen as less fundamental to the LC and more fundamental to the LC). Which functions can be typed (not all can) ties in with deeper theory regarding computability, the halting problem, orders of arithmetic, etc. “Normalization of terms corresponds in the formulas-as-types interpretation tonormalisation of proofs in the sense of Prawitz.”</p>
+<p>:20 Types are constants, variables, or functions between existing types, constructions allow defining new types. Type functions use right association, aligning with currying, so 1-&gt;2-&gt;3 means 1-&gt;(2-&gt;3). Statements are typed terms, e.g.&nbsp;M:o, where o is the predicate and M is the subject of the statement. Type derivations rely on modus ponens and another inference rule I don’t understand (definition 5.3, maybe something like casting or inter-type functions). A basis is mutually exclusive or “linearly independent”-typed statements that form the basic workspace of assumptions, almost like a basis vector defining a space.</p>
+<p>I think the second inference is something like “you can have a function go from the type of any input you know the type of, to another existing type, by having the input be that known term:type.” Sort of like how in propositional logic you can have P-&gt;Q with anything for P if Q is true. Anything can map to an existing term:type. Left off pg 36.</p>
+<p><strong>Tuesday 6/9</strong> 25 minutes</p>
+<p>:25 Read AI response for interpreter, same AI conversation from earlier. (<a href="https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab" class="uri">https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab</a>). Wrote up clarifying instructions. Going to have two views, one for ASTs and one for the solution graph.</p>
+<p><strong>Wednesday 6/10</strong> 80 minutes</p>
+<p>1:20 Clarified with AI more. We’ll use alpha equivalence (allowing variable renaming) when checking whether two ASTs are the same. Updated UI and display a bit. Reviewing code and orienting myself for identifying binding group nodes hiding in the structural nodes, and to be ready to get into the weeds with the interpreter. Added identifyBindingGroups to replace parenthesis groups and the root with binding groups if they are a function grouping. This is in treePlotter.R and is ran in parsedAST in app.R immediately following the parsing step.</p>
+<p>allow non-evaluation expressions</p>
+<pre><code>Parse error: Application Parse Error: binding term must be followed by two terms</code></pre>
+<p><strong>Friday 6/12</strong> 35 minutes</p>
+<p>:35 meet with mentor, start work on tests.</p>
+<p><strong>Tuesday 6/16</strong> 180 minutes</p>
+<p>1:00 worked on the interpreter. Got alphaEquivalence code from AI, reviewed alphaEquivalence a bit.</p>
+<p>2:00 Got interpreter code from AI, reviewed it a bit, read up until buildHyperGraph and asked followup questions, gave suggestions, refined the design and broke it down to double check it. Still a little shaky on renameTermInPlace and renameBoundVar, especially with recursion. Mostly looks pretty good, except I haven’t gone over the UI stuff as much.</p>
+<p><strong>Friday 6/19</strong> 60 minutes</p>
+<p>:45 Read a bit more Intro to LC. pg 42 has presentable boolean logic examples. “error” when dividing by zero is of type Z, the same as the integers. Weird. I went to read Types and Programming Languages but saw I only had the table of contents. The text is available at <a href="https://theswissbay.ch/pdf/Gentoomen%20Library/Maths/Comp%20Sci%20Math/Benjamin_C._Pierce-Types_and_Programming_Languages-The_MIT_Press%282002%29.pdf" class="uri">https://theswissbay.ch/pdf/Gentoomen%20Library/Maths/Comp%20Sci%20Math/Benjamin_C._Pierce-Types_and_Programming_Languages-The_MIT_Press%282002%29.pdf</a> and has been added to my resources folder for offline use. Also skimmed this video <a href="https://www.youtube.com/watch?v=TrYosPPCQAY" class="uri">https://www.youtube.com/watch?v=TrYosPPCQAY</a>, which clarified type-checking a little as modus-ponens-style logic to chain inputs and outputs of functions to determine results’ types. Reasoning with types allows different orders of abstraction for logic (first-order vs second-order vs …etc.). A frame is a set of sets that defines the types, including a truth-value type and a compound “function” type between two types. Abstractions’ types are the type of the output. Higher-order logic and the metaphysics of the logic systems is definitely something to think about more.</p>
+<p>:15 Skimmed Types and Programming Languages, same sort of stuff, deriving function types from the types of its components, various terms for invalid values, like 0 or “wrong”, or what we’d probably get NULL in a program from or UNDEFINED on a calculator. It seems to get a little more into the ins and outs, including type to term ideas, closer to how we’d think about sets or groupings. Depth, derivations, permutations are mentioned in 9.3. 9.4 gets into Curry-Howard Correspondence for propositions. Arrow constructors describe the creation of a type via an introduction rule (dependencies, functions, implications) and using a type with an elimination rule (result, output, modus ponens). This was interesting:</p>
+<p>“Most compilers for full-scale programming languages actually avoid carrying annotations at run time: they are usedduring typechecking (and during code generation, in more sophisticated compilers), but do not appear in thecompiled form of the program. In effect, programs are converted back to an untyped form before they are evaluated.This style of semantics can be formalized using an erasure function mapping simply typed terms into thecorresponding untyped terms.” pg 109</p>
+<p>STLC can either be evaluated as simply typed or compiled to an untyped version and evaluted as untyped.</p>
+<p>“An important commonality of the two styles is that, in both, itmakes sense to talk about the behavior of a term t, whether or not t is actually well typed. This form of languagedefinition is often called Curry-style. We first define the terms, then define a semantics showing how they behave, thengive a type system that rejects some terms whose behaviors we don’t like. Semantics is prior to typing.</p>
+<p>A rather different way of organizing a language definition is to define terms, then identify the well-typed terms, thengive semantics just to these. In these so-called Church-style systems, typing is prior to semantics: we never even askthe question “what is the behavior of an ill-typed term?” Indeed, strictly speaking, what we actually evaluate inChurch-style systems is typing derivations, not terms.” pg111</p>
+<p><strong>Saturday 6/20</strong> 70 minutes</p>
+<p>:20 Working on interpreter, debugging. ViewAST moved to TreePlotter.R. Going to start making test systems. How should I handle input like (. x) y?</p>
+<p>:50 More work on interpreter. Debugged a bit, changed identifyBindingGroups to also work with just the function abstractions, since functions might not have an input. Gonna focus on debugging, really understanding the whole theory and program, and fixing up the UI. Since compilers often don’t even use types in the final code and there’s not a lot of time remaining for my project, I don’t think I’ll do typing. It’s getting hard to keep track of the program, so testing will be helpful.</p>
+<p><strong>Sunday 6/21</strong> 35 minutes</p>
+<p>:35 YT Research into type theory in general; Martin-Lof type theory and HoTT (connecting this project to future application and context). Type theory “hides implementation details”, so the different ways of defining numbers from sets, for example, are not distinguished. The Univalence principle defines equality and equivalence to be the same. An element of one type is not an instance of any other type (differing from set theory’s flexbility). Equality of equalities cannot always be proven true (higher-order indeterminability).</p>
+<p><strong>Monday 6/22</strong> 65 minutes</p>
+<p>:40 More YT research into type theory (mainly computerphile). J Rule says proofs for reflexivity are sufficient to prove equality. Equality is a groupoid, as a group describes the patterns that govern equality for any closed system (closure describable by operation results belonging to the type of the operated elements). J Rule allows any equality to be treated as a groupoid? Using group behavior we can see the impossibility of proving any two equalities are equal because you can’t prove any two integers are equal (integers being elements of a group under addition). Correspondence allows defining any mappable-comparable things as being equal, e.g.&nbsp;any collection of equal size? Natural numbers and integers are the same under this view. However, operations and other structures/patterns can break these correspondences. UIP (Uniqueness of Identity Proof) fails when there are multiple potential correspondences (mappings) – there must be only one correspondence. Since type theory is implementation-independent, it aligns with black-box methodology for function design in programming (plug-and-play, focusing on results at each step and not the process). HoTT idea came about with types as geometric objects and elements of types as the points on the surface, equality as a path from one point to another. Triviality of the uniqueness of equality asks “up to isomorphism” so topologically “same” paths are considered the same and must be non-trivially different to be considered different equalities. The univalence principle then comes into effect for comparing <em>types</em>, as equal if there is a one-to-one correspondence. HoTT expands from set theory with flexibility comparable to how non-euclidean geometry generalizes from the assumptions of euclidean geometry. In a plane there is only one path between two points, but in other geometries there can be more, which can’t be expressed as plain sets.</p>
+<p>:25 Worked on interpreter. Replaced name$Clone(recursive=TRUE) syntax with Clone(name) syntax because the version I’m working with is automatically recursive when it creates a clone of a tree and that’s the correct syntax. Gradually fixing bugs and trying to get the testthat results to come back clean.</p>
+<p><strong>Tuesday 6/23</strong> 60 minutes</p>
+<p>1:00 Working on interpreter. Moved identifyBindingGroups to be in parser.R instead of treePlotter because that’s more intuitive to me. More work with testthat and a lot of code review and cleanup to make sure I still know what’s going on. Still using <a href="https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab">the same AI chat</a>.</p>
+<p><strong>Wednesday 6/24</strong> 65 minutes</p>
+<p>1:05 Began conducting full review of all code. I want to double-check behavior when parsing empty parens. reduceBindings calls parseBinding on each binding term trio to structure the AST, this is where I first made the decision to view the binding terms, function bodies, and inputs together. Since only these trios can be evaluated, all the Binding_Group nodes should act as markers for every evaluate-able reduction step. I’m renaming parser.R’s parse_lambda to parse_expression. I’ve gone over the full lexing and parsing except I’m still looking over identifyBindingGroups</p>
+<p><strong>Thursday 6/25</strong> 100 minutes</p>
+<p>1:40 Continued full review of all code. Fixed bug for recognizing lambda symbols as binding terms as well as slashes. structural nodes include “functionAbstraction” for a binding term, function body and input together, even though in normal terminology function abstraction refers to only the first two parts. Since this will be used for evaluation, I only use it when there are all three parts. Also, using “Root” as a variable name will color the “root” nodes accordingly lol. Added try_catch and is.null check so UI doesn’t freeze from invalid parsing while getting user input, but lost specific error messages.</p>
+<p>I had to make a hard decision for how to interpret parentheses around the binding term and next terms:</p>
+<p>(\x. x b) a</p>
+<p>1- \x. x b a ; using default rules to take one term as body and the next as input</p>
+<p>2- \x. (x b) a</p>
+<p>Which should it be equivalent to? Should parentheses group a function and input, or just a function? I’m going with option 1. Evaluation goes from the “inside” out, one term at a time, and entire function-input pairs can be grouped by parentheses. (. x) y is a weirder case, because I wouldn’t put parentheses around just a function abstraction usually. Parentheses group together terms as a single term, e.g.&nbsp;a single function body. Reviewed parsing, interpreter will be next.</p>
+<p><strong>Friday 6/26</strong> 40 minutes</p>
+<p>:40 met with mentor. Went over some tests and cases.</p>
+<p><strong>Monday 6/29</strong> 15 minutes</p>
+<p>:15 Working on interpreter. Identified issue with substitution protocol that prevents atomic-term bodies from being replaced.</p>
+<p><strong>Tuesday 6/30</strong> 90 minutes</p>
+<p>1:15 in progress. Continuing code review. FYI findReducibleNodes in interpreter and freeVariables in interpreter both use exactly three children of a binding group for their checks. Also renameBoundVar. Variables are considered free until they are bound by a binding term /in a binding group/. If there is no input, for example, then the bound variable is considered free because the binding doesn’t belong to a binding group. If there is no substitution or evaluation to happen anyways, this hopefully shouldn’t affect the results.</p>
+<p>Fixed the atomic-term body substitution bug. collectNames collects entire binding terms, not just the variable name. This shouldn’t be an issue, since if the bound variable exists in the body it will be counted in the collection, and if it isn’t, then there’s no conflict anyway, in terms of evaluation. I think.</p>
+<p>Renaming issues are hard to iron out, as I’m a little shaky on the finer details of what needs to happen to avoid variable capture. Variable capture only happens in multi-layer functions, (e.g.&nbsp;currying), so the testing examples have to be a bit more complicated.</p>
+<p>:15 Gave practice presentation for the project.</p>
+<p><strong>Saturday 7/11</strong> 105 minutes</p>
+<p>1:45 Added recursive name replacement for evaluation into the inputs of nested function abstractions to ensure that all non-conflicted variables get renamed properly (some were missed when inputs were ignored to prevent variable capture, but variable capture only happens for bound variables that might have name conflicts, not inputs). Continued code review.</p>
+<p>AI flagged a redundant complexity to maybe fix in the future (where “Step 2” refers to checking node$name==“Binding_Group” and the length of children is &gt;=2, or ==3, and “Step 3” is if not both conditions are true and each child gets checked for a match, as a free variable, with the variable to be substituted.):</p>
+<p>in Step 2, the recursion into the body passes <code>c(boundVars, boundVar)</code> as the new <code>boundVars</code> for the recursive call. This extends the <code>boundVars</code> vector with the current inner binding’s variable. But look at what <code>substituteName</code> actually uses <code>boundVars</code> for — only in Step 3’s check: <code>!varName %in% boundVars</code>. This check prevents substitution when <code>varName</code> has been rebound by an enclosing scope. However, since Step 2 already returns early when <code>boundVar == varName</code> (the rebinding case), the <code>c(boundVars, boundVar)</code> passed into the recursive call would only ever add a variable that is different from <code>varName</code> — so it would never actually affect the <code>!varName %in% boundVars</code> check in any subsequent call. This means <code>boundVars</code> as currently used is effectively always empty or irrelevant when it reaches Step 3.</p>
+<p>**Note to self, something to review later.</p>
+<p>Might also want to double-check loop identifying for the UI display, and checking for recursive chains with ASTs that have multiple parent ASTs in the graph. Removed display cards that weren’t working anyway, doing plain circle nodes until I can make mini ASTs in the graph. Those work now, basically.</p>
+<p>Now any nodes with multiple parents is flagged as a loop. Still using the chat <a href="https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab" class="uri">https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab</a></p>
+<p>AI response:</p>
+<p>\x. x a works just fine, and all the main functionality is basically working, at a glance. Testing other examples shows that seemingly any nodes with multiple parents are flagged as a loop even if no path forms a loop.</p>
+<p>Additionally, I may need to add restrictions into which evaluations can be completed or what they use for inputs, to reflect the associativity rules in LC, especially where currying is concerned. For example, in the OR TRUE FALSE expression (\p.&nbsp;\q. p p q)(\x. \y. x)(\x. \y. y) the tree doesn’t include a two-step curried evaluation yielding anything like (\x. \y. x)(\x. \y. x)(\x. \y. y) two layers down the tree, nor does it simplify to (\x. \y. x) as either of the options. It instead gives the solutions “p /y /y” or “q /y /y”.</p>
+<p><strong>Friday 7/17</strong> 30 minutes</p>
+<p>:30 Added a readme to the project. I have presented my project (I was so nervous!) which I will likely make available here. Project is wrapped up for the semester, I may or may not continue development directly on this in the future. I will certainly take forward what I learned from this experience to my future development, in any case. Did some review and cleanup for “archiving”.</p>
+<p>Future work would involve checking more carefully what is happening in evaluation, cleaning up the code, and polishing the UI display (particularly the left evaluation graph and making sure it displays the correct formatting and results). I asked Claude to summarize the current state of development at the end of <a href="https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab">the conversation I’ve been using</a>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>Random notes:</p>
+<p>. a . b . q ; q doesn’t parse as body for z, adding another term allows it to be a binding group and parse correctly</p>
+<p>#run tests with testthat::test_dir(“tests/testthat”)</p>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
