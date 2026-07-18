@@ -15,3 +15,5 @@ There is an entry box for a text expression that will be tokenized by the lexer,
 The left tree shows possible evaluation paths. igraph and Data.tree were used for the AST structures, shiny, colourpicker, and visNetwork for the UI, and testthat for automatic case-testing.
 
 Future development: UI could use some polishing, associativity might not be considered properly during evaluation, and the naming system to avoid variable capture seems buggy. (e.g. "\\name. (hello I'm name)" triggers a rename.)
+
+Read [Timeline Tracker](https://calebhaleprogrammer.github.io/Lambda-Calculus-Capstone/Resources/Documentation/00%20Timeline_Tracker.html)
