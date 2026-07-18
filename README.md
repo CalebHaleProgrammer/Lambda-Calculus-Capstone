@@ -12,4 +12,6 @@ There is an entry box for a text expression that will be tokenized by the lexer,
 
 -   "(\\x. x b) a" should be the same as "\\x. x b a", what I understand to be standard LC syntax should apply; left associativity for inputs, right associativity for bindings/function abstractions, working "outward" from the "middle". So, "\\x. \y. x y a b" should be "(\\x. (\y. x y) a) b".
 
-The left tree shows possible evaluation paths.
+The left tree shows possible evaluation paths. igraph and Data.tree were used for the AST structures, shiny, colourpicker, and visNetwork for the UI, and testthat for automatic case-testing.
+
+Future development: UI could use some polishing, associativity might not be considered properly during evaluation, and the naming system to avoid variable capture seems buggy. (e.g. "\\name. (hello I'm name)" triggers a rename.)

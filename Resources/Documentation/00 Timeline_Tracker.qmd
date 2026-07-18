@@ -407,15 +407,19 @@ AI response:
 
 Additionally, I may need to add restrictions into which evaluations can be completed or what they use for inputs, to reflect the associativity rules in LC, especially where currying is concerned. For example, in the OR TRUE FALSE expression (\\p. \\q. p p q)(\\x. \\y. x)(\\x. \\y. y) the tree doesn't include a two-step curried evaluation yielding anything like (\\x. \\y. x)(\\x. \\y. x)(\\x. \\y. y) two layers down the tree, nor does it simplify to (\\x. \\y. x) as either of the options. It instead gives the solutions "p /y /y" or "q /y /y".
 
-**Friday 7/17** .. minutes
+**Friday 7/17** 30 minutes
 
-:15 Added a readme to the project
+:30 Added a readme to the project. I have presented my project (I was so nervous!) which I will likely make available here. Project is wrapped up for the semester, I may or may not continue development directly on this in the future. I will certainly take forward what I learned from this experience to my future development, in any case. Did some review and cleanup for "archiving".
+
+Future work would involve checking more carefully what is happening in evaluation, cleaning up the code, and polishing the UI display (particularly the left evaluation graph and making sure it displays the correct formatting and results). I asked Claude to summarize the current state of development at the end of [the conversation I've been using](https://claude.ai/chat/c8bb4786-aba4-445c-a759-a7fd6fe296ab).
+
+.
 
 .
 
 .
 
-.
+Random notes:
 
 \x. a \y. b \z. q ; q doesn't parse as body for z, adding another term allows it to be a binding group and parse correctly
 
